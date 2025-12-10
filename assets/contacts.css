@@ -1,0 +1,442 @@
+/* Контакты - специфичные стили */
+
+/* Кастомный чекбокс */
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkbox-custom:hover {
+    border-color: #375d74;
+    background: rgba(55, 93, 116, 0.1);
+}
+
+.checkbox-custom.checked {
+    background: #375d74;
+    border-color: #375d74;
+    position: relative;
+}
+
+.checkbox-custom.checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Базовые стили для контейнеров */
+.responsive-container {
+    width: 100%;
+    max-width: 1952px; /* 1432px контент + 260px*2 отступы */
+    margin: 0 auto;
+    padding-left: 260px;
+    padding-right: 260px;
+}
+
+
+
+/* Адаптивные стили */
+
+/* Большие планшеты и маленькие ноутбуки */
+@media (max-width: 1536px) {
+    .responsive-container {
+        padding-left: 160px;
+        padding-right: 160px;
+    }
+}
+
+@media (max-width: 1440px) {
+    .responsive-container {
+        padding-left: 120px;
+        padding-right: 120px;
+    }
+}
+
+/* Планшеты */
+@media (max-width: 1280px) {
+    .responsive-container {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+}
+
+/* Средние планшеты */
+@media (max-width: 1024px) {
+    .responsive-container {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .responsive-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* Маленькие мобильные */
+@media (max-width: 640px) {
+    .responsive-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+/* Предотвращение горизонтального скролла */
+body {
+    overflow-x: hidden;
+}
+
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Плавные переходы для изображений */
+img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Улучшение отображения на экранах с высокой плотностью пикселей */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* ============================================
+   АДАПТАЦИЯ ОСНОВНОГО КОНТЕНТА
+   ============================================ */
+
+/* Большие планшеты - 1280px и меньше */
+@media (max-width: 1280px) {
+    /* Уменьшаем фиксированные ширины в адресах */
+    .address-card-content {
+        width: auto !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Планшеты и меньше - 1024px */
+@media (max-width: 1024px) {
+    /* Три адреса - делаем в колонку */
+    .addresses-row {
+        flex-direction: column !important;
+    }
+    
+    .address-card {
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+    }
+    
+    .address-card-content {
+        width: 100% !important;
+        max-width: none !important;
+    }
+    
+    /* Контактная информация - две колонки в одну */
+    .contact-info-columns {
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    .contact-column {
+        width: 100% !important;
+    }
+    
+    /* Подробная схема проезда */
+    .route-scheme-card {
+        width: 100% !important;
+        max-width: 500px !important;
+    }
+    
+    /* Форма с картой */
+    .form-map-container {
+        flex-direction: column !important;
+    }
+    
+    .form-section {
+        width: 100% !important;
+    }
+    
+    .map-section {
+        width: 100% !important;
+        min-height: 400px !important;
+        height: auto !important;
+    }
+}
+
+/* Средние планшеты - 768px */
+@media (max-width: 768px) {
+    /* АО и ООО - в колонку */
+    .company-info-row {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .company-separator {
+        display: none !important;
+    }
+    
+    /* Проезд к офису - в колонку */
+    .route-info-row {
+        flex-direction: column !important;
+        gap: 5px !important;
+    }
+    
+    .route-separator {
+        display: none !important;
+    }
+    
+    /* Внимание блок - меньше padding */
+    .attention-block {
+        padding: 15px !important;
+        gap: 8px !important;
+    }
+    
+    .attention-title {
+        font-size: 18px !important;
+    }
+    
+    .attention-text {
+        font-size: 14px !important;
+    }
+    
+    /* Подробная схема проезда */
+    .route-scheme-card {
+        width: 100% !important;
+        max-width: none !important;
+    }
+    
+    /* Карта */
+    .map-section {
+        min-height: 350px !important;
+    }
+}
+
+/* Мобильные устройства - 640px */
+@media (max-width: 640px) {
+    /* Адреса - меньше padding */
+    .address-card {
+        padding: 15px !important;
+        border-radius: 15px !important;
+        gap: 20px !important;
+    }
+    
+    /* Контактная информация */
+    .contact-title {
+        font-size: 24px !important;
+    }
+    
+    .contact-card {
+        padding: 15px !important;
+        border-radius: 15px !important;
+        gap: 15px !important;
+    }
+    
+    /* Иконки контактов - меньше */
+    .contact-icon-wrapper {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 8px !important;
+    }
+    
+    .contact-icon {
+        width: 16px !important;
+        height: 16px !important;
+    }
+    
+    .contact-label {
+        font-size: 13px !important;
+    }
+    
+    .contact-value {
+        font-size: 15px !important;
+    }
+    
+    /* Разделители в контактах */
+    .contact-divider {
+        margin-left: 46px !important;
+    }
+    
+    /* Внимание блок */
+    .attention-block {
+        padding: 12px !important;
+        border-radius: 15px !important;
+    }
+    
+    /* Форма */
+    .form-section {
+        padding: 20px !important;
+    }
+    
+    .form-title {
+        font-size: 24px !important;
+    }
+    
+    .form-input {
+        font-size: 14px !important;
+        padding: 8px !important;
+        height: 42px !important;
+    }
+    
+    .form-textarea {
+        height: 150px !important;
+    }
+    
+    .form-checkbox-text {
+        font-size: 13px !important;
+    }
+    
+    .form-button {
+        width: 100% !important;
+    }
+    
+    /* Карта */
+    .map-section {
+        min-height: 300px !important;
+    }
+}
+
+/* Очень маленькие мобильные - 480px */
+@media (max-width: 480px) {
+    /* Адреса */
+    .address-card {
+        padding: 12px !important;
+        gap: 15px !important;
+    }
+    
+    /* Иконка адреса */
+    .address-icon-wrapper {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    /* Контактная информация */
+    .contact-title {
+        font-size: 20px !important;
+    }
+    
+    .contact-card {
+        padding: 12px !important;
+        gap: 12px !important;
+    }
+    
+    /* Внимание блок */
+    .attention-title {
+        font-size: 16px !important;
+    }
+    
+    .attention-text {
+        font-size: 13px !important;
+    }
+    
+    .attention-note {
+        font-size: 14px !important;
+    }
+    
+    /* Форма */
+    .form-section {
+        padding: 15px !important;
+        gap: 15px !important;
+    }
+    
+    .form-title {
+        font-size: 20px !important;
+    }
+    
+    .form-underline {
+        width: 80px !important;
+    }
+    
+    /* Карта */
+    .map-section {
+        min-height: 250px !important;
+    }
+}
+
+/* ============================================
+   ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+   ============================================ */
+
+/* Плавные переходы для адаптивных изменений */
+.addresses-row,
+.address-card,
+.contact-info-columns,
+.form-map-container {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Улучшение отображения текста на малых экранах */
+@media (max-width: 768px) {
+    /* Убираем whitespace-pre-wrap на малых экранах для лучшего переноса */
+    .attention-text,
+    .attention-note {
+        white-space: normal !important;
+    }
+}
+
+.address-icon-wrapper img,
+.contact-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Адаптация для средних размеров между планшетом и ПК */
+@media (max-width: 1200px) and (min-width: 1025px) {
+    .addresses-row {
+        gap: 15px !important;
+    }
+    
+    .contact-info-columns {
+        gap: 18px !important;
+    }
+}
+
+/* Улучшение читаемости на планшетах */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .address-card {
+        padding: 18px !important;
+        gap: 25px !important;
+    }
+    
+    .contact-card {
+        padding: 18px !important;
+    }
+    
+    .attention-block {
+        padding: 18px !important;
+    }
+}
+
+/* Предотвращение переполнения контента */
+.address-card-content,
+.contact-value,
+.attention-text,
+.attention-note {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Обеспечиваем минимальные размеры для кликабельных элементов на мобильных */
+@media (max-width: 768px) {
+    .form-button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+}

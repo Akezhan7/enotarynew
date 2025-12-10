@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПО, токены и услуги - E-NOTary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Roboto:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="order-ukep.css">
+    <link rel="stylesheet" href="animations.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 25px rgba(161, 161, 161, 0.2);
+        }
+        .view-all-btn {
+            background: rgba(55, 93, 116, 0.15);
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .view-all-btn:hover {
+            background: rgba(55, 93, 116, 0.25);
+        }
+        .arrow-icon {
+            width: 7px;
+            height: 12px;
+        }
+        .text-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body class="bg-[#fafafa] font-sans">
+    <div class="flex flex-col items-center relative w-full">
+     <!-- Меню -->
+     <header class="backdrop-blur-[10px] backdrop-filter w-full">
+            <div class="responsive-container">
+                <!-- Верхняя часть -->
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-5 items-start sm:items-center py-4 lg:py-5 border-b border-transparent flex-wrap">
+                    <p class="flex-1 font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] min-w-[200px]">Сигнал-КОМ	e-Notary Удостоверяющий Центр </p>
+                    <a href="https://t.me/SmartTokenPro1" target="_blank" rel="noopener noreferrer" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-5 h-[18px] overflow-hidden relative flex-shrink-0">
+                            <img src="figma-downloads/mingcute_telegram-fill.png" alt="Telegram" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap">@SmartTokenPro1 </p>
+                    </a>
+                    <a href="tel:+74953633093" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-[18px] h-[18px] relative flex-shrink-0">
+                            <img src="figma-downloads/basil_phone-solid.png" alt="Phone" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap">+7 (495) 363-30-93</p>
+                    </a>
+                </div>
+                
+                <!-- Нижняя часть -->
+               <div class="flex gap-3 md:gap-5 items-center pb-4 lg:pb-5 relative">
+                <a href="index.html" class="h-[40px] sm:h-[44px] lg:h-[46px] w-[135px] sm:w-[150px] lg:w-[165px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
+                    <img src="assets/images/logo1.svg" alt="Logo" class="w-full h-full object-contain">
+                </a>
+                <a href="index.html" class="h-[40px] sm:h-[44px] lg:h-[46px] w-[95px] sm:w-[105px] lg:w-[116px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
+                    <img src="assets/images/logo2.svg" alt="Logo 2" class="w-full h-full object-contain">
+                </a>
+                <!-- Мобильная кнопка меню -->
+                <button class="mobile-menu-button ml-auto lg:hidden p-2 -mr-2" id="menuToggle" aria-label="Открыть меню">
+                    <div class="hamburger" id="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                <!-- Десктопное меню -->
+                <div class="desktop-nav hidden lg:flex flex-1 gap-5 xl:gap-7 items-center justify-end">
+                    <div class="nav-item-with-dropdown relative">
+                        <a href="products-services.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">ПО&Токены&Услуги</a>
+                        <!-- Выпадающее подменю -->
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Справочник квалифицированных сертификатов</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Справочник сертификатов</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Облачная подпись</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Сервер штампов времени</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Проверка электронной подписи</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Сервис подписи документов</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Экспертиза электронной подписи</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Служба OCSP</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Свой УЦ или Аутсорсинг?</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item-wrapper">
+                        <a href="documents-page.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">
+                            Документы
+                        </a>
+                    </div>
+                    <div class="nav-item-wrapper">
+                        <a href="blog-page.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">
+                            Блог
+                        </a>
+                    </div>
+                    <div class="nav-item-wrapper">
+                        <a href="contacts-page.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">
+                            Контакты
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </header>
+
+        <!-- Полноэкранное мобильное меню -->
+        <div class="mobile-menu" id="mobileMenu">
+            <!-- Кнопка закрытия -->
+            <button class="mobile-menu-close" id="menuClose" aria-label="Закрыть меню">
+                <div class="hamburger active">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            
+            <div class="menu-item-with-submenu">
+                <div class="menu-item cursor-pointer">
+                    <a href="products-services.html" class="menu-item-link" onclick="event.stopPropagation()">
+                        <p>ПО&Токены&Услуги</p>
+                    </a>
+                    <svg class="submenu-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="toggleMobileSubmenu(event)">
+                        <path d="M5 7.5L10 12.5L15 7.5" stroke="#262626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="mobile-submenu">
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Справочник квалифицированных сертификатов</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Справочник сертификатов</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Облачная подпись</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Сервер штампов времени</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Проверка электронной подписи</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Сервис подписи документов</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Экспертиза электронной подписи</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Служба OCSP</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Свой УЦ или Аутсорсинг?</p>
+                    </a>
+                </div>
+            </div>
+            <a href="documents-page.html" class="menu-item" onclick="closeMobileMenu()">
+                <p>Документы</p>
+            </a>
+            <a href="blog-page.html" class="menu-item" onclick="closeMobileMenu()">
+                <p>Блог</p>
+            </a>
+            <a href="contacts-page.html" class="menu-item" onclick="closeMobileMenu()">
+                <p>Контакты</p>
+            </a>
+            <!-- Контактная информация в меню -->
+            <div class="menu-item mt-10">
+                <div class="flex flex-col gap-4 items-center">
+                    <a href="https://t.me/SmartTokenPro1" target="_blank" rel="noopener noreferrer" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-5 h-[18px] overflow-hidden relative flex-shrink-0">
+                            <img src="figma-downloads/mingcute_telegram-fill.png" alt="Telegram" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-base text-secondary leading-[1.15]">@SmartTokenPro1</p>
+                    </a>
+                    <a href="tel:+74953633093" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-[18px] h-[18px] relative flex-shrink-0">
+                            <img src="figma-downloads/basil_phone-solid.png" alt="Phone" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-base text-secondary leading-[1.15]">+7 (495) 363-30-93</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Хлебные крошки -->
+        <div class="w-full responsive-container pb-3 lg:pb-4">
+            <div class="flex items-center gap-2 font-semibold text-sm text-secondary">
+                <a href="#" class="hover:text-primary transition-colors">Главная</a>
+                <span>/</span>
+                <span class="text-dark">ПО&Токены&Услуги</span>
+            </div>
+        </div>
+
+        <!-- Главный контент -->
+        <main class="w-full responsive-container">
+            <!-- Заголовок страницы -->
+            <section class="flex flex-col gap-5 items-center text-center py-10">
+                <h1 class="font-bold text-[28px] sm:text-[32px] md:text-[40px] text-[#262626] leading-[1.05] tracking-[-0.03em] max-w-[831px]" data-aos="fade-down">ПО, токены и услуги для работы с электронной подписью</h1>
+                <p class="font-semibold text-base text-[#262626] leading-[1.15] max-w-full" data-aos="fade-up" data-aos-delay="100">
+                    УЦ e-Notary входит в состав <span class="text-primary underline">АО «Сигнал-КОМ»</span> (разработчика средств криптографической защиты, защищённых приложений и сервисов) и предлагает клиентам сертифицированное программное обеспечение, программные и аппаратные токены, а также услуги, необходимые для работы с электронной подписью.
+                </p>
+            </section>
+
+            <!-- Программное обеспечение -->
+            <section class="flex flex-col gap-5 py-5">
+                <div class="flex items-center justify-between" data-aos="fade-right" data-aos-delay="150">
+                    <h2 class="font-bold text-[24px] sm:text-[28px] md:text-[32px] text-[#262626] leading-[1.15]">Программное обеспечение</h2>
+                    <button class="view-all-btn">
+                        <span class="font-semibold text-base text-primary leading-[1.15]">Посмотреть все</span>
+                        <svg class="arrow-icon" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L6 6L1 11" stroke="#375d74" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Карточка 1 -->
+                    <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="w-[68px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                            <img src="figma-downloads/signal-com-csp.png" alt="Signal-COM CSP" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-2.5 flex-1 p-2.5">
+                            <h3 class="font-bold text-[18px] sm:text-[20px] text-[#262626] leading-[1.15]">Криптопровайдер Signal-COM CSP</h3>
+                            <p class="font-semibold text-base text-[#262626] leading-[1.15] opacity-80">Cредства криптографической защиты сообщений</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Карточка 2 -->
+                    <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="250">
+                        <div class="w-[68px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                            <img src="figma-downloads/multi-installer.png" alt="Мульти-Инсталлятор" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-2.5 flex-1 p-2.5">
+                            <div class="flex items-center gap-2.5">
+                                <h3 class="font-bold text-[18px] sm:text-[20px] text-[#262626] leading-[1.15]">Мульти-Инсталлятор УКЭП</h3>
+                                <div class="w-5 h-5 overflow-hidden flex-shrink-0">
+                                    <img src="figma-downloads/solar_info-square-bold-duotone.png" alt="Info" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <p class="font-semibold text-base text-[#262626] leading-[1.15] opacity-80">Автоматическая установка и настройка: </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Токены -->
+            <section class="flex flex-col gap-5 py-5">
+                <div class="flex items-center justify-between" data-aos="fade-right" data-aos-delay="300">
+                    <h2 class="font-bold text-[24px] sm:text-[28px] md:text-[32px] text-[#262626] leading-[1.15]">Токены</h2>
+                    <button class="view-all-btn">
+                        <span class="font-semibold text-base text-primary leading-[1.15]">Посмотреть все</span>
+                        <svg class="arrow-icon" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L6 6L1 11" stroke="#375d74" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Карточка 1 -->
+                    <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="350">
+                        <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                            <img src="figma-downloads/smarttoken-pro.png" alt="SmartToken-PRO" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-2.5 flex-1 p-2.5">
+                            <h3 class="font-bold text-[18px] sm:text-[20px] text-[#262626] leading-[1.15]"> Мобильное приложение SmartToken-PRO</h3>
+                            <p class="font-semibold text-base text-[#262626] leading-[1.15] opacity-80 text-clamp-3">СКЗИ SmartToken-PRO — это мобильное приложение, работающее как в режиме криптографического токена, при взаимодействии с приложениями на стационарных ПК с поддержкой криптопровайдеров, криптобиблиотек и криптоплагинов, так и в качестве автономного средства ЭП при взаимодействии с приложениями на мобильном устройстве в режиме «поделиться».</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Карточка 2 -->
+                    <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="w-[130px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                            <img src="figma-downloads/rutoken.png" alt="Рутокен" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-2.5 flex-1 p-2.5">
+                            <h3 class="font-bold text-[18px] sm:text-[20px] text-[#262626] leading-[1.15]">USB-ключи Рутокен компании «Актив»</h3>
+                            <p class="font-semibold text-base text-[#262626] leading-[1.15] opacity-80 text-clamp-3">Рутокен — это криптографический USB-токен, обеспечивающий надежную защиту ключей ЭП и аутентификации. Надежность Рутокен подтверждена его многолетней эксплуатацией в сетях массового обслуживания.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Услуги -->
+            <section class="flex flex-col gap-5 py-5">
+                <div class="flex items-center justify-between" data-aos="fade-right" data-aos-delay="450">
+                    <h2 class="font-bold text-[24px] sm:text-[28px] md:text-[32px] text-[#262626] leading-[1.15]">Услуги</h2>
+                    <button class="view-all-btn">
+                        <span class="font-semibold text-base text-primary leading-[1.15]">Посмотреть все</span>
+                        <svg class="arrow-icon" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L6 6L1 11" stroke="#375d74" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Карточка 1 -->
+                    <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="500">
+                        <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                            <img src="figma-downloads/settings-icon.png" alt="Настройка" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-2.5 flex-1 p-2.5">
+                            <h3 class="font-bold text-[18px] sm:text-[20px] text-[#262626] leading-[1.15]">Настройка рабочего места пользователя при работе с УКЭП</h3>
+                            <p class="font-semibold text-base text-[#262626] leading-[1.15] opacity-80">Cредства криптографической защиты сообщений</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Карточка 2 -->
+                    <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="550">
+                        <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                            <img src="figma-downloads/multi-installer.png" alt="Штампы времени" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-2.5 flex-1 p-2.5">
+                            <h3 class="font-bold text-[18px] sm:text-[20px] text-[#262626] leading-[1.15]">Сервис штампов времени </h3>
+                            <p class="font-semibold text-base text-[#262626] leading-[1.15] opacity-80">Cредства криптографической защиты сообщений</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Карточка 3 -->
+                    <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="600">
+                        <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                            <img src="figma-downloads/verification-icon.png" alt="Проверка" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex flex-col gap-2.5 flex-1 p-2.5">
+                            <div class="flex items-center gap-2.5">
+                                <h3 class="font-bold text-[18px] sm:text-[20px] text-[#262626] leading-[1.15]">Локальная проверка УКЭП</h3>
+                                <div class="w-5 h-5 overflow-hidden flex-shrink-0">
+                                    <img src="figma-downloads/solar_info-square-bold-duotone.png" alt="Info" class="w-full h-full object-contain">
+                                </div>
+                            </div>
+                            <p class="font-semibold text-base text-[#262626] leading-[1.15] opacity-80">Cредства криптографической защиты сообщений</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+         <!-- Футер -->
+        <footer class="w-full responsive-container pb-0 pt-[30px] md:pt-[40px] overflow-hidden flex flex-col gap-[30px] md:gap-[40px] lg:gap-[50px]">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 xl:gap-10 w-full">
+                <!-- Главная -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Главная</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">О нас</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Новости</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Контакты</p>
+                    </div>
+                </div>
+
+                <!-- Информация -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Информация</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Лицензии и сертификаты</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Перечень требуемых документов</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Договор оферты</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Регламент УЦ</p>
+                    </div>
+                </div>
+
+                <!-- Услуги -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Услуги</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Проверка электронной подписи</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Сервер штампов времени</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Облачная подпись</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Справочник сертификатов</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Справочник квалифицированных сертификатов</p>
+                    </div>
+                </div>
+
+                <!-- Цены -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Цены на сертификаты электронной подписи</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Квалифицированная электронная подпись (КЭП)</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Электронная подпись для госуслуг</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Электронная подпись для торгов</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для портала поставщиков Москва</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для налоговой</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для юридических лиц</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для физических лиц</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Копирайт -->
+            <div class="bg-[#333333] flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 rounded-tl-[15px] sm:rounded-tl-[20px] rounded-tr-[15px] sm:rounded-tr-[20px] font-semibold text-sm md:text-base text-white leading-[1.15]">
+                <p class="whitespace-nowrap">2025 © ООО «Енот»</p>
+                <a href="politic.html" class="text-center sm:text-right cursor-pointer hover:opacity-70 transition-opacity no-underline text-white">Политика конфиденциальности</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

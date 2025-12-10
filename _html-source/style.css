@@ -1,0 +1,864 @@
+/* Глобальные стили */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Базовые стили для контейнеров */
+.responsive-container {
+    width: 100%;
+    max-width: 1952px; /* 1432px контент + 260px*2 отступы */
+    margin: 0 auto;
+    padding-left: 260px;
+    padding-right: 260px;
+}
+
+/* Компенсация высоты фиксированной шапки */
+body {
+    padding-top: 0;
+}
+
+body > .flex:first-child {
+    padding-top: 0;
+}
+
+/* Градиентные фоны для секций на всю ширину экрана */
+.hero-section-wrapper {
+    position: relative;
+    isolation: isolate;
+    padding-top: 0;
+}
+
+.hero-section-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(54, 98, 125, 0.2));
+    border-radius: 0 0 50px 50px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.mchd-section-wrapper {
+    position: relative;
+    isolation: isolate;
+}
+
+.mchd-section-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(54, 98, 125, 0.2));
+    border-radius: 50px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Контейнер с ограничением ширины для контента */
+.content-wrapper {
+    max-width: 1432px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Базовые стили для мобильного меню */
+.mobile-menu-button {
+    display: none;
+}
+
+.mobile-menu {
+    display: none;
+}
+
+/* Адаптивные стили для больших экранов */
+@media (min-width: 1953px) {
+    .hero-section-wrapper::before,
+    .mchd-section-wrapper::before {
+        width: 100%;
+    }
+}
+
+/* Большие планшеты и маленькие ноутбуки */
+@media (max-width: 1536px) {
+    .responsive-container {
+        padding-left: 160px;
+        padding-right: 160px;
+        max-width: 1752px; /* 1432px + 160px*2 */
+    }
+    
+    .hero-section-wrapper::before,
+    .mchd-section-wrapper::before {
+        max-width: 1752px;
+    }
+}
+
+@media (max-width: 1440px) {
+    .responsive-container {
+        padding-left: 120px;
+        padding-right: 120px;
+    }
+}
+
+/* Планшеты */
+@media (max-width: 1280px) {
+    .responsive-container {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+}
+
+/* Средние планшеты */
+@media (max-width: 1024px) {
+    .responsive-container {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    
+    /* Показываем кнопку мобильного меню */
+    .mobile-menu-button {
+        display: flex;
+    }
+    
+    /* Скрываем десктопное меню */
+    .desktop-nav {
+        display: none !important;
+    }
+    
+    .hero-section-wrapper::before {
+        border-radius: 0 0 40px 40px;
+    }
+    
+    .mchd-section-wrapper::before {
+        border-radius: 40px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .responsive-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .hero-section-wrapper::before {
+        border-radius: 0 0 30px 30px;
+    }
+    
+    .mchd-section-wrapper::before {
+        border-radius: 30px;
+    }
+}
+
+/* Маленькие мобильные */
+@media (max-width: 640px) {
+    .responsive-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .hero-section-wrapper::before {
+        border-radius: 0 0 20px 20px;
+    }
+    
+    .mchd-section-wrapper::before {
+        border-radius: 20px;
+    }
+}
+
+/* Фиксированная шапка с плавной анимацией */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(250, 250, 250, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid transparent;
+}
+
+header.scrolled {
+    background: rgba(250, 250, 250, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Анимация появления шапки при скролле вверх */
+header.scrolled-up {
+    transform: translateY(0);
+}
+
+header.scrolled-down {
+    transform: translateY(-100%);
+    box-shadow: none;
+}
+
+/* Полноэкранное мобильное меню с красивым дизайном */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(250, 250, 250, 0.98) 0%, rgba(240, 245, 248, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 9998;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 0.4s, 
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    padding: 100px 20px 60px;
+    justify-content: flex-start;
+}
+
+.mobile-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+/* Кнопка закрытия меню */
+.mobile-menu-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: 10000;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.mobile-menu-close:hover {
+    transform: scale(1.1);
+}
+
+.mobile-menu-close:active {
+    transform: scale(0.95);
+}
+
+/* Декоративные элементы для меню */
+.mobile-menu::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(55, 93, 116, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.mobile-menu::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(25, 189, 123, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Стили для пунктов мобильного меню с красивой анимацией */
+.mobile-menu .menu-item {
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                opacity 0.4s ease-in-out;
+    position: relative;
+    z-index: 1;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: transparent;
+    text-decoration: none;
+    display: block;
+}
+
+.mobile-menu a.menu-item {
+    text-decoration: none;
+}
+
+.mobile-menu.active .menu-item {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.mobile-menu.active .menu-item:nth-child(1) {
+    transition-delay: 0.15s;
+}
+
+.mobile-menu.active .menu-item:nth-child(2) {
+    transition-delay: 0.25s;
+}
+
+.mobile-menu.active .menu-item:nth-child(3) {
+    transition-delay: 0.35s;
+}
+
+.mobile-menu.active .menu-item:nth-child(4) {
+    transition-delay: 0.45s;
+}
+
+.mobile-menu.active .menu-item:nth-child(5) {
+    transition-delay: 0.55s;
+}
+
+.mobile-menu .menu-item p {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.mobile-menu .menu-item:hover {
+    background: rgba(55, 93, 116, 0.05);
+}
+
+.mobile-menu .menu-item:hover p {
+    color: #375d74;
+    transform: scale(1.08);
+}
+
+.mobile-menu .menu-item:active {
+    transform: scale(0.95);
+    background: rgba(55, 93, 116, 0.1);
+}
+
+/* Кнопка бургер-меню */
+.mobile-menu-button {
+    z-index: 9999;
+    position: relative;
+    background: transparent;
+    border: none;
+}
+
+/* Анимация для гамбургера */
+.hamburger {
+    width: 30px;
+    height: 24px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: #262626;
+    border-radius: 3px;
+    opacity: 1;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform-origin: center;
+}
+
+.hamburger.active span {
+    background: #375d74;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: translateY(10.5px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-10.5px) rotate(-45deg);
+}
+
+/* Предотвращение прокрутки при открытом меню */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Дополнительные улучшения для очень маленьких экранов */
+@media (max-width: 480px) {
+    .responsive-container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    
+    .mobile-menu {
+        padding: 90px 15px 50px;
+    }
+    
+    .mobile-menu .menu-item p {
+        font-size: 22px;
+    }
+    
+    .mobile-menu::before,
+    .mobile-menu::after {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .mobile-submenu-item p {
+        font-size: 16px;
+    }
+}
+
+/* Улучшения для средних экранов (планшеты в портретной ориентации) */
+@media (min-width: 641px) and (max-width: 768px) {
+    .responsive-container {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    
+    .mobile-menu {
+        padding: 100px 25px 55px;
+    }
+}
+
+/* Предотвращение горизонтального скролла */
+body {
+    overflow-x: hidden;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+/* Удаление подчеркивания у ссылок */
+.no-underline, a.no-underline {
+    text-decoration: none !important;
+}
+
+/* Плавные переходы для изображений */
+img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Улучшение отображения на экранах с высокой плотностью пикселей */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* ============================================
+   УНИВЕРСАЛЬНЫЙ HERO БЛОК
+   ============================================ */
+
+/* Основные стили hero блока */
+.page-hero-section {
+    width: 100%;
+}
+
+.page-hero-block {
+    background: rgba(55, 93, 116, 0.15);
+    height: 223px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 30px;
+    position: relative;
+}
+
+.page-hero-vector {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1446.5px;
+    height: 332.959px;
+    pointer-events: none;
+}
+
+.page-hero-vector img {
+    display: block;
+    max-width: none;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.page-hero-title {
+    font-weight: bold;
+    font-size: 32px;
+    text-align: center;
+    color: #262626;
+    line-height: 1.15;
+    position: relative;
+    z-index: 10;
+}
+
+/* Адаптивные стили для hero блока */
+
+/* Планшеты и меньше - 1024px */
+@media (max-width: 1024px) {
+    .page-hero-block {
+        height: 180px !important;
+    }
+    
+    .page-hero-title {
+        font-size: 28px !important;
+    }
+    
+    .page-hero-vector {
+        width: 1000px !important;
+    }
+}
+
+/* Средние планшеты - 768px */
+@media (max-width: 768px) {
+    .page-hero-block {
+        height: 150px !important;
+        border-radius: 20px !important;
+    }
+    
+    .page-hero-title {
+        font-size: 24px !important;
+    }
+    
+    .page-hero-vector {
+        width: 800px !important;
+        opacity: 0.3 !important;
+    }
+}
+
+/* Мобильные устройства - 640px */
+@media (max-width: 640px) {
+    .page-hero-block {
+        height: 120px !important;
+        border-radius: 15px !important;
+        margin: 0 !important;
+    }
+    
+    .page-hero-title {
+        font-size: 20px !important;
+        padding: 0 15px !important;
+    }
+    
+    .page-hero-vector {
+        width: 600px !important;
+        opacity: 0.2 !important;
+    }
+}
+
+/* Маленькие мобильные - 480px */
+@media (max-width: 480px) {
+    .page-hero-block {
+        height: 100px !important;
+    }
+    
+    .page-hero-title {
+        font-size: 18px !important;
+    }
+    
+    .page-hero-vector {
+        width: 400px !important;
+    }
+}
+
+/* ============================================
+   DROPDOWN МЕНЮ (ДЕСКТОП)
+   ============================================ */
+
+/* Контейнер для элемента меню с выпадающим списком */
+.nav-item-with-dropdown,
+.nav-item-wrapper {
+    position: relative;
+    padding: 10px 0;
+}
+
+/* Общие стили для всех ссылок навигации */
+.nav-link {
+    position: relative;
+    display: inline-block;
+    transition: opacity 0.3s ease;
+}
+
+/* Эффект подчеркивания при наведении */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #375d74;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link:hover {
+    opacity: 0.7;
+}
+
+/* Выпадающее меню */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    background: #FAFAFA;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    min-width: 350px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+/* Показываем dropdown при hover */
+.nav-item-with-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Элементы dropdown меню */
+.dropdown-item {
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background: rgba(55, 93, 116, 0.08);
+}
+
+.dropdown-item p {
+    color: #262626;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.15;
+    margin: 0;
+}
+
+/* Адаптивность для dropdown на больших экранах */
+@media (min-width: 1280px) {
+    .dropdown-menu {
+        min-width: 400px;
+    }
+}
+
+/* ============================================
+   МОБИЛЬНОЕ ПОДМЕНЮ
+   ============================================ */
+
+/* Контейнер для элемента с подменю в мобильном меню */
+.menu-item-with-submenu {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Элемент меню со ссылкой и стрелкой */
+.menu-item-with-submenu .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+}
+
+/* Ссылка внутри меню */
+.menu-item-link {
+    text-decoration: none;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Стрелка для раскрытия подменю */
+.submenu-arrow {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+/* Поворот стрелки при раскрытии */
+.menu-item-with-submenu.active .submenu-arrow {
+    transform: rotate(180deg);
+}
+
+/* Контейнер мобильного подменю */
+.mobile-submenu {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(55, 93, 116, 0.03);
+    border-radius: 12px;
+    margin-top: 0;
+}
+
+/* Раскрытое состояние подменю */
+.menu-item-with-submenu.active .mobile-submenu {
+    max-height: 1000px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* Элементы мобильного подменю */
+.mobile-submenu-item {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(-20px);
+    display: block;
+    text-decoration: none;
+}
+
+/* Показываем элементы с задержкой */
+.menu-item-with-submenu.active .mobile-submenu-item {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Задержки для каждого элемента */
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(1) {
+    transition-delay: 0.05s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(2) {
+    transition-delay: 0.1s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(3) {
+    transition-delay: 0.15s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(4) {
+    transition-delay: 0.2s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(5) {
+    transition-delay: 0.25s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(6) {
+    transition-delay: 0.3s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(7) {
+    transition-delay: 0.35s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(8) {
+    transition-delay: 0.4s;
+}
+
+.menu-item-with-submenu.active .mobile-submenu-item:nth-child(9) {
+    transition-delay: 0.45s;
+}
+
+/* Стили текста в подменю */
+.mobile-submenu-item p {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    color: #262626;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* Hover эффект для элементов подменю */
+.mobile-submenu-item:hover {
+    background: rgba(55, 93, 116, 0.08);
+    border-radius: 8px;
+}
+
+.mobile-submenu-item:active {
+    transform: scale(0.98);
+    background: rgba(55, 93, 116, 0.12);
+}
+
+/* Адаптивность для мобильного подменю */
+@media (max-width: 480px) {
+    .mobile-submenu-item p {
+        font-size: 16px;
+    }
+    
+    .mobile-submenu-item {
+        padding: 12px 15px;
+    }
+}
+
+/* Хлебные крошки (breadcrumbs) */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #979797;
+}
+
+.breadcrumbs a {
+    color: #979797;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+    color: #375d74;
+}
+
+.breadcrumbs span:last-child {
+    color: #262626;
+}
+
+/* Адаптивность breadcrumbs */
+@media (max-width: 768px) {
+    .breadcrumbs {
+        font-size: 12px;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .breadcrumbs {
+        font-size: 11px;
+        gap: 4px;
+    }
+}

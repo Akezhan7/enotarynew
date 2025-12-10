@@ -1,0 +1,465 @@
+/* Глобальные стили для страницы блога */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Базовые стили для контейнеров */
+.post-container {
+    width: 100%;
+    max-width: 1952px; /* 1432px контент + 260px*2 отступы */
+    margin: 0 auto;
+    padding-left: 260px;
+    padding-right: 260px;
+}
+/* Предотвращение горизонтального скролла */
+body {
+    overflow-x: hidden;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+/* Плавные переходы для изображений */
+img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Улучшение отображения на экранах с высокой плотностью пикселей */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* ============================================
+   СТИЛИ ДЛЯ ОСНОВНОГО КОНТЕНТА СТАТЬИ
+   ============================================ */
+
+/* Заголовочный блок статьи */
+.post-header-block {
+    min-height: 140px;
+    height: auto;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.post-header-vector {
+    transition: all 0.3s ease;
+}
+
+/* Основной контент статьи */
+.post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-content p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Заголовок статьи внутри контента */
+.post-content-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Хлебные крошки */
+.breadcrumbs {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Сайдбар с фиксированной шириной */
+.post-sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+}
+
+/* Контейнер для основного контента и сайдбара */
+.post-main-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* Карточки новостей в сайдбаре */
+.post-sidebar-card {
+    transition: all 0.3s ease;
+}
+
+.post-sidebar-card:hover {
+    transform: translateY(-2px);
+}
+
+.post-sidebar-card-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+/* ============================================
+   АДАПТИВНЫЕ СТИЛИ
+   ============================================ */
+
+/* Адаптивные стили для больших экранов */
+@media (min-width: 1953px) {
+    .post-container {
+        max-width: 1952px;
+    }
+}
+
+/* Большие планшеты и маленькие ноутбуки */
+@media (max-width: 1536px) {
+    .post-container {
+        padding-left: 160px;
+        padding-right: 160px;
+        max-width: 1752px; /* 1432px + 160px*2 */
+    }
+}
+
+@media (max-width: 1440px) {
+    .post-container {
+        padding-left: 120px;
+        padding-right: 120px;
+    }
+    
+    .post-title {
+        font-size: 28px !important;
+    }
+    
+    .post-sidebar {
+        width: 300px !important;
+    }
+}
+
+/* Планшеты */
+@media (max-width: 1280px) {
+    .post-container {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+    
+    .post-title {
+        font-size: 28px !important;
+    }
+    
+    .post-sidebar {
+        width: 280px !important;
+        top: 80px;
+    }
+    
+    .post-header-block {
+        min-height: 130px;
+        padding-top: 18px !important;
+        padding-bottom: 18px !important;
+    }
+    
+    .post-header-vector {
+        width: 1200px !important;
+        opacity: 0.9;
+    }
+}
+
+/* Средние планшеты */
+@media (max-width: 1024px) {
+    .post-container {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    
+    .post-title {
+        font-size: 26px !important;
+    }
+    
+    /* Превращаем layout в одноколоночный */
+    .post-main-wrapper {
+        flex-direction: column;
+    }
+    
+    .post-sidebar {
+        width: 100% !important;
+        position: static;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    /* Карточки в сайдбаре становятся двухколоночными */
+    .post-sidebar-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .post-header-block {
+        min-height: 120px;
+        padding-top: 16px !important;
+        padding-bottom: 16px !important;
+    }
+    
+    .post-header-vector {
+        width: 1000px !important;
+        opacity: 0.8;
+    }
+    
+    .post-content {
+        gap: 16px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .post-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .post-title {
+        font-size: 24px !important;
+        max-width: 100% !important;
+    }
+    
+    .post-header-block {
+        min-height: 110px;
+        border-radius: 20px !important;
+        padding-top: 16px !important;
+        padding-bottom: 16px !important;
+    }
+    
+    .post-header-vector {
+        width: 800px !important;
+        opacity: 0.6;
+    }
+    
+    .post-content {
+        font-size: 15px !important;
+        gap: 14px;
+    }
+    
+    .post-content p {
+        line-height: 1.5;
+    }
+    
+    /* Карточки в сайдбаре становятся одноколоночными на маленьких планшетах */
+    .post-sidebar-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    /* Уменьшаем высоту изображений в карточках */
+    .post-sidebar-card .h-\[200px\] {
+        height: 160px !important;
+    }
+    
+    .post-sidebar-card-description {
+        -webkit-line-clamp: 3;
+        font-size: 14px !important;
+    }
+}
+
+/* Маленькие мобильные */
+@media (max-width: 640px) {
+    .post-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .post-title {
+        font-size: 22px !important;
+    }
+    
+    .post-header-block {
+        min-height: 100px;
+        border-radius: 16px !important;
+        padding: 14px 12px !important;
+    }
+    
+    .post-header-vector {
+        width: 600px !important;
+        opacity: 0.5;
+    }
+    
+    .post-content {
+        font-size: 14px !important;
+        gap: 12px;
+    }
+    
+    .post-content-title {
+        font-size: 18px !important;
+    }
+    
+    /* Уменьшаем заголовки и метаданные в сайдбаре */
+    .post-sidebar > p:first-child {
+        font-size: 18px !important;
+    }
+    
+    .post-sidebar-card .h-\[200px\] {
+        height: 150px !important;
+    }
+    
+    .post-sidebar-card-title {
+        font-size: 16px !important;
+    }
+    
+    .post-sidebar-card-description {
+        font-size: 13px !important;
+    }
+    
+    /* Адаптация хлебных крошек */
+    .breadcrumbs p {
+        font-size: 14px !important;
+    }
+}
+
+/* Очень маленькие мобильные устройства */
+@media (max-width: 480px) {
+    .post-container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    
+    .post-title {
+        font-size: 20px !important;
+    }
+    
+    .post-header-block {
+        min-height: 90px;
+        padding: 12px 10px !important;
+        border-radius: 14px !important;
+    }
+    
+    .post-header-vector {
+        width: 500px !important;
+        opacity: 0.4;
+    }
+    
+    .post-content {
+        font-size: 13px !important;
+        gap: 10px;
+    }
+    
+    .post-content-title {
+        font-size: 16px !important;
+    }
+    
+    .post-sidebar-card .h-\[200px\] {
+        height: 140px !important;
+    }
+    
+    .post-sidebar-card-title {
+        font-size: 15px !important;
+    }
+    
+    .post-sidebar-card-description {
+        font-size: 12px !important;
+        -webkit-line-clamp: 3;
+    }
+    
+    /* Адаптация хлебных крошек */
+    .breadcrumbs p {
+        font-size: 13px !important;
+    }
+    
+    /* Дата публикации */
+    .post-header-block p:last-of-type {
+        font-size: 12px !important;
+    }
+}
+
+/* Дополнительная адаптация для экстремально маленьких экранов */
+@media (max-width: 375px) {
+    .post-title {
+        font-size: 18px !important;
+    }
+    
+    .post-header-block {
+        min-height: 85px;
+        padding: 10px 8px !important;
+    }
+    
+    .post-header-vector {
+        width: 400px !important;
+        opacity: 0.3;
+    }
+    
+    .post-header-block p:last-of-type {
+        font-size: 11px !important;
+    }
+}
+
+/* Улучшения для средних экранов (планшеты в портретной ориентации) */
+@media (min-width: 641px) and (max-width: 768px) {
+    .post-container {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    
+    .post-title {
+        font-size: 23px !important;
+    }
+    
+    .post-content-title {
+        font-size: 19px !important;
+    }
+}
+
+/* Адаптация для планшетов в ландшафтной ориентации */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .post-main-wrapper {
+        gap: 20px;
+    }
+    
+    .post-sidebar-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+}
+
+/* Адаптация для очень больших экранов */
+@media (min-width: 1921px) {
+    .post-content {
+        gap: 24px;
+    }
+}
+
+/* ============================================
+   ДОПОЛНИТЕЛЬНЫЕ СТИЛИ
+   ============================================ */
+
+/* Плавная прокрутка для якорных ссылок */
+a[href^="#"] {
+    scroll-behavior: smooth;
+}
+
+/* Анимация для загрузки изображений */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+img {
+    animation: fadeIn 0.3s ease-in;
+}
+
+
+
+
+
+

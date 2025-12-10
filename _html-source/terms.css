@@ -1,0 +1,36 @@
+/* Специфичные стили для страницы условий использования */
+
+/* Дополнительные стили для контентных секций */
+section p {
+    margin-bottom: 0.25rem;
+}
+
+section p:last-child {
+    margin-bottom: 0;
+}
+
+/* Точная типографика согласно дизайну */
+h2 {
+    font-variation-settings: 'wdth' 100;
+}
+
+section div p {
+    font-variation-settings: 'wdth' 100;
+}
+
+/* Улучшение читаемости на мобильных */
+@media (max-width: 640px) {
+    section {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+}
+
+/* Плавные переходы для ссылок и интерактивных элементов */
+a {
+    transition: opacity 0.3s ease-in-out;
+}
+
+a:hover {
+    opacity: 0.7;
+}

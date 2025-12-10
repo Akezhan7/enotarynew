@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог - E-NOTary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#375d74',
+                        'secondary': '#979797',
+                        'dark': '#262626',
+                        'bg-main': '#fafafa',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="blog.css">
+    <link rel="stylesheet" href="animations.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-bg-main font-sans">
+    <div class="flex flex-col items-center relative w-full">
+          <!-- Меню -->
+ <header class="backdrop-blur-[10px] backdrop-filter w-full">
+            <div class="responsive-container">
+                <!-- Верхняя часть -->
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-5 items-start sm:items-center py-4 lg:py-5 border-b border-transparent flex-wrap">
+                    <p class="flex-1 font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] min-w-[200px]">Сигнал-КОМ	e-Notary Удостоверяющий Центр </p>
+                    <a href="https://t.me/SmartTokenPro1" target="_blank" rel="noopener noreferrer" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-5 h-[18px] overflow-hidden relative flex-shrink-0">
+                            <img src="figma-downloads/mingcute_telegram-fill.png" alt="Telegram" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap">@SmartTokenPro1 </p>
+                    </a>
+                    <a href="tel:+74953633093" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-[18px] h-[18px] relative flex-shrink-0">
+                            <img src="figma-downloads/basil_phone-solid.png" alt="Phone" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap">+7 (495) 363-30-93</p>
+                    </a>
+                </div>
+                
+                <!-- Нижняя часть -->
+               <div class="flex gap-3 md:gap-5 items-center pb-4 lg:pb-5 relative">
+                <a href="index.html" class="h-[40px] sm:h-[44px] lg:h-[46px] w-[135px] sm:w-[150px] lg:w-[165px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
+                    <img src="assets/images/logo1.svg" alt="Logo" class="w-full h-full object-contain">
+                </a>
+                <a href="index.html" class="h-[40px] sm:h-[44px] lg:h-[46px] w-[95px] sm:w-[105px] lg:w-[116px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
+                    <img src="assets/images/logo2.svg" alt="Logo 2" class="w-full h-full object-contain">
+                </a>
+                <!-- Мобильная кнопка меню -->
+                <button class="mobile-menu-button ml-auto lg:hidden p-2 -mr-2" id="menuToggle" aria-label="Открыть меню">
+                    <div class="hamburger" id="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+                <!-- Десктопное меню -->
+                <div class="desktop-nav hidden lg:flex flex-1 gap-5 xl:gap-7 items-center justify-end">
+                    <div class="nav-item-with-dropdown relative">
+                        <a href="products-services.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">ПО&Токены&Услуги</a>
+                        <!-- Выпадающее подменю -->
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Справочник квалифицированных сертификатов</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Справочник сертификатов</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Облачная подпись</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Сервер штампов времени</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Проверка электронной подписи</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Сервис подписи документов</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Экспертиза электронной подписи</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Служба OCSP</p>
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <p class="font-bold text-base text-[#262626] leading-[1.15]">Свой УЦ или Аутсорсинг?</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-item-wrapper">
+                        <a href="documents-page.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">
+                            Документы
+                        </a>
+                    </div>
+                    <div class="nav-item-wrapper">
+                        <a href="blog-page.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">
+                            Блог
+                        </a>
+                    </div>
+                    <div class="nav-item-wrapper">
+                        <a href="contacts-page.html" class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">
+                            Контакты
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </header>
+
+        <!-- Полноэкранное мобильное меню -->
+        <div class="mobile-menu" id="mobileMenu">
+            <!-- Кнопка закрытия -->
+            <button class="mobile-menu-close" id="menuClose" aria-label="Закрыть меню">
+                <div class="hamburger active">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            
+            <div class="menu-item-with-submenu">
+                <div class="menu-item cursor-pointer">
+                    <a href="products-services.html" class="menu-item-link" onclick="event.stopPropagation()">
+                        <p>ПО&Токены&Услуги</p>
+                    </a>
+                    <svg class="submenu-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="toggleMobileSubmenu(event)">
+                        <path d="M5 7.5L10 12.5L15 7.5" stroke="#262626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="mobile-submenu">
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Справочник квалифицированных сертификатов</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Справочник сертификатов</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Облачная подпись</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Сервер штампов времени</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Проверка электронной подписи</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Сервис подписи документов</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Экспертиза электронной подписи</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Служба OCSP</p>
+                    </a>
+                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
+                        <p>Свой УЦ или Аутсорсинг?</p>
+                    </a>
+                </div>
+            </div>
+            <a href="documents-page.html" class="menu-item" onclick="closeMobileMenu()">
+                <p>Документы</p>
+            </a>
+            <a href="blog-page.html" class="menu-item" onclick="closeMobileMenu()">
+                <p>Блог</p>
+            </a>
+            <a href="contacts-page.html" class="menu-item" onclick="closeMobileMenu()">
+                <p>Контакты</p>
+            </a>
+            <!-- Контактная информация в меню -->
+            <div class="menu-item mt-10">
+                <div class="flex flex-col gap-4 items-center">
+                    <a href="https://t.me/SmartTokenPro1" target="_blank" rel="noopener noreferrer" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-5 h-[18px] overflow-hidden relative flex-shrink-0">
+                            <img src="figma-downloads/mingcute_telegram-fill.png" alt="Telegram" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-base text-secondary leading-[1.15]">@SmartTokenPro1</p>
+                    </a>
+                    <a href="tel:+74953633093" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
+                        <div class="w-[18px] h-[18px] relative flex-shrink-0">
+                            <img src="figma-downloads/basil_phone-solid.png" alt="Phone" class="block max-w-none w-full h-full object-contain">
+                        </div>
+                        <p class="font-semibold text-base text-secondary leading-[1.15]">+7 (495) 363-30-93</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Хлебные крошки -->
+        <div class="w-full responsive-container pb-3 lg:pb-4">
+            <div class="flex items-center gap-2 font-semibold text-sm text-secondary">
+                <a href="#" class="hover:text-primary transition-colors">Главная</a>
+                <span>/</span>
+                <span class="text-dark">Блог</span>
+            </div>
+        </div>
+
+        <!-- Заголовок блока с фоном и поиском -->
+        <section class="w-full blog-container">
+            <div class="blog-header-block bg-[rgba(55,93,116,0.15)] flex flex-col items-center justify-between overflow-hidden rounded-[30px] relative py-[60px] px-[20px] pb-[30px]" data-aos="fade-down">
+                <!-- Заголовок -->
+                <p class="blog-title font-bold text-[32px] text-center text-dark leading-[1.15] relative z-10">Блог</p>
+                
+                <!-- Поиск -->
+                <div class="blog-search bg-white flex gap-[10px] items-center justify-between px-3 py-2.5 rounded-[10px] shadow-[0px_0px_5px_0px_rgba(0,0,0,0.06)] w-[382px] relative z-10" data-aos="fade-up" data-aos-delay="100">
+                    <input 
+                        type="text" 
+                        id="blogSearchInput" 
+                        placeholder="Поиск" 
+                        class="flex-1 font-semibold text-base text-dark leading-[1.15] outline-none bg-transparent placeholder:text-secondary"
+                    >
+                    <!-- Иконка поиска -->
+                    <div id="searchIcon" class="overflow-clip relative w-5 h-5 flex-shrink-0 transition-opacity cursor-pointer">
+                        <div class="absolute inset-[12.5%]">
+                            <div class="absolute inset-[-5%]">
+                                <img src="figma-downloads/blog-search.svg" alt="Search" class="block max-w-none w-full h-full">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Крестик для очистки -->
+                    <div id="clearIcon" class="w-5 h-5 flex-shrink-0 transition-opacity cursor-pointer hidden">
+                        <img src="assets/images/x.svg" alt="Clear" class="block w-full h-full object-contain">
+                    </div>
+                </div>
+                
+                <!-- Декоративный вектор (позади всего) -->
+                <div class="blog-header-vector absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-[-50%] w-[1446.5px] h-[332.959px] pointer-events-none">
+                    <div class="flex-none rotate-180 scale-y-[-100%] w-full h-full">
+                        <img src="figma-downloads/Vector 1.png" alt="" class="block max-w-none w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блоги секция -->
+        <section class="w-full blog-container py-5">
+            <div class="blog-grid">
+                <!-- Блог 1 -->
+                <a href="blog-post.html" class="blog-card bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex flex-col gap-2.5 no-underline hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="50">
+                    <div class="blog-card-image h-[200px] relative rounded-[20px] overflow-hidden">
+                        <div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px]"></div>
+                        <img src="assets/images/blog-image-1.png" alt="Blog Image" class="absolute inset-0 w-full h-full object-cover rounded-[20px]">
+                    </div>
+                    <div class="p-2.5 flex flex-col gap-2.5 flex-1">
+                        <div class="blog-card-content flex flex-col gap-2.5">
+                            <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15] whitespace-pre-wrap">Статья</p>
+                            <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15] whitespace-pre-wrap">File-PRO v.3 — новая версия популярного продукта</p>
+                            <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15] whitespace-pre-wrap">Потребность подписать, зашифровать и отправить документ контрагенту, используя различные каналы связи, на корпоративном уровне была решена компанией Сигнал-КОМ еще в начале 2000-х годов. Многие наши клиенты уже более 20 лет используют комплекс File-PRO v.2, работающий под OS Windows.</p>
+                        </div>
+                        <div class="blog-card-meta flex gap-2.5 items-center flex-wrap">
+                            <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">29 ноября 2025 г.</p>
+                            <div class="w-[6px] h-[6px] flex-shrink-0">
+                                <img src="figma-downloads/blog-clock.svg" alt="" class="block max-w-none w-full h-full">
+                            </div>
+                            <div class="flex gap-[6px] items-center">
+                                <div class="overflow-clip relative w-5 h-5 flex-shrink-0">
+                                    <img src="figma-downloads/blog-clock.svg" alt="Time" class="block w-full h-full object-contain">
+                                </div>
+                                <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">10 минут чтения</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Блог 2 -->
+                <a href="blog-post.html" class="blog-card bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex flex-col gap-2.5 no-underline hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="100">
+                    <div class="blog-card-image h-[200px] relative rounded-[20px] overflow-hidden">
+                        <div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px]"></div>
+                        <img src="assets/images/blog-image-2.png" alt="Blog Image" class="absolute inset-0 w-full h-full object-cover rounded-[20px]">
+                    </div>
+                    <div class="p-2.5 flex flex-col gap-2.5 flex-1">
+                        <div class="blog-card-content flex flex-col gap-2.5">
+                            <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15] whitespace-pre-wrap">Статья</p>
+                            <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15] whitespace-pre-wrap">Статья: SmartToken-PRO. Ваш смартфон – криптографический токен</p>
+                            <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15] whitespace-pre-wrap">Сегодня все больше компаний и организаций используют электронные подписи (ЭП), чтобы подписывать документы в различных системах ЭДО. Однако, для того чтобы использовать ЭП, необходимо иметь специализированный токен/носитель ЭЦП, который является ее ключевым хранилищем. На рынке существует множество подобных изделий — от флешек до специализированных криптографических токенов (Рутокен ЭЦП, ESMART Token GOST, JaCarta GOST и др.).</p>
+                        </div>
+                        <div class="blog-card-meta flex gap-2.5 items-center flex-wrap">
+                            <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">29 ноября 2025 г.</p>
+                            <div class="w-[6px] h-[6px] flex-shrink-0">
+                                <img src="figma-downloads/blog-clock.svg" alt="" class="block max-w-none w-full h-full">
+                            </div>
+                            <div class="flex gap-[6px] items-center">
+                                <div class="overflow-clip relative w-5 h-5 flex-shrink-0">
+                                    <img src="figma-downloads/blog-clock.svg" alt="Time" class="block w-full h-full object-contain">
+                                </div>
+                                <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">10 минут чтения</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Блог 3 -->
+                <a href="blog-post.html" class="blog-card bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex flex-col gap-2.5 no-underline hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="150">
+                    <div class="blog-card-image h-[200px] relative rounded-[20px] overflow-hidden">
+                        <div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px]"></div>
+                        <img src="assets/images/blog-image-3.png" alt="Blog Image" class="absolute inset-0 w-full h-full object-cover rounded-[20px]">
+                    </div>
+                    <div class="p-2.5 flex flex-col gap-2.5 flex-1">
+                        <div class="blog-card-content flex flex-col gap-2.5">
+                            <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15] whitespace-pre-wrap">Статья</p>
+                            <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15] whitespace-pre-wrap">Сервер электронной подписи</p>
+                            <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15] whitespace-pre-wrap">Сервера, осуществляющие формирование/проверку электронной подписи (ЭП) под различными электронными документами, являются неотъемлемой составляющей систем юридически значимого электронного документооборота (ЭДО).</p>
+                        </div>
+                        <div class="blog-card-meta flex gap-2.5 items-center flex-wrap">
+                            <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">29 ноября 2025 г.</p>
+                            <div class="w-[6px] h-[6px] flex-shrink-0">
+                                <img src="figma-downloads/blog-clock.svg" alt="" class="block max-w-none w-full h-full">
+                            </div>
+                            <div class="flex gap-[6px] items-center">
+                                <div class="overflow-clip relative w-5 h-5 flex-shrink-0">
+                                    <img src="figma-downloads/blog-clock.svg" alt="Time" class="block w-full h-full object-contain">
+                                </div>
+                                <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">10 минут чтения</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Блог 4 -->
+                <a href="blog-post.html" class="blog-card bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex flex-col gap-2.5 no-underline hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="200">
+                    <div class="blog-card-image h-[200px] relative rounded-[20px] overflow-hidden">
+                        <div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px]"></div>
+                        <img src="assets/images/blog-image-4.png" alt="Blog Image" class="absolute inset-0 w-full h-full object-cover rounded-[20px]">
+                    </div>
+                    <div class="p-2.5 flex flex-col gap-2.5 flex-1">
+                        <div class="blog-card-content flex flex-col gap-2.5">
+                            <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15] whitespace-pre-wrap">Статья</p>
+                            <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15] whitespace-pre-wrap">Современные серверные криптографические решения от компании Сигнал-КОМ</p>
+                            <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15] whitespace-pre-wrap">Компания Сигнал-КОМ предлагает своим клиентам широкий спектр серверных криптографических решений, при этом выбор конкретного решения определяется на основе требований заказчика по количеству подписываемых и проверяемых документов.</p>
+                        </div>
+                        <div class="blog-card-meta flex gap-2.5 items-center flex-wrap">
+                            <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">29 ноября 2025 г.</p>
+                            <div class="w-[6px] h-[6px] flex-shrink-0">
+                                <img src="figma-downloads/blog-clock.svg" alt="" class="block max-w-none w-full h-full">
+                            </div>
+                            <div class="flex gap-[6px] items-center">
+                                <div class="overflow-clip relative w-5 h-5 flex-shrink-0">
+                                    <img src="figma-downloads/blog-clock.svg" alt="Time" class="block w-full h-full object-contain">
+                                </div>
+                                <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">10 минут чтения</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Блог 5 -->
+                <a href="blog-post.html" class="blog-card bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex flex-col gap-2.5 no-underline hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="250">
+                    <div class="blog-card-image h-[200px] relative rounded-[20px] overflow-hidden">
+                        <div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px]"></div>
+                        <img src="assets/images/blog-image-5.png" alt="Blog Image" class="absolute inset-0 w-full h-full object-cover rounded-[20px]">
+                    </div>
+                    <div class="p-2.5 flex flex-col gap-2.5 flex-1">
+                        <div class="blog-card-content flex flex-col gap-2.5">
+                            <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15] whitespace-pre-wrap">Статья</p>
+                            <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15] whitespace-pre-wrap">Мамынов А. И.: Как автоматизировать обработку запросов на сертификаты электронной подписи? Программный комплекс Notary Verify v.2.x</p>
+                            <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15] whitespace-pre-wrap">Современные бизнес-процессы трудно представить себе без использования информационных технологий и электронной подписи (ЭП). ЭП применяется в различных сферах деятельности, и степень ее использования в бизнесе и взаимоотношениях с государственными структурами постоянно растет</p>
+                        </div>
+                        <div class="blog-card-meta flex gap-2.5 items-center flex-wrap">
+                            <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">29 ноября 2025 г.</p>
+                            <div class="w-[6px] h-[6px] flex-shrink-0">
+                                <img src="figma-downloads/blog-clock.svg" alt="" class="block max-w-none w-full h-full">
+                            </div>
+                            <div class="flex gap-[6px] items-center">
+                                <div class="overflow-clip relative w-5 h-5 flex-shrink-0">
+                                    <img src="figma-downloads/blog-clock.svg" alt="Time" class="block w-full h-full object-contain">
+                                </div>
+                                <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">10 минут чтения</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Блог 6 -->
+                <a href="blog-post.html" class="blog-card bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex flex-col gap-2.5 no-underline hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="300">
+                    <div class="blog-card-image h-[200px] relative rounded-[20px] overflow-hidden">
+                        <div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px]"></div>
+                        <img src="assets/images/blog-image-6.png" alt="Blog Image" class="absolute inset-0 w-full h-full object-cover rounded-[20px]">
+                    </div>
+                    <div class="p-2.5 flex flex-col gap-2.5 flex-1">
+                        <div class="blog-card-content flex flex-col gap-2.5">
+                            <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15] whitespace-pre-wrap">Статья</p>
+                            <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15] whitespace-pre-wrap">File-PRO v.3 — новая версия популярного продукта</p>
+                            <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15] whitespace-pre-wrap">Потребность подписать, зашифровать и отправить документ контрагенту, используя различные каналы связи, на корпоративном уровне была решена компанией Сигнал-КОМ еще в начале 2000-х годов. Многие наши клиенты уже более 20 лет используют комплекс File-PRO v.2, работающий под OS Windows.</p>
+                        </div>
+                        <div class="blog-card-meta flex gap-2.5 items-center flex-wrap">
+                            <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">29 ноября 2025 г.</p>
+                            <div class="w-[6px] h-[6px] flex-shrink-0">
+                                <img src="figma-downloads/blog-clock.svg" alt="" class="block max-w-none w-full h-full">
+                            </div>
+                            <div class="flex gap-[6px] items-center">
+                                <div class="overflow-clip relative w-5 h-5 flex-shrink-0">
+                                    <img src="figma-downloads/blog-clock.svg" alt="Time" class="block w-full h-full object-contain">
+                                </div>
+                                <p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">10 минут чтения</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="w-full responsive-container pb-0 pt-[30px] md:pt-[40px] overflow-hidden flex flex-col gap-[30px] md:gap-[40px] lg:gap-[50px]">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 xl:gap-10 w-full">
+                <!-- Главная -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Главная</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">О нас</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Новости</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Контакты</p>
+                    </div>
+                </div>
+
+                <!-- Информация -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Информация</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Лицензии и сертификаты</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Перечень требуемых документов</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Договор оферты</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Регламент УЦ</p>
+                    </div>
+                </div>
+
+                <!-- Услуги -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Услуги</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Проверка электронной подписи</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Сервер штампов времени</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Облачная подпись</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Справочник сертификатов</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Справочник квалифицированных сертификатов</p>
+                    </div>
+                </div>
+
+                <!-- Цены -->
+                <div class="flex flex-col gap-4 lg:gap-5">
+                    <p class="font-bold text-sm md:text-base text-[#262626] leading-[1.15]">Цены на сертификаты электронной подписи</p>
+                    <div class="flex flex-col gap-2.5 font-semibold text-sm md:text-base text-secondary leading-[1.15]">
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Квалифицированная электронная подпись (КЭП)</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Электронная подпись для госуслуг</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">Электронная подпись для торгов</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для портала поставщиков Москва</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для налоговой</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для юридических лиц</p>
+                        <p class="cursor-pointer hover:opacity-70 transition-opacity">ЭЦП для физических лиц</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Копирайт -->
+            <div class="bg-[#333333] flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 rounded-tl-[15px] sm:rounded-tl-[20px] rounded-tr-[15px] sm:rounded-tr-[20px] font-semibold text-sm md:text-base text-white leading-[1.15]">
+                <p class="whitespace-nowrap">2025 © ООО «Енот»</p>
+                <a href="politic.html" class="text-center sm:text-right cursor-pointer hover:opacity-70 transition-opacity no-underline text-white">Политика конфиденциальности</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

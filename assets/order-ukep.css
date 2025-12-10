@@ -1,0 +1,661 @@
+/* Специфичные стили для страницы заказа УКЭП */
+
+/* Карточки выбора типа лица */
+.entity-card {
+    transition: all 0.3s ease;
+}
+
+.entity-card:hover {
+    transform: translateY(-2px);
+}
+
+.entity-card-active {
+    border-color: #375d74 !important;
+}
+
+/* Кастомный чекбокс */
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkbox-custom:hover {
+    border-color: #375d74;
+    background: rgba(55, 93, 116, 0.1);
+}
+
+.checkbox-custom.checked {
+    background: #375d74;
+    border-color: #375d74;
+    position: relative;
+}
+
+.checkbox-custom.checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Контроль количества */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 13px;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 8px;
+}
+
+.quantity-btn:hover {
+    opacity: 0.7;
+}
+
+.quantity-btn:active {
+    transform: scale(0.95);
+}
+
+/* Кнопка минуса - серая линия */
+.quantity-btn[data-action="decrement"]::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 2px;
+    background: #979797;
+    border-radius: 1px;
+}
+
+/* Кнопка плюса - темно-синий фон с белым крестом */
+.quantity-btn[data-action="increment"] {
+    background: #375d74;
+    border-radius: 8px;
+}
+
+.quantity-btn[data-action="increment"]::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 2px;
+    background: white;
+    border-radius: 1px;
+}
+
+.quantity-btn[data-action="increment"]::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 14px;
+    background: white;
+    border-radius: 1px;
+}
+
+.quantity-value {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    color: #262626;
+    min-width: 35px;
+    line-height: 1;
+}
+
+/* =====================================================
+   АДАПТИВНЫЕ СТИЛИ ДЛЯ РАЗНЫХ УСТРОЙСТВ
+   Десктоп остается без изменений, планшеты и мобильные адаптируются
+   ===================================================== */
+
+/* ПЛАНШЕТЫ В ЛАНДШАФТЕ (1024px - 768px) */
+@media (max-width: 1024px) and (min-width: 768px) {
+    /* Карточки выбора типа лица - оставляем в ряд на планшетах */
+    .entity-card {
+        min-width: 200px;
+    }
+    
+    /* Списки товаров - частичная адаптация */
+    /* Чекбокс и текст на всю ширину, контролы справа */
+}
+
+/* ПЛАНШЕТЫ В ПОРТРЕТЕ И МАЛЕНЬКИЕ ПЛАНШЕТЫ (768px - 640px) */
+@media (max-width: 768px) {
+    /* Карточки выбора типа лица - в колонку */
+    .entity-card {
+        width: 100%;
+        min-height: 66px;
+    }
+    
+    /* Списки товаров - гибридная раскладка */
+    /* Строки с товарами - делаем flex-wrap */
+    section .bg-white.border > div[class*="flex"] {
+        flex-wrap: wrap;
+        gap: 12px !important;
+    }
+    .ibsh .bg-white.border > div[class*="flex"] {
+        flex-wrap: nowrap;
+        gap: 12px !important;
+    }
+    /* Чекбокс остается слева */
+    section .bg-white.border > div[class*="flex"] .checkbox-custom {
+        flex-shrink: 0;
+    }
+    
+    /* Текст занимает оставшееся место */
+    section .bg-white.border > div[class*="flex"] > div.flex-1 {
+        flex: 1 1 calc(100% - 36px);
+        min-width: 0;
+    }
+    
+    /* Убираем ненужные order правила, так как структура HTML уже правильная */
+    
+    /* Секция "Всего" - кнопка под ценой */
+    section:last-of-type .bg-white.border > div:last-child {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    section:last-of-type .bg-white.border > div:last-child button {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* МОБИЛЬНЫЕ УСТРОЙСТВА (640px и меньше) */
+@media (max-width: 640px) {
+    /* Уменьшаем размеры чекбоксов */
+    .checkbox-custom {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .checkbox-custom.checked::after {
+        font-size: 12px;
+    }
+    
+    /* Карточки выбора типа лица - компактнее */
+    .entity-card {
+        padding: 16px !important;
+        min-height: 60px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .entity-card p {
+        font-size: 14px !important;
+    }
+    
+    .entity-card > div {
+        margin-top: 8px;
+    }
+    
+    /* Списки товаров - полная вертикальная раскладка */
+    section .bg-white.border > div[class*="flex"] {
+        gap: 10px !important;
+        padding: 16px !important;
+    }
+    
+    /* Чекбокс и текст в ряд */
+    section .bg-white.border > div[class*="flex"] .checkbox-custom {
+        align-self: flex-start;
+        margin-top: 2px;
+    }
+    
+    /* Текст занимает всю ширину */
+    section .bg-white.border > div[class*="flex"] > div.flex-1,
+    section .bg-white.border > div[class*="flex"] > p.flex-1 {
+        width: 100%;
+        max-width: 100%;
+
+    }
+    
+    /* Quantity control на отдельной строке, слева */
+    section .bg-white.border > div[class*="flex"] .quantity-control {
+        width: 100%;
+        max-width: 200px;
+        align-self: flex-start;
+        gap: 12px;
+        padding: 2px;
+    }
+    
+    /* Уменьшаем размер кнопок quantity */
+    .quantity-btn {
+        width: 26px;
+        height: 26px;
+    }
+    
+    .quantity-btn[data-action="decrement"]::before,
+    .quantity-btn[data-action="increment"]::before {
+        width: 12px;
+    }
+    
+    .quantity-btn[data-action="increment"]::after {
+        height: 12px;
+    }
+    
+    .quantity-value {
+        font-size: 18px;
+        min-width: 30px;
+    }
+    
+    /* Цена рядом с quantity control */
+    section .bg-white.border > div[class*="flex"] > p.font-bold:last-child {
+        align-self: flex-start;
+        width: auto !important;
+        min-width: auto;
+        margin-left: auto;
+        font-size: 18px;
+    }
+    
+    section:first-of-type h1 {
+        font-size: 22px !important;
+    }
+    
+    /* Заголовки секций - меньше */
+    section h2 {
+        font-size: 20px !important;
+    }
+    
+    /* Секция "Всего" */
+    .obhs:last-of-type .bg-white.border {
+        padding: 0 !important;
+    }
+    
+    section:last-of-type .bg-white.border > div {
+        padding: 16px !important;
+    }
+    
+    section:last-of-type .bg-white.border > div:first-child p {
+        font-size: 18px;
+    }
+    
+    section:last-of-type .bg-white.border > div:first-child p:last-child {
+        font-size: 20px;
+    }
+    
+    section:last-of-type .bg-white.border > div:last-child {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 0 !important;
+    }
+    
+    section:last-of-type .bg-white.border > div:last-child button {
+        width: 100%;
+        height: 48px !important;
+    }
+}
+
+/* МАЛЕНЬКИЕ МОБИЛЬНЫЕ (480px и меньше) */
+@media (max-width: 480px) {
+    /* Еще более компактная раскладка */
+    section .bg-white.border > div[class*="flex"] {
+        padding: 12px !important;
+    }
+    
+    .entity-card {
+        padding: 12px !important;
+        gap: 6px !important;
+    }
+    
+    section h2 {
+        font-size: 18px !important;
+    }
+    
+    section:first-of-type h1 {
+        font-size: 20px !important;
+    }
+    
+    /* Quantity control компактнее */
+    .quantity-btn {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .quantity-value {
+        font-size: 16px;
+        min-width: 28px;
+    }
+    
+    section .bg-white.border > div[class*="flex"] > p.font-bold:last-child {
+        font-size: 16px;
+    }
+}
+
+/* ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (360px и меньше) */
+@media (max-width: 360px) {
+    section .bg-white.border > div[class*="flex"] > div.flex-1,
+    section .bg-white.border > div[class*="flex"] > p.flex-1 {
+        font-size: 14px !important;
+    }
+    
+    .quantity-control {
+        gap: 8px !important;
+    }
+}
+
+/* =====================================================
+   ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ
+   ===================================================== */
+
+/* Предотвращение переноса текста в ценах */
+@media (max-width: 640px) {
+    section .bg-white.border > div[class*="flex"] > p:last-child {
+        white-space: nowrap;
+    }
+}
+
+/* Улучшение отображения кнопки "Дальше" */
+@media (max-width: 640px) {
+    section:last-of-type button {
+        min-height: 44px;
+        font-size: 15px;
+    }
+}
+
+/* Выравнивание элементов на десктопе */
+@media (min-width: 1025px) {
+    /* Убираем принудительную вертикальную раскладку на десктопе */
+    
+    section .bg-white.border > div.flex.items-start {
+        align-items: flex-start !important;
+    }
+}
+
+/* Плавные переходы для адаптивных изменений */
+@media (prefers-reduced-motion: no-preference) {
+    section .bg-white.border > div[class*="flex"],
+    .entity-card,
+    .quantity-control,
+    .checkbox-custom {
+        transition: all 0.3s ease;
+    }
+}
+
+/* Улучшение читаемости текста на мобильных */
+@media (max-width: 640px) {
+    section .bg-white.border > div p {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+}
+
+/* Оптимизация для landscape ориентации на мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+    section h2 {
+        font-size: 18px !important;
+    }
+    
+    .entity-card {
+        min-height: 50px;
+        padding: 12px !important;
+    }
+}
+
+/* Улучшение для очень широких экранов */
+@media (min-width: 1920px) {
+    
+    .entity-card {
+        padding: 5px !important;
+    }
+}
+
+/* Стили для интерактивности */
+.entity-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.entity-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(55, 93, 116, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.entity-card:hover::before {
+    opacity: 1;
+}
+
+.entity-card-active::before {
+    opacity: 1;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+/* Фикс для строк с items-start на десктопе */
+@media (min-width: 1025px) {
+    section .bg-white.border > div.flex.items-start {
+        align-items: center;
+    }
+    
+    section .bg-white.border > div.flex.items-start .checkbox-custom {
+        margin-top: 0;
+    }
+}
+
+/* Анимация для строк списка */
+.bg-white.border.border-\[rgba\(0\,0\,0\,0\.05\)\].rounded-\[20px\] > div {
+    transition: background-color 0.3s ease;
+}
+
+.bg-white.border.border-\[rgba\(0\,0\,0\,0\.05\)\].rounded-\[20px\] > div:hover {
+    background-color: rgba(55, 93, 116, 0.02);
+}
+
+/* Адаптация для описаний и ссылок в строках */
+@media (max-width: 768px) {
+    /* Описания - меньший размер шрифта */
+    section .bg-white.border > div p.text-sm {
+        font-size: 13px !important;
+        line-height: 1.3;
+    }
+    
+    /* Ссылки в описаниях */
+    section .bg-white.border > div a {
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 640px) {
+    /* Еще меньше на мобильных */
+    section .bg-white.border > div p.text-sm {
+        font-size: 12px !important;
+    }
+    
+    /* Основной текст названия товара */
+    section .bg-white.border > div p.text-base {
+        font-size: 14px !important;
+    }
+}
+
+/* Чекбокс согласия (с галочкой внутри) */
+.checkbox-custom-agree {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox-custom-agree.checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 7px;
+    border-left: 2px solid #375d74;
+    border-bottom: 2px solid #375d74;
+    transform: translate(-50%, -60%) rotate(-45deg);
+}
+
+/* Адаптивные стили для формы физического лица */
+
+/* Улучшение полей ввода на всех устройствах */
+.form-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.form-input::placeholder {
+    opacity: 0.7;
+}
+
+/* Кнопка оплаты - адаптивная */
+.payment-button {
+    min-width: 160px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Блок согласия */
+.agreement-box {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.agreement-box:hover {
+    background-color: rgba(55, 93, 116, 0.02);
+}
+
+/* Планшеты в портретной ориентации */
+@media (max-width: 1024px) and (min-width: 768px) {
+    /* Оставляем двухколоночный layout на планшетах в ландшафте */
+    .form-input {
+        font-size: 15px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 767px) {
+    /* Увеличиваем размер чекбокса для тач-интерфейса */
+    .checkbox-custom-agree {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .checkbox-custom-agree.checked::after {
+        width: 11px;
+        height: 8px;
+    }
+    
+    /* Кнопка оплаты на всю ширину на мобильных */
+    .payment-button {
+        width: 100%;
+    }
+    
+    /* Улучшаем читаемость на мобильных */
+    .form-input {
+        font-size: 16px !important; /* Предотвращает zoom на iOS */
+    }
+    
+    .form-input::placeholder {
+        font-size: 14px;
+    }
+}
+
+/* Маленькие мобильные */
+@media (max-width: 480px) {
+    /* Минимальные размеры для очень маленьких экранов */
+    .checkbox-custom-agree {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .checkbox-custom-agree.checked::after {
+        width: 10px;
+        height: 7px;
+    }
+}
+
+/* Улучшения для тач-устройств */
+@media (hover: none) and (pointer: coarse) {
+    /* Увеличиваем зону нажатия для мобильных */
+    .form-input,
+    .payment-button,
+    .checkbox-custom-agree {
+        -webkit-tap-highlight-color: rgba(55, 93, 116, 0.1);
+    }
+    
+    /* Убираем hover эффекты на тач-устройствах */
+    .payment-button:hover {
+        opacity: 1;
+    }
+    
+    .payment-button:active {
+        opacity: 0.9;
+    }
+}
+
+/* Улучшение для textarea */
+textarea.form-input {
+    min-height: 120px;
+    line-height: 1.4;
+}
+
+/* Стили для фокуса - улучшенная доступность */
+.form-input:focus {
+    border-color: #375d74;
+    box-shadow: 0 0 0 3px rgba(55, 93, 116, 0.1);
+}
+
+/* Анимация для кнопки */
+.payment-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.payment-button:active::before {
+    width: 300px;
+    height: 300px;
+}
