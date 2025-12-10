@@ -141,9 +141,9 @@ get_header();
                 
                 <!-- Кнопка Дальше -->
                 <div class="flex items-center justify-end gap-2 sm:gap-2.5 p-4 sm:p-5 w-full">
-                    <a href="#" class="bg-primary rounded-[8px] sm:rounded-[10px] px-2.5 py-2.5 flex items-center justify-center h-[44px] sm:h-[46px] w-full sm:w-[160px] hover:opacity-90 transition-opacity no-underline">
-                        <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15]">Дальше</p>
-                    </a>
+                    <button type="button" data-product-id="86" class="order-next-btn bg-primary rounded-[8px] sm:rounded-[10px] px-2.5 py-2.5 flex items-center justify-center h-[44px] sm:h-[46px] w-full sm:w-[160px] hover:opacity-90 transition-opacity cursor-pointer border-0">
+                        <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] m-0">Дальше</p>
+                    </button>
                 </div>
             </div>
         </section>

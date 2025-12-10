@@ -179,6 +179,17 @@ function enotarynew_scripts() {
 	// Main script.js
 	wp_enqueue_script( 'enotarynew-main-script', get_template_directory_uri() . '/assets/script.js', array('jquery'), _S_VERSION, true );
 	
+	// Custom order script for WooCommerce integration
+	if ( is_page_template( 'page-order-ukep.php' ) || is_page_template( 'page-order-mchd.php' ) || is_page_template( 'page-order-unep.php' ) ) {
+		wp_enqueue_script( 'enotarynew-custom-order', get_template_directory_uri() . '/assets/js/custom-order.js', array('jquery'), _S_VERSION, true );
+		
+		// Localize script with AJAX URL and nonce
+		wp_localize_script( 'enotarynew-custom-order', 'enotaryAjax', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'enotary_cart_nonce' )
+		) );
+	}
+	
 	// Navigation script
 	wp_enqueue_script( 'enotarynew-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 
@@ -214,6 +225,11 @@ require get_template_directory() . '/inc/customizer.php';
 if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
+
+/**
+ * AJAX Cart Handler for WooCommerce
+ */
+require get_template_directory() . '/inc/ajax-cart.php';
 
 /**
  * Get page URL by template name
