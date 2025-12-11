@@ -244,7 +244,10 @@ function initCheckboxes() {
 // ===========================
 // УПРАВЛЕНИЕ КОЛИЧЕСТВОМ
 // ===========================
+// ФУНКЦИЯ ПЕРЕНЕСЕНА В universal-calc.js
+// Не использовать здесь, чтобы избежать дублирования обработчиков
 
+/*
 function initQuantityControls() {
     const quantityButtons = document.querySelectorAll('.quantity-btn');
     
@@ -307,6 +310,7 @@ function initQuantityControls() {
         });
     });
 }
+*/
 
 
 // ===========================
@@ -571,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initStickyHeader();
     initBlogSearch();
     initCheckboxes();
-    initQuantityControls();
+    // initQuantityControls(); // ОТКЛЮЧЕНО - теперь в universal-calc.js
     initEntityCards();
     initDocumentModal();
     initDropdownMenu();

@@ -23,6 +23,13 @@ function enotary_add_to_cart_handler() {
     // Проверка nonce для безопасности
     check_ajax_referer( 'enotary_cart_nonce', 'nonce' );
     
+    // Проверка что WooCommerce активен
+    if ( ! function_exists( 'wc_get_product' ) ) {
+        wp_send_json_error( array(
+            'message' => 'WooCommerce не активен'
+        ) );
+    }
+    
     // Получение данных из POST запроса
     $product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
     $total_price = isset( $_POST['total_price'] ) ? floatval( $_POST['total_price'] ) : 0;

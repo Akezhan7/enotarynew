@@ -144,9 +144,9 @@ function enotarynew_scripts() {
 	// Animations CSS
 	wp_enqueue_style( 'enotarynew-animations', get_template_directory_uri() . '/assets/animations.css', array(), _S_VERSION );
 	
-	// WordPress default stylesheet (for backward compatibility)
-	wp_enqueue_style( 'enotarynew-style', get_stylesheet_uri(), array(), _S_VERSION );
-	wp_style_add_data( 'enotarynew-style', 'rtl', 'replace' );
+	// WordPress default stylesheet (ОТКЛЮЧЕН - конфликтует с кастомными стилями)
+	// wp_enqueue_style( 'enotarynew-style', get_stylesheet_uri(), array(), _S_VERSION );
+	// wp_style_add_data( 'enotarynew-style', 'rtl', 'replace' );
 
 	// Conditional styles for specific page templates
 	if ( is_page_template( 'page-order-ukep.php' ) || is_page_template( 'page-order-mchd.php' ) || is_page_template( 'page-order-unep.php' ) ) {
@@ -179,7 +179,18 @@ function enotarynew_scripts() {
 	// Main script.js
 	wp_enqueue_script( 'enotarynew-main-script', get_template_directory_uri() . '/assets/script.js', array('jquery'), _S_VERSION, true );
 	
-	// Custom order script for WooCommerce integration
+	// Universal Calculator for order pages (UKEP, MCHD, UNEP)
+	if ( is_page_template( 'page-order-ukep.php' ) || is_page_template( 'page-order-mchd.php' ) || is_page_template( 'page-order-unep.php' ) ) {
+		wp_enqueue_script( 'enotarynew-universal-calc', get_template_directory_uri() . '/assets/js/universal-calc.js', array('jquery'), _S_VERSION, true );
+		
+		// Localize script with AJAX URL and nonce for bundle operations
+		wp_localize_script( 'enotarynew-universal-calc', 'enotaryBundleAjax', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'enotary_bundle_nonce' )
+		) );
+	}
+	
+	// Custom order script for WooCommerce integration (legacy - can be removed if not used)
 	if ( is_page_template( 'page-order-ukep.php' ) || is_page_template( 'page-order-mchd.php' ) || is_page_template( 'page-order-unep.php' ) ) {
 		wp_enqueue_script( 'enotarynew-custom-order', get_template_directory_uri() . '/assets/js/custom-order.js', array('jquery'), _S_VERSION, true );
 		
@@ -227,9 +238,24 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 }
 
 /**
- * AJAX Cart Handler for WooCommerce
+ * Load WooCommerce-dependent files after WooCommerce is fully loaded
  */
-require get_template_directory() . '/inc/ajax-cart.php';
+function enotarynew_load_woocommerce_files() {
+	// Проверяем, что WooCommerce активен
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+	
+	// Product Helper Functions for WooCommerce
+	require_once get_template_directory() . '/inc/product-helpers.php';
+	
+	// AJAX Bundle Handler for WooCommerce
+	require_once get_template_directory() . '/inc/ajax-handler.php';
+	
+	// AJAX Cart Handler for WooCommerce
+	require_once get_template_directory() . '/inc/ajax-cart.php';
+}
+add_action( 'woocommerce_init', 'enotarynew_load_woocommerce_files' );
 
 /**
  * Get page URL by template name

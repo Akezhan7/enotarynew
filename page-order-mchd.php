@@ -31,52 +31,65 @@ get_header();
 
         <!-- Выбор типа лица -->
         <section class="w-full responsive-container py-6 sm:py-8 md:py-10 flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-10" data-aos="fade-up" data-aos-delay="100">
-            <div class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]" data-price="3000">
+            <?php
+            // Получаем базовые товары МЧД по SKU
+            $legal_entity = get_product_data_by_sku( 'mchd-legal' );
+            $individual = get_product_data_by_sku( 'mchd-individual' );
+            $entrepreneur = get_product_data_by_sku( 'mchd-entrepreneur' );
+            ?>
+            
+            <!-- Юридическое Лицо -->
+            <label class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
+                <input 
+                    type="radio" 
+                    name="payer_type" 
+                    value="legal_entity" 
+                    class="hidden"
+                    data-base-price="<?php echo esc_attr( $legal_entity['price'] ?? 3000 ); ?>"
+                    data-base-id="<?php echo esc_attr( $legal_entity['id'] ?? 0 ); ?>"
+                >
                 <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap">Юридическое Лицо</p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap">3000 руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo number_format( $legal_entity['price'] ?? 3000, 0, ',', ' ' ); ?> руб.</p>
                 </div>
-            </div>
-            <div class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]" data-price="2000">
+            </label>
+            
+            <!-- Физическое Лицо -->
+            <label class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
+                <input 
+                    type="radio" 
+                    name="payer_type" 
+                    value="individual" 
+                    class="hidden"
+                    data-base-price="<?php echo esc_attr( $individual['price'] ?? 2000 ); ?>"
+                    data-base-id="<?php echo esc_attr( $individual['id'] ?? 0 ); ?>"
+                >
                 <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap">Физическое Лицо</p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap">2000 руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo number_format( $individual['price'] ?? 2000, 0, ',', ' ' ); ?> руб.</p>
                 </div>
-            </div>
-            <div class="entity-card entity-card-active border border-[rgba(0,0,0,0.05)] bg-primary rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-lg min-h-[60px] sm:min-h-[76px]" data-price="2000">
+            </label>
+            
+            <!-- ИП -->
+            <label class="entity-card entity-card-active border border-[rgba(0,0,0,0.05)] bg-primary rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-lg min-h-[60px] sm:min-h-[76px]">
+                <input 
+                    type="radio" 
+                    name="payer_type" 
+                    value="entrepreneur" 
+                    class="hidden"
+                    checked
+                    data-base-price="<?php echo esc_attr( $entrepreneur['price'] ?? 2000 ); ?>"
+                    data-base-id="<?php echo esc_attr( $entrepreneur['id'] ?? 0 ); ?>"
+                >
                 <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap">ИП</p>
                 <div class="bg-white rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap">2000 руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo number_format( $entrepreneur['price'] ?? 2000, 0, ',', ' ' ); ?> руб.</p>
                 </div>
-            </div>
+            </label>
         </section>
 
         <!-- Формат -->
-        <section class="w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5">
-            <h2 class="font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-[#262626] leading-[1.15]">Формат</h2>
-            
-            <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full">
-                <!-- Формат 003 -->
-                <div class="flex items-start gap-2 sm:gap-2.5 p-4 sm:p-5 border-b border-[rgba(0,0,0,0.05)]">
-                    <div class="checkbox-custom mt-0.5 sm:mt-1"></div>
-                    <div class="flex-1 flex flex-col gap-2 sm:gap-2.5">
-                        <p class="font-bold text-sm sm:text-base text-[#262626] leading-[1.15]">003</p>
-                        <p class="font-semibold text-xs sm:text-sm text-secondary leading-[1.15]">Универсальный формат, применяется для взаимодействия с ФНС, Росстатом, СФР, банками, контрагентами и в системах ЭДО. С марта 2025 года это единственный формат, который ФНС принимает к регистрации.</p>
-                    </div>
-                    <p class="font-bold text-sm sm:text-base text-[#262626] leading-[1.15] text-right flex-shrink-0">2000₽</p>
-                </div>
-
-                <!-- Собственный формат СФР -->
-                <div class="flex items-start gap-2 sm:gap-2.5 p-4 sm:p-5">
-                    <div class="checkbox-custom mt-0.5 sm:mt-1"></div>
-                    <div class="flex-1 flex flex-col gap-2 sm:gap-2.5">
-                        <p class="font-bold text-sm sm:text-base text-[#262626] leading-[1.15]">Собственный формат СФР.</p>
-                        <p class="font-semibold text-xs sm:text-sm text-secondary leading-[1.15]">Для обмена документами с СФР нужно создавать специальные МЧД</p>
-                    </div>
-                    <p class="font-bold text-sm sm:text-base text-[#262626] leading-[1.15] text-right flex-shrink-0">2000₽</p>
-                </div>
-            </div>
-        </section>
+        <?php render_checklist_by_category( 'format', 'Формат', array(), false ); ?>
 
         <!-- Всего -->
         <section class="obhs w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5 mb-6 sm:mb-8 md:mb-10">
@@ -85,11 +98,11 @@ get_header();
             <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full flex flex-col">
                 <div class="flex items-center justify-between gap-2 sm:gap-2.5 p-4 sm:p-5 border-b border-[rgba(0,0,0,0.05)] w-full">
                     <p class="font-bold text-base sm:text-lg text-[#262626] leading-[1.15]">Всего</p>
-                    <p class="font-bold text-base sm:text-lg text-[#262626] leading-[1.15] whitespace-nowrap flex-shrink-0" id="totalPrice">1000₽</p>
+                    <p class="font-bold text-base sm:text-lg text-[#262626] leading-[1.15] whitespace-nowrap flex-shrink-0 total-price">0₽</p>
                 </div>
                 <div class="flex items-center justify-end gap-2 sm:gap-2.5 p-4 sm:p-5 w-full">
-                    <button type="button" data-product-id="87" class="order-next-btn bg-primary rounded-[8px] sm:rounded-[10px] px-2.5 py-2.5 flex items-center justify-center h-[44px] sm:h-[46px] w-full sm:w-[160px] hover:opacity-90 transition-opacity cursor-pointer border-0">
-                        <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] m-0">Дальше</p>
+                    <button type="button" class="submit-order-btn bg-primary rounded-[8px] sm:rounded-[10px] px-2.5 py-2.5 flex items-center justify-center h-[44px] sm:h-[46px] w-full sm:w-[200px] hover:opacity-90 transition-opacity cursor-pointer border-0">
+                        <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] m-0">Оформить заказ</p>
                     </button>
                 </div>
             </div>
