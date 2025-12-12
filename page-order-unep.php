@@ -6,6 +6,10 @@
  */
 
 get_header();
+
+// Получаем СТАТИЧЕСКИЕ данные для кнопок типа плательщика
+// Это НЕ товары WooCommerce, а элементы формы для выбора типа заказчика
+$payer_types = get_payer_types_options();
 ?>
 
         <!-- Хлебные крошки -->
@@ -31,61 +35,51 @@ get_header();
 
         <!-- Выбор типа лица -->
         <section class="w-full responsive-container py-6 sm:py-8 md:py-10 flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-10" data-aos="fade-up" data-aos-delay="100">
-            <?php
-            // Получаем базовые товары УНЭП по SKU
-            $legal_entity = get_product_data_by_sku( 'unep-legal' );
-            $individual = get_product_data_by_sku( 'unep-individual' );
-            $entrepreneur = get_product_data_by_sku( 'unep-entrepreneur' );
-            ?>
-            
             <!-- Юридическое Лицо -->
-            <label class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
+            <div class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="legal_entity" 
+                    value="<?php echo esc_attr( $payer_types['ul']['value'] ); ?>" 
                     class="hidden"
-                    data-base-price="<?php echo esc_attr( $legal_entity['price'] ?? 3000 ); ?>"
-                    data-base-id="<?php echo esc_attr( $legal_entity['id'] ?? 0 ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['ul']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap">Юридическое Лицо</p>
+                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['ul']['label'] ); ?></p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo number_format( $legal_entity['price'] ?? 3000, 0, ',', ' ' ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['ul']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
-            </label>
+            </div>
             
             <!-- Физическое Лицо -->
-            <label class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
+            <div class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="individual" 
+                    value="<?php echo esc_attr( $payer_types['fl']['value'] ); ?>" 
                     class="hidden"
-                    data-base-price="<?php echo esc_attr( $individual['price'] ?? 2000 ); ?>"
-                    data-base-id="<?php echo esc_attr( $individual['id'] ?? 0 ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['fl']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap">Физическое Лицо</p>
+                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['fl']['label'] ); ?></p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo number_format( $individual['price'] ?? 2000, 0, ',', ' ' ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['fl']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
-            </label>
+            </div>
             
             <!-- ИП -->
-            <label class="entity-card entity-card-active border border-[rgba(0,0,0,0.05)] bg-primary rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-lg min-h-[60px] sm:min-h-[76px]">
+            <div class="entity-card entity-card-active border border-[rgba(0,0,0,0.05)] bg-primary rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-lg min-h-[60px] sm:min-h-[76px]">
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="entrepreneur" 
+                    value="<?php echo esc_attr( $payer_types['ip']['value'] ); ?>" 
                     class="hidden"
                     checked
-                    data-base-price="<?php echo esc_attr( $entrepreneur['price'] ?? 2000 ); ?>"
-                    data-base-id="<?php echo esc_attr( $entrepreneur['id'] ?? 0 ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['ip']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap">ИП</p>
+                <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['ip']['label'] ); ?></p>
                 <div class="bg-white rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo number_format( $entrepreneur['price'] ?? 2000, 0, ',', ' ' ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['ip']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
-            </label>
+            </div>
         </section>
 
         <!-- Усиленный неквалифицированный сертификат -->

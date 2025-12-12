@@ -7,26 +7,9 @@
 
 get_header();
 
-// Получаем данные товаров для кнопок типа плательщика (только если WooCommerce активен)
-$ukep_ul = array( 'id' => 0, 'name' => 'Юридическое Лицо', 'price' => 3000 );
-$ukep_fl = array( 'id' => 0, 'name' => 'Физическое Лицо', 'price' => 2000 );
-$ukep_ip = array( 'id' => 0, 'name' => 'ИП', 'price' => 2000 );
-
-if ( function_exists( 'get_product_data_by_sku' ) ) {
-    $ukep_ul_data = get_product_data_by_sku( 'ukep_cert_ul' );
-    $ukep_fl_data = get_product_data_by_sku( 'ukep_cert_fl' );
-    $ukep_ip_data = get_product_data_by_sku( 'ukep_cert_ip' );
-    
-    if ( $ukep_ul_data ) {
-        $ukep_ul = $ukep_ul_data;
-    }
-    if ( $ukep_fl_data ) {
-        $ukep_fl = $ukep_fl_data;
-    }
-    if ( $ukep_ip_data ) {
-        $ukep_ip = $ukep_ip_data;
-    }
-}
+// Получаем СТАТИЧЕСКИЕ данные для кнопок типа плательщика
+// Это НЕ товары WooCommerce, а элементы формы для выбора типа заказчика
+$payer_types = get_payer_types_options();
 ?>
 
         <!-- Хлебные крошки -->
@@ -58,14 +41,13 @@ if ( function_exists( 'get_product_data_by_sku' ) ) {
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="ul" 
+                    value="<?php echo esc_attr( $payer_types['ul']['value'] ); ?>" 
                     class="hidden"
-                    data-base-price="<?php echo esc_attr( $ukep_ul['price'] ); ?>"
-                    data-base-id="<?php echo esc_attr( $ukep_ul['id'] ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['ul']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $ukep_ul['name'] ); ?></p>
+                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['ul']['label'] ); ?></p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $ukep_ul['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['ul']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
             
@@ -74,14 +56,13 @@ if ( function_exists( 'get_product_data_by_sku' ) ) {
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="fl" 
+                    value="<?php echo esc_attr( $payer_types['fl']['value'] ); ?>" 
                     class="hidden"
-                    data-base-price="<?php echo esc_attr( $ukep_fl['price'] ); ?>"
-                    data-base-id="<?php echo esc_attr( $ukep_fl['id'] ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['fl']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $ukep_fl['name'] ); ?></p>
+                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['fl']['label'] ); ?></p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $ukep_fl['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['fl']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
             
@@ -90,108 +71,71 @@ if ( function_exists( 'get_product_data_by_sku' ) ) {
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="ip" 
+                    value="<?php echo esc_attr( $payer_types['ip']['value'] ); ?>" 
                     class="hidden"
                     checked
-                    data-base-price="<?php echo esc_attr( $ukep_ip['price'] ); ?>"
-                    data-base-id="<?php echo esc_attr( $ukep_ip['id'] ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['ip']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( $ukep_ip['name'] ); ?></p>
+                <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['ip']['label'] ); ?></p>
                 <div class="bg-white rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $ukep_ip['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['ip']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
         </section>
 
         <!-- Квалифицированные сертификаты -->
-        <section class="w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5">
-            <h2 class="font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-[#262626] leading-[1.15]">Квалифицированные сертификаты:</h2>
-            
-            <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full">
-                <?php 
-                if ( function_exists( 'render_checklist_by_category' ) ) {
-                    render_checklist_by_category( 'kvalificzirovannye-sertifikaty' );
-                } else {
-                    echo '<!-- WooCommerce функции не загружены -->';
-                }
-                ?>
-            </div>
-        </section>
+        <?php 
+        if ( function_exists( 'render_checklist_by_category' ) ) {
+            render_checklist_by_category( 'kvalificzirovannye-sertifikaty', 'Квалифицированные сертификаты:' );
+        } else {
+            echo '<!-- WooCommerce функции не загружены -->';
+        }
+        ?>
 
         <!-- Платные расширения для сертификатов -->
-        <section class="w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5">
-            <h2 class="font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-[#262626] leading-[1.15]">Платные расширения для сертификатов:</h2>
-            
-            <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full">
-                <?php 
-                if ( function_exists( 'render_checklist_by_category' ) ) {
-                    render_checklist_by_category( 'platnye-rasshireniya-dlya-sertifikatov' );
-                } else {
-                    echo '<!-- WooCommerce функции не загружены -->';
-                }
-                ?>
-            </div>
-        </section>
+        <?php 
+        if ( function_exists( 'render_checklist_by_category' ) ) {
+            render_checklist_by_category( 'platnye-rasshireniya-dlya-sertifikatov', 'Платные расширения для сертификатов:' );
+        } else {
+            echo '<!-- WooCommerce функции не загружены -->';
+        }
+        ?>
 
         <!-- Машиночитаемая доверенность -->
-        <section class="w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5">
-            <h2 class="font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-[#262626] leading-[1.15]">Машиночитаемая доверенность</h2>
-            
-            <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full">
-                <?php 
-                if ( function_exists( 'render_checklist_by_category' ) ) {
-                    render_checklist_by_category( 'mashinochitaemaya-doverennost' );
-                } else {
-                    echo '<!-- WooCommerce функции не загружены -->';
-                }
-                ?>
-            </div>
-        </section>
+        <?php 
+        if ( function_exists( 'render_checklist_by_category' ) ) {
+            render_checklist_by_category( 'mashinochitaemaya-doverennost', 'Машиночитаемая доверенность:' );
+        } else {
+            echo '<!-- WooCommerce функции не загружены -->';
+        }
+        ?>
 
         <!-- Криптопровайдеры -->
-        <section class="w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5">
-            <h2 class="font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-[#262626] leading-[1.15]">Криптопровайдеры</h2>
-            
-            <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full">
-                <?php 
-                if ( function_exists( 'render_checklist_by_category' ) ) {
-                    render_checklist_by_category( 'kriptoprovajdery' );
-                } else {
-                    echo '<!-- WooCommerce функции не загружены -->';
-                }
-                ?>
-            </div>
-        </section>
+        <?php 
+        if ( function_exists( 'render_checklist_by_category' ) ) {
+            render_checklist_by_category( 'kriptoprovajdery', 'Криптопровайдеры:' );
+        } else {
+            echo '<!-- WooCommerce функции не загружены -->';
+        }
+        ?>
 
         <!-- Носители ключей (Токен) -->
-        <section class="w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5">
-            <h2 class="font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-[#262626] leading-[1.15]">Носители ключей (Токен)</h2>
-            
-            <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full">
-                <?php 
-                if ( function_exists( 'render_checklist_by_category' ) ) {
-                    render_checklist_by_category( 'nositeli-klyuchej-token' );
-                } else {
-                    echo '<!-- WooCommerce функции не загружены -->';
-                }
-                ?>
-            </div>
-        </section>
+        <?php 
+        if ( function_exists( 'render_checklist_by_category' ) ) {
+            render_checklist_by_category( 'nositeli-klyuchej-token', 'Носители ключей (Токен):' );
+        } else {
+            echo '<!-- WooCommerce функции не загружены -->';
+        }
+        ?>
 
         <!-- Дополнительные услуги -->
-        <section class="w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5">
-            <h2 class="font-bold text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-[#262626] leading-[1.15]">Дополнительные услуги</h2>
-            
-            <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] overflow-hidden w-full">
-                <?php 
-                if ( function_exists( 'render_checklist_by_category' ) ) {
-                    render_checklist_by_category( 'dopolnitelnye-uslugi' );
-                } else {
-                    echo '<!-- WooCommerce функции не загружены -->';
-                }
-                ?>
-            </div>
-        </section>
+        <?php 
+        if ( function_exists( 'render_checklist_by_category' ) ) {
+            render_checklist_by_category( 'dopolnitelnye-uslugi', 'Дополнительные услуги:' );
+        } else {
+            echo '<!-- WooCommerce функции не загружены -->';
+        }
+        ?>
 
         <!-- Всего -->
         <section class="obhs w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5 mb-6 sm:mb-8 md:mb-10">

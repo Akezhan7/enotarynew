@@ -37,6 +37,20 @@ function add_custom_bundle_to_cart() {
     $payer_type = isset( $_POST['payer_type'] ) ? sanitize_text_field( $_POST['payer_type'] ) : '';
     $base_product_id = isset( $_POST['base_product_id'] ) ? intval( $_POST['base_product_id'] ) : 0;
     
+    // Нормализация типа плательщика для единообразия
+    $payer_type_normalized = '';
+    if ( ! empty( $payer_type ) ) {
+        if ( stripos( $payer_type, 'Физическое' ) !== false || stripos( $payer_type, 'физ' ) !== false ) {
+            $payer_type_normalized = 'individual';
+        } elseif ( stripos( $payer_type, 'Индивидуальный' ) !== false || stripos( $payer_type, 'ИП' ) !== false ) {
+            $payer_type_normalized = 'entrepreneur';
+        } elseif ( stripos( $payer_type, 'Юридическое' ) !== false || stripos( $payer_type, 'юр' ) !== false ) {
+            $payer_type_normalized = 'legal';
+        } else {
+            $payer_type_normalized = 'individual'; // Дефолт
+        }
+    }
+    
     // Валидация данных
     if ( empty( $items ) || ! is_array( $items ) ) {
         wp_send_json_error( array(
@@ -81,8 +95,10 @@ function add_custom_bundle_to_cart() {
     }
     
     // Сохранение типа плательщика в сессию
-    if ( ! empty( $payer_type ) ) {
-        WC()->session->set( 'active_payer_type', $payer_type );
+    if ( ! empty( $payer_type_normalized ) ) {
+        WC()->session->set( 'active_payer_type', $payer_type_normalized );
+        // Сохраняем также оригинальное значение для отображения
+        WC()->session->set( 'payer_type_label', $payer_type );
     }
     
     // Сохранение ID базового товара
@@ -114,12 +130,14 @@ add_action( 'woocommerce_checkout_order_processed', 'save_bundle_info_to_order',
 function save_bundle_info_to_order( $order_id ) {
     // Получаем данные из сессии
     $payer_type = WC()->session->get( 'active_payer_type' );
+    $payer_type_label = WC()->session->get( 'payer_type_label' );
     $base_product_id = WC()->session->get( 'base_product_id' );
     $bundle_items = WC()->session->get( 'bundle_items' );
     
     // Сохраняем тип плательщика
     if ( ! empty( $payer_type ) ) {
         update_post_meta( $order_id, '_payer_type', $payer_type );
+        update_post_meta( $order_id, '_payer_type_label', $payer_type_label );
     }
     
     // Сохраняем ID базового товара
@@ -134,6 +152,7 @@ function save_bundle_info_to_order( $order_id ) {
     
     // Очищаем сессию после создания заказа
     WC()->session->__unset( 'active_payer_type' );
+    WC()->session->__unset( 'payer_type_label' );
     WC()->session->__unset( 'base_product_id' );
     WC()->session->__unset( 'bundle_items' );
 }
@@ -145,16 +164,17 @@ add_action( 'woocommerce_admin_order_data_after_billing_address', 'display_bundl
 
 function display_bundle_info_in_admin( $order ) {
     $payer_type = get_post_meta( $order->get_id(), '_payer_type', true );
+    $payer_type_label = get_post_meta( $order->get_id(), '_payer_type_label', true );
     $base_product_id = get_post_meta( $order->get_id(), '_base_product_id', true );
     
     if ( $payer_type ) {
         $payer_type_labels = array(
-            'ul' => 'Юридическое лицо',
-            'ip' => 'Индивидуальный предприниматель',
-            'fl' => 'Физическое лицо',
+            'legal' => 'Юридическое лицо',
+            'entrepreneur' => 'Индивидуальный предприниматель',
+            'individual' => 'Физическое лицо',
         );
         
-        $label = isset( $payer_type_labels[ $payer_type ] ) ? $payer_type_labels[ $payer_type ] : $payer_type;
+        $label = ! empty( $payer_type_label ) ? $payer_type_label : ( isset( $payer_type_labels[ $payer_type ] ) ? $payer_type_labels[ $payer_type ] : $payer_type );
         
         echo '<div class="order-payer-type" style="margin-top: 15px; padding: 10px; background: #f0f0f1; border-left: 3px solid #2271b1;">';
         echo '<p><strong>Тип плательщика:</strong> ' . esc_html( $label ) . '</p>';

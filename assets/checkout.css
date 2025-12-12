@@ -1,0 +1,194 @@
+/* ============================================
+   Кастомные стили чекаута для eNotary
+   ============================================ */
+
+/* Скрытие полей WooCommerce с классом enotary-hidden-field */
+.enotary-hidden-field,
+.woocommerce-billing-fields .enotary-hidden-field,
+.woocommerce-billing-fields .form-row.enotary-hidden-field {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Скрытие стандартных полей WooCommerce */
+.woocommerce-billing-fields .hidden-field,
+.woocommerce-billing-fields .form-row.hidden-field {
+    display: none !important;
+}
+
+/* Кастомные поля чекаута */
+.enotary-field-inn input,
+.enotary-field-kpp input,
+.enotary-field-okpo input,
+.enotary-field-company input,
+.enotary-field-address input,
+.enotary-field-legal-address input,
+.enotary-field-postcode input {
+    background: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 8px !important;
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #979797 !important;
+    transition: border-color 0.3s ease !important;
+}
+
+.enotary-field-inn input:focus,
+.enotary-field-kpp input:focus,
+.enotary-field-okpo input:focus,
+.enotary-field-company input:focus,
+.enotary-field-address input:focus,
+.enotary-field-legal-address input:focus,
+.enotary-field-postcode input:focus {
+    border-color: #375d74 !important;
+    outline: none !important;
+}
+
+/* Лейблы полей */
+.enotary-field-inn label,
+.enotary-field-kpp label,
+.enotary-field-okpo label,
+.enotary-field-company label,
+.enotary-field-address label,
+.enotary-field-legal-address label,
+.enotary-field-postcode label {
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    color: #262626 !important;
+    margin-bottom: 8px !important;
+}
+
+/* Сообщения валидации */
+.woocommerce-error,
+.woocommerce-message {
+    background: #f0f0f1;
+    border-left: 3px solid #2271b1;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.woocommerce-error li,
+.woocommerce-message {
+    list-style: none;
+    font-weight: 600;
+    color: #262626;
+}
+
+/* Блок с типом плательщика на чекауте */
+.enotary-payer-type-notice {
+    background: #f0f0f1;
+    border-left: 3px solid #375d74;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.enotary-payer-type-notice p {
+    margin: 0;
+    font-weight: 600;
+    color: #262626;
+}
+
+.enotary-payer-type-notice strong {
+    color: #375d74;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .enotary-field-inn input,
+    .enotary-field-kpp input,
+    .enotary-field-okpo input,
+    .enotary-field-company input,
+    .enotary-field-address input,
+    .enotary-field-legal-address input,
+    .enotary-field-postcode input {
+        font-size: 14px !important;
+        padding: 10px 12px !important;
+    }
+    
+    .enotary-field-inn label,
+    .enotary-field-kpp label,
+    .enotary-field-okpo label,
+    .enotary-field-company label,
+    .enotary-field-address label,
+    .enotary-field-legal-address label,
+    .enotary-field-postcode label {
+        font-size: 14px !important;
+    }
+}
+
+/* Стили для методов оплаты */
+.woocommerce-checkout #payment ul.payment_methods {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li {
+    padding: 15px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li input[type=radio] {
+    margin-right: 10px;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li label {
+    font-weight: 600;
+    color: #262626;
+    cursor: pointer;
+}
+
+/* Кнопка оформления заказа */
+.woocommerce-checkout #payment #place_order {
+    background: #375d74 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 14px 30px !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    width: 100%;
+}
+
+.woocommerce-checkout #payment #place_order:hover {
+    opacity: 0.9;
+}
+
+.woocommerce-checkout #payment #place_order:active {
+    transform: scale(0.98);
+}
+
+/* Блок итогов заказа */
+.woocommerce-checkout-review-order-table {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+}
+
+.woocommerce-checkout-review-order-table th,
+.woocommerce-checkout-review-order-table td {
+    padding: 12px 15px;
+}
+
+/* Форма billing */
+.woocommerce-billing-fields h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #262626;
+    margin-bottom: 20px;
+}
+
+/* Секции форм */
+.woocommerce-billing-fields .form-row {
+    margin-bottom: 15px;
+}

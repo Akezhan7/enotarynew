@@ -1,0 +1,106 @@
+{
+    "key": "group_enotary_payer_types",
+    "title": "Типы плательщиков",
+    "fields": [
+        {
+            "key": "field_payer_ul_label",
+            "label": "Юридическое лицо - Название",
+            "name": "payer_ul_label",
+            "type": "text",
+            "instructions": "Название для кнопки \"Юридическое лицо\"",
+            "required": 0,
+            "default_value": "Юридическое Лицо",
+            "placeholder": "Юридическое Лицо",
+            "wrapper": {
+                "width": "50"
+            }
+        },
+        {
+            "key": "field_payer_ul_price",
+            "label": "Юридическое лицо - Цена",
+            "name": "payer_ul_price",
+            "type": "number",
+            "instructions": "Базовая цена для юридических лиц (в рублях)",
+            "required": 0,
+            "default_value": 3000,
+            "placeholder": "3000",
+            "min": 0,
+            "step": 100,
+            "wrapper": {
+                "width": "50"
+            }
+        },
+        {
+            "key": "field_payer_fl_label",
+            "label": "Физическое лицо - Название",
+            "name": "payer_fl_label",
+            "type": "text",
+            "instructions": "Название для кнопки \"Физическое лицо\"",
+            "required": 0,
+            "default_value": "Физическое Лицо",
+            "placeholder": "Физическое Лицо",
+            "wrapper": {
+                "width": "50"
+            }
+        },
+        {
+            "key": "field_payer_fl_price",
+            "label": "Физическое лицо - Цена",
+            "name": "payer_fl_price",
+            "type": "number",
+            "instructions": "Базовая цена для физических лиц (в рублях)",
+            "required": 0,
+            "default_value": 2000,
+            "placeholder": "2000",
+            "min": 0,
+            "step": 100,
+            "wrapper": {
+                "width": "50"
+            }
+        },
+        {
+            "key": "field_payer_ip_label",
+            "label": "ИП - Название",
+            "name": "payer_ip_label",
+            "type": "text",
+            "instructions": "Название для кнопки \"ИП\"",
+            "required": 0,
+            "default_value": "ИП",
+            "placeholder": "ИП",
+            "wrapper": {
+                "width": "50"
+            }
+        },
+        {
+            "key": "field_payer_ip_price",
+            "label": "ИП - Цена",
+            "name": "payer_ip_price",
+            "type": "number",
+            "instructions": "Базовая цена для ИП (в рублях)",
+            "required": 0,
+            "default_value": 2000,
+            "placeholder": "2000",
+            "min": 0,
+            "step": 100,
+            "wrapper": {
+                "width": "50"
+            }
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "enotary-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "description": "Настройки типов плательщиков для страниц заказа услуг УКЭП, УНЭП и МЧД"
+}

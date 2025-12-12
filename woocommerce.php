@@ -1,0 +1,20 @@
+<?php
+/**
+ * The template for displaying all WooCommerce pages
+ *
+ * @package enotarynew
+ */
+
+get_header();
+?>
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main">
+
+		<?php woocommerce_content(); ?>
+
+	</main><!-- #main -->
+</div><!-- #primary -->
+
+<?php
+get_footer();

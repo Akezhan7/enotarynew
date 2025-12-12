@@ -99,6 +99,12 @@ function enotarynew_setup() {
 			'flex-height' => true,
 		)
 	);
+
+	// Add WooCommerce support
+	add_theme_support( 'woocommerce' );
+	add_theme_support( 'wc-product-gallery-zoom' );
+	add_theme_support( 'wc-product-gallery-lightbox' );
+	add_theme_support( 'wc-product-gallery-slider' );
 }
 add_action( 'after_setup_theme', 'enotarynew_setup' );
 
@@ -172,6 +178,11 @@ function enotarynew_scripts() {
 	if ( is_page_template( 'page-terms.php' ) || is_page_template( 'page-politic.php' ) ) {
 		wp_enqueue_style( 'enotarynew-terms', get_template_directory_uri() . '/assets/terms.css', array(), _S_VERSION );
 	}
+	
+	// Checkout styles for WooCommerce
+	if ( is_checkout() || is_cart() ) {
+		wp_enqueue_style( 'enotarynew-checkout', get_template_directory_uri() . '/assets/checkout.css', array(), _S_VERSION );
+	}
 
 	// Enqueue jQuery (if not already loaded)
 	wp_enqueue_script( 'jquery' );
@@ -203,6 +214,11 @@ function enotarynew_scripts() {
 	
 	// Navigation script
 	wp_enqueue_script( 'enotarynew-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
+	
+	// Debug script for checkout (only when ?debug=1 is in URL)
+	if ( is_checkout() && isset( $_GET['debug'] ) && $_GET['debug'] == '1' ) {
+		wp_enqueue_script( 'enotarynew-checkout-debug', get_template_directory_uri() . '/assets/js/checkout-debug.js', array('jquery'), _S_VERSION, true );
+	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -254,8 +270,11 @@ function enotarynew_load_woocommerce_files() {
 	
 	// AJAX Cart Handler for WooCommerce
 	require_once get_template_directory() . '/inc/ajax-cart.php';
+	
+	// Custom Checkout Forms Handler for different payer types
+	require_once get_template_directory() . '/inc/checkout-custom-forms.php';
 }
-add_action( 'woocommerce_init', 'enotarynew_load_woocommerce_files' );
+add_action( 'init', 'enotarynew_load_woocommerce_files', 20 );
 
 /**
  * Get page URL by template name
@@ -275,3 +294,169 @@ function enotarynew_get_page_url_by_template( $template ) {
 	
 	return home_url();
 }
+
+/**
+ * Регистрация страницы настроек ACF для E-Notary
+ */
+if( function_exists('acf_add_options_page') ) {
+	acf_add_options_page(array(
+		'page_title' 	=> 'Настройки E-Notary',
+		'menu_title'	=> 'E-Notary',
+		'menu_slug' 	=> 'enotary-settings',
+		'capability'	=> 'edit_posts',
+		'icon_url'		=> 'dashicons-admin-generic',
+		'redirect'		=> false,
+		'position'		=> 58,
+	));
+}
+
+/**
+ * Получить типы плательщиков для форм заказа
+ * 
+ * Эти значения НЕ являются товарами WooCommerce, а статическими элементами формы
+ * для выбора типа заказчика услуги.
+ * 
+ * Значения можно изменить в админке: E-Notary → Типы плательщиков
+ * 
+ * @return array Массив с типами плательщиков
+ */
+function get_payer_types_options() {
+	// Проверяем, активен ли ACF
+	if ( function_exists( 'get_field' ) ) {
+		return array(
+			'ul' => array(
+				'value' => 'ul',
+				'label' => get_field( 'payer_ul_label', 'option' ) ?: 'Юридическое Лицо',
+				'price' => (int) get_field( 'payer_ul_price', 'option' ) ?: 3000,
+				'description' => 'Для организаций и компаний',
+			),
+			'fl' => array(
+				'value' => 'fl',
+				'label' => get_field( 'payer_fl_label', 'option' ) ?: 'Физическое Лицо',
+				'price' => (int) get_field( 'payer_fl_price', 'option' ) ?: 2000,
+				'description' => 'Для частных граждан',
+			),
+			'ip' => array(
+				'value' => 'ip',
+				'label' => get_field( 'payer_ip_label', 'option' ) ?: 'ИП',
+				'price' => (int) get_field( 'payer_ip_price', 'option' ) ?: 2000,
+				'description' => 'Для индивидуальных предпринимателей',
+			),
+		);
+	}
+	
+	// Fallback если ACF не активен
+	return array(
+		'ul' => array(
+			'value' => 'ul',
+			'label' => 'Юридическое Лицо',
+			'price' => 3000,
+			'description' => 'Для организаций и компаний',
+		),
+		'fl' => array(
+			'value' => 'fl',
+			'label' => 'Физическое Лицо',
+			'price' => 2000,
+			'description' => 'Для частных граждан',
+		),
+		'ip' => array(
+			'value' => 'ip',
+			'label' => 'ИП',
+			'price' => 2000,
+			'description' => 'Для индивидуальных предпринимателей',
+		),
+	);
+}
+
+/**
+ * ============================================
+ * Кастомные страницы входа и регистрации
+ * ============================================
+ */
+
+/**
+ * Переопределение стандартной страницы входа WordPress
+ */
+function enotary_custom_login_page() {
+    // Создаем страницу "Вход" если её нет
+    $login_page = get_page_by_path( 'vkhod' );
+    
+    if ( ! $login_page ) {
+        $login_page_id = wp_insert_post( array(
+            'post_title'   => 'Вход',
+            'post_name'    => 'vkhod',
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_content' => '',
+            'page_template' => 'template-login.php',
+        ) );
+    }
+}
+add_action( 'after_setup_theme', 'enotary_custom_login_page' );
+
+/**
+ * Переопределение стандартной страницы регистрации WordPress
+ */
+function enotary_custom_register_page() {
+    // Создаем страницу "Регистрация" если её нет
+    $register_page = get_page_by_path( 'registratsiya' );
+    
+    if ( ! $register_page ) {
+        $register_page_id = wp_insert_post( array(
+            'post_title'   => 'Регистрация',
+            'post_name'    => 'registratsiya',
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_content' => '',
+            'page_template' => 'template-register.php',
+        ) );
+    }
+}
+add_action( 'after_setup_theme', 'enotary_custom_register_page' );
+
+/**
+ * Редирект со стандартной страницы входа wp-login.php на кастомную
+ */
+function enotary_redirect_login_page() {
+    $page_viewed = basename( $_SERVER['REQUEST_URI'] );
+    
+    if ( $page_viewed == 'wp-login.php' && $_SERVER['REQUEST_METHOD'] == 'GET' && ! isset( $_GET['action'] ) ) {
+        wp_redirect( home_url( '/vkhod/' ) );
+        exit;
+    }
+}
+add_action( 'init', 'enotary_redirect_login_page' );
+
+/**
+ * Редирект после выхода на страницу входа
+ */
+function enotary_logout_redirect() {
+    wp_redirect( home_url( '/vkhod/' ) );
+    exit;
+}
+add_action( 'wp_logout', 'enotary_logout_redirect' );
+
+/**
+ * Изменение URL страницы входа в WordPress
+ */
+function enotary_custom_login_url( $login_url ) {
+    return home_url( '/vkhod/' );
+}
+add_filter( 'login_url', 'enotary_custom_login_url' );
+
+/**
+ * Изменение URL страницы регистрации в WordPress
+ */
+function enotary_custom_register_url( $register_url ) {
+    return home_url( '/registratsiya/' );
+}
+add_filter( 'register_url', 'enotary_custom_register_url' );
+
+/**
+ * Включить регистрацию пользователей
+ */
+function enotary_enable_user_registration() {
+    update_option( 'users_can_register', 1 );
+}
+add_action( 'after_setup_theme', 'enotary_enable_user_registration' );
+
