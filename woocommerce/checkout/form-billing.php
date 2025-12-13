@@ -426,7 +426,26 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
 <!-- Скрытые поля для инициализации WooCommerce checkout -->
 <div style="display: none;">
     <?php
+    // Список полей, которые уже видимы в кастомных формах
+    $visible_fields = array(
+        'billing_first_name',
+        'billing_email',
+        'billing_phone',
+        'billing_inn',
+        'billing_passport_address',
+        'billing_postcode_custom',
+        'billing_company',
+        'billing_kpp',
+        'billing_okpo',
+        'billing_legal_address'
+    );
+    
     foreach ( $checkout->get_checkout_fields( 'billing' ) as $key => $field ) {
+        // Пропускаем поля, которые уже отображаются в видимых формах
+        if ( in_array( $key, $visible_fields ) ) {
+            continue;
+        }
+        
         if ( ! isset( $field['type'] ) ) {
             $field['type'] = 'text';
         }

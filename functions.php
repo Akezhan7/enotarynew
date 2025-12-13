@@ -276,6 +276,9 @@ function enotarynew_load_woocommerce_files() {
 	
 	// PDF Invoices Integration for Legal Entities
 	require_once get_template_directory() . '/inc/pdf-invoices.php';
+	
+	// Admin Panel Customization
+	require_once get_template_directory() . '/inc/admin-custom.php';
 }
 add_action( 'init', 'enotarynew_load_woocommerce_files', 20 );
 

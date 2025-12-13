@@ -366,6 +366,13 @@ function enotary_filter_payment_gateways( $gateways ) {
 add_action( 'woocommerce_checkout_update_order_meta', 'enotary_save_custom_checkout_fields' );
 
 function enotary_save_custom_checkout_fields( $order_id ) {
+    // Получаем объект заказа
+    $order = wc_get_order( $order_id );
+    
+    if ( ! $order ) {
+        return;
+    }
+    
     // Проверка что WooCommerce активен
     if ( ! function_exists( 'WC' ) || ! WC()->session ) {
         return;
@@ -374,13 +381,13 @@ function enotary_save_custom_checkout_fields( $order_id ) {
     $payer_type = WC()->session->get( 'active_payer_type' );
     $payer_type_label = WC()->session->get( 'payer_type_label' );
     
-    // Сохранить тип лица
+    // Сохранить тип лица (ВАЖНО: используем _active_payer_type для совместимости с админкой)
     if ( ! empty( $payer_type ) ) {
-        update_post_meta( $order_id, '_payer_type', sanitize_text_field( $payer_type ) );
+        $order->update_meta_data( '_active_payer_type', sanitize_text_field( $payer_type ) );
     }
     
     if ( ! empty( $payer_type_label ) ) {
-        update_post_meta( $order_id, '_payer_type_label', sanitize_text_field( $payer_type_label ) );
+        $order->update_meta_data( '_payer_type_label', sanitize_text_field( $payer_type_label ) );
     }
     
     // Список всех возможных кастомных полей
@@ -397,9 +404,12 @@ function enotary_save_custom_checkout_fields( $order_id ) {
     // Сохранение каждого поля если оно заполнено
     foreach ( $custom_fields as $field ) {
         if ( isset( $_POST[ $field ] ) && ! empty( $_POST[ $field ] ) ) {
-            update_post_meta( $order_id, '_' . $field, sanitize_text_field( $_POST[ $field ] ) );
+            $order->update_meta_data( '_' . $field, sanitize_text_field( $_POST[ $field ] ) );
         }
     }
+    
+    // Сохраняем все изменения
+    $order->save();
 }
 
 /**
