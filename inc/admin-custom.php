@@ -271,32 +271,56 @@ function enotary_save_certificate_hpos_data( $order_id, $order ) {
 /**
  * Настройка колонок таблицы заказов (старая система CPT)
  */
-add_filter( 'manage_edit-shop_order_columns', 'enotary_custom_shop_order_columns', 20 );
+add_filter( 'manage_edit-shop_order_columns', 'enotary_custom_shop_order_columns', 999 );
 
 /**
  * Настройка колонок таблицы заказов (новая система HPOS)
  */
-add_filter( 'manage_woocommerce_page_wc-orders_columns', 'enotary_custom_shop_order_columns', 20 );
+add_filter( 'manage_woocommerce_page_wc-orders_columns', 'enotary_custom_shop_order_columns', 999 );
 
 function enotary_custom_shop_order_columns( $columns ) {
-    // Удаляем лишние стандартные колонки
-    unset( $columns['shipping_address'] );
-    unset( $columns['billing_address'] );
-    
-    // Создаем новый массив колонок в нужном порядке
+    // Полностью перестраиваем колонки в нужном порядке
     $new_columns = array();
     
-    foreach ( $columns as $key => $value ) {
-        $new_columns[ $key ] = $value;
-        
-        // После колонки order_status добавляем наши кастомные колонки
-        if ( $key === 'order_status' ) {
-            $new_columns['payer_info'] = 'Заказчик / Тип';
-            $new_columns['company_details'] = 'Реквизиты (ЮЛ)';
-            $new_columns['contacts_info'] = 'Контакты';
-            $new_columns['cert_expiry'] = 'Срок действия';
-            $new_columns['invoice_link'] = 'Счет';
-        }
+    // Чекбокс (если есть)
+    if ( isset( $columns['cb'] ) ) {
+        $new_columns['cb'] = $columns['cb'];
+    }
+    
+    // Номер заказа
+    if ( isset( $columns['order_number'] ) ) {
+        $new_columns['order_number'] = $columns['order_number'];
+    }
+    
+    // Дата
+    if ( isset( $columns['order_date'] ) ) {
+        $new_columns['order_date'] = $columns['order_date'];
+    }
+    
+    // Статус
+    if ( isset( $columns['order_status'] ) ) {
+        $new_columns['order_status'] = $columns['order_status'];
+    }
+    
+    // КАСТОМНЫЕ КОЛОНКИ
+    $new_columns['payer_info'] = 'Заказчик / Тип';
+    $new_columns['company_details'] = 'Реквизиты (ЮЛ)';
+    $new_columns['customer_address'] = 'Адрес';
+    
+    // Сумма заказа
+    if ( isset( $columns['order_total'] ) ) {
+        $new_columns['order_total'] = $columns['order_total'];
+    }
+    
+    // Продолжение кастомных колонок
+    $new_columns['contacts_info'] = 'Контакты';
+    $new_columns['cert_expiry'] = 'Срок действия';
+    $new_columns['order_notes'] = 'Примечание';
+    $new_columns['invoice_link'] = 'Счет';
+    
+    // Остальные стандартные колонки (если есть)
+    if ( isset( $columns['wc_actions'] ) ) {
+        $new_columns['wc_actions'] = $columns['wc_actions'];
     }
     
     return $new_columns;
@@ -375,6 +399,28 @@ function enotary_custom_shop_order_column_content( $column, $post_id ) {
             }
             break;
         
+        case 'customer_address':
+            // Адрес: Город, Улица, Дом
+            $city = $order->get_billing_city();
+            $address_1 = $order->get_billing_address_1();
+            $address_2 = $order->get_billing_address_2();
+            $passport_address = $order->get_meta( '_billing_passport_address' );
+            
+            // Всегда выводим что-то, даже если данных нет (для отладки)
+            if ( ! empty( $passport_address ) ) {
+                echo '<div style="font-size: 12px; line-height: 1.4; color: #333;">';
+                echo esc_html( $passport_address );
+                echo '</div>';
+            } elseif ( $city || $address_1 || $address_2 ) {
+                $address_parts = array_filter( array( $city, $address_1, $address_2 ) );
+                echo '<div style="font-size: 12px; line-height: 1.4; color: #333;">';
+                echo esc_html( implode( ', ', $address_parts ) );
+                echo '</div>';
+            } else {
+                echo '<span style="color: #999; font-size: 12px;">Не указан</span>';
+            }
+            break;
+        
         case 'contacts_info':
             // Телефон и Email
             $phone = $order->get_billing_phone();
@@ -426,6 +472,24 @@ function enotary_custom_shop_order_column_content( $column, $post_id ) {
                 echo '</div>';
             } else {
                 echo '<span style="color: #999;">Не указан</span>';
+            }
+            break;
+        
+        case 'order_notes':
+            // Примечание - комментарий клиента к заказу (customer_note)
+            $customer_note = $order->get_customer_note();
+            
+            if ( ! empty( $customer_note ) ) {
+                // Обрезаем длинные комментарии до 100 символов
+                $note_short = mb_strlen( $customer_note ) > 100 
+                    ? mb_substr( $customer_note, 0, 100 ) . '...' 
+                    : $customer_note;
+                
+                echo '<div style="font-size: 12px; line-height: 1.4; max-width: 200px;" title="' . esc_attr( $customer_note ) . '">';
+                echo esc_html( $note_short );
+                echo '</div>';
+            } else {
+                echo '<span style="color: #999;">—</span>';
             }
             break;
         

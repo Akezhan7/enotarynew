@@ -279,6 +279,9 @@ function enotarynew_load_woocommerce_files() {
 	
 	// Admin Panel Customization
 	require_once get_template_directory() . '/inc/admin-custom.php';
+	
+	// Certificate Expiry Notifications System (ТЗ п. 215)
+	require_once get_template_directory() . '/inc/notifications.php';
 }
 add_action( 'init', 'enotarynew_load_woocommerce_files', 20 );
 
