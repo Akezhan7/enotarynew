@@ -231,13 +231,20 @@ function initCheckboxes() {
         });
     });
 
-    // Чекбоксы согласия
-    const agreeCheckbox = document.querySelector('.checkbox-custom-agree');
-    if (agreeCheckbox) {
-        agreeCheckbox.addEventListener('click', function() {
+    // Чекбоксы согласия (поддержка множественных чекбоксов на странице)
+    const agreeCheckboxes = document.querySelectorAll('.checkbox-custom-agree');
+    agreeCheckboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('click', function() {
             this.classList.toggle('checked');
+            
+            // Синхронизация со скрытым input checkbox
+            const parent = this.parentElement;
+            const hiddenInput = parent.querySelector('input[type="checkbox"]');
+            if (hiddenInput) {
+                hiddenInput.checked = this.classList.contains('checked');
+            }
         });
-    }
+    });
 }
 
 

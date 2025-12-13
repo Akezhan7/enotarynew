@@ -273,6 +273,9 @@ function enotarynew_load_woocommerce_files() {
 	
 	// Custom Checkout Forms Handler for different payer types
 	require_once get_template_directory() . '/inc/checkout-custom-forms.php';
+	
+	// PDF Invoices Integration for Legal Entities
+	require_once get_template_directory() . '/inc/pdf-invoices.php';
 }
 add_action( 'init', 'enotarynew_load_woocommerce_files', 20 );
 
@@ -321,51 +324,69 @@ if( function_exists('acf_add_options_page') ) {
  * @return array Массив с типами плательщиков
  */
 function get_payer_types_options() {
-	// Проверяем, активен ли ACF
-	if ( function_exists( 'get_field' ) ) {
+	// ID товаров для типов плательщиков
+	$payer_product_ids = array(
+		'legal'        => 283, // Юридическое лицо
+		'individual'   => 284, // Физическое лицо
+		'entrepreneur' => 285, // ИП
+	);
+	
+	$payer_types = array();
+	
+	// Проверяем что WooCommerce активен
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		// Fallback если WooCommerce не активен
 		return array(
-			'ul' => array(
-				'value' => 'ul',
-				'label' => get_field( 'payer_ul_label', 'option' ) ?: 'Юридическое Лицо',
-				'price' => (int) get_field( 'payer_ul_price', 'option' ) ?: 3000,
-				'description' => 'Для организаций и компаний',
+			'legal' => array(
+				'value' => 'legal',
+				'label' => 'Юридическое Лицо',
+				'price' => 3000,
+				'product_id' => 283,
 			),
-			'fl' => array(
-				'value' => 'fl',
-				'label' => get_field( 'payer_fl_label', 'option' ) ?: 'Физическое Лицо',
-				'price' => (int) get_field( 'payer_fl_price', 'option' ) ?: 2000,
-				'description' => 'Для частных граждан',
+			'individual' => array(
+				'value' => 'individual',
+				'label' => 'Физическое Лицо',
+				'price' => 2000,
+				'product_id' => 284,
 			),
-			'ip' => array(
-				'value' => 'ip',
-				'label' => get_field( 'payer_ip_label', 'option' ) ?: 'ИП',
-				'price' => (int) get_field( 'payer_ip_price', 'option' ) ?: 2000,
-				'description' => 'Для индивидуальных предпринимателей',
+			'entrepreneur' => array(
+				'value' => 'entrepreneur',
+				'label' => 'ИП',
+				'price' => 2000,
+				'product_id' => 285,
 			),
 		);
 	}
 	
-	// Fallback если ACF не активен
-	return array(
-		'ul' => array(
-			'value' => 'ul',
-			'label' => 'Юридическое Лицо',
-			'price' => 3000,
-			'description' => 'Для организаций и компаний',
-		),
-		'fl' => array(
-			'value' => 'fl',
-			'label' => 'Физическое Лицо',
-			'price' => 2000,
-			'description' => 'Для частных граждан',
-		),
-		'ip' => array(
-			'value' => 'ip',
-			'label' => 'ИП',
-			'price' => 2000,
-			'description' => 'Для индивидуальных предпринимателей',
-		),
-	);
+	// Получаем данные из товаров WooCommerce
+	foreach ( $payer_product_ids as $key => $product_id ) {
+		$product = wc_get_product( $product_id );
+		
+		if ( $product ) {
+			$payer_types[ $key ] = array(
+				'value'      => $key,
+				'label'      => $product->get_name(),
+				'price'      => floatval( $product->get_price() ),
+				'product_id' => $product_id,
+			);
+		} else {
+			// Fallback если товар не найден
+			$labels = array(
+				'legal'        => 'Юридическое Лицо',
+				'individual'   => 'Физическое Лицо',
+				'entrepreneur' => 'ИП',
+			);
+			
+			$payer_types[ $key ] = array(
+				'value'      => $key,
+				'label'      => $labels[ $key ],
+				'price'      => 2000,
+				'product_id' => $product_id,
+			);
+		}
+	}
+	
+	return $payer_types;
 }
 
 /**

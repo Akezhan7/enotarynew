@@ -87,6 +87,19 @@ function enotary_customize_checkout_fields( $fields ) {
         'class'    => array( 'enotary-hidden-field' ),
     );
     
+    // Отключаем поля, которые WooCommerce требует по умолчанию, но мы не используем
+    $fields['billing']['billing_last_name'] = array(
+        'type'     => 'text',
+        'required' => false,
+        'class'    => array( 'enotary-hidden-field' ),
+    );
+    
+    $fields['billing']['billing_state'] = array(
+        'type'     => 'text',
+        'required' => false,
+        'class'    => array( 'enotary-hidden-field' ),
+    );
+    
     // Добавляем кастомные поля в зависимости от типа лица
     if ( $payer_type === 'individual' ) {
         $fields['billing']['billing_inn'] = array(
@@ -127,7 +140,7 @@ function enotary_customize_checkout_fields( $fields ) {
             'priority' => 120,
         );
     } elseif ( $payer_type === 'legal' ) {
-        $fields['billing']['billing_company_name'] = array(
+        $fields['billing']['billing_company'] = array(
             'type'     => 'text',
             'label'    => 'Наименование юр. лица',
             'required' => true,
@@ -168,6 +181,48 @@ function enotary_customize_checkout_fields( $fields ) {
     // Удаляем shipping поля (доставка не нужна)
     $fields['shipping'] = array();
     
+    // Удаляем поле заметок к заказу
+    if ( isset( $fields['order']['order_comments'] ) ) {
+        unset( $fields['order']['order_comments'] );
+    }
+    
+    return $fields;
+}
+
+/**
+ * ============================================
+ * СКРЫТИЕ НЕНУЖНЫХ ЭЛЕМЕНТОВ ЧЕКАУТА
+ * ============================================
+ */
+
+/**
+ * Убираем купоны с чекаута
+ */
+add_filter( 'woocommerce_coupons_enabled', 'enotary_disable_coupons_on_checkout' );
+function enotary_disable_coupons_on_checkout( $enabled ) {
+    if ( is_checkout() ) {
+        return false;
+    }
+    return $enabled;
+}
+
+/**
+ * Убираем блок доставки полностью
+ */
+add_filter( 'woocommerce_cart_needs_shipping', '__return_false' );
+
+/**
+ * Убираем заметки к заказу
+ */
+add_filter( 'woocommerce_enable_order_notes_field', '__return_false' );
+
+/**
+ * Убираем дополнительные поля
+ */
+add_filter( 'woocommerce_checkout_fields', 'enotary_remove_checkout_additional_fields', 10000 );
+function enotary_remove_checkout_additional_fields( $fields ) {
+    // Удаляем все дополнительные поля
+    unset( $fields['order'] );
     return $fields;
 }
 
@@ -253,7 +308,7 @@ function enotary_force_login_before_checkout() {
  * 
  * Логика:
  * - ЮЛ (legal) → только bacs (Счет на оплату)
- * - ФЛ/ИП (individual/entrepreneur) → только robokassa
+ * - ФЛ/ИП (individual/entrepreneur) → cheque (Чековые платежи) + robokassa (когда будет готова)
  * 
  * @param array $gateways Доступные платежные шлюзы
  * @return array Отфильтрованные шлюзы
@@ -284,11 +339,11 @@ function enotary_filter_payment_gateways( $gateways ) {
         }
     }
     
-    // ФЛ и ИП - ТОЛЬКО Робокасса
+    // ФЛ и ИП - ВРЕМЕННО bacs для диагностики (потом вернуть cheque)
     elseif ( $payer_type === 'individual' || $payer_type === 'entrepreneur' ) {
         foreach ( $gateways as $key => $gateway ) {
-            // Скрыть всё кроме robokassa
-            if ( $key !== 'robokassa' ) {
+            // ТЕСТ: временно используем bacs вместо cheque
+            if ( $key !== 'bacs' && $key !== 'robokassa' ) {
                 unset( $gateways[ $key ] );
             }
         }
@@ -334,7 +389,7 @@ function enotary_save_custom_checkout_fields( $order_id ) {
         'billing_kpp',
         'billing_okpo',
         'billing_legal_address',
-        'billing_company_name',
+        'billing_company',
         'billing_passport_address',
         'billing_postcode_custom',
     );
@@ -362,7 +417,7 @@ function enotary_display_custom_fields_in_admin( $order ) {
     $kpp = get_post_meta( $order_id, '_billing_kpp', true );
     $okpo = get_post_meta( $order_id, '_billing_okpo', true );
     $legal_address = get_post_meta( $order_id, '_billing_legal_address', true );
-    $company_name = get_post_meta( $order_id, '_billing_company_name', true );
+    $company_name = get_post_meta( $order_id, '_billing_company', true );
     $passport_address = get_post_meta( $order_id, '_billing_passport_address', true );
     $postcode_custom = get_post_meta( $order_id, '_billing_postcode_custom', true );
     
@@ -412,7 +467,7 @@ function enotary_add_custom_fields_to_emails( $order, $sent_to_admin, $plain_tex
     // Получить кастомные поля
     $inn = get_post_meta( $order_id, '_billing_inn', true );
     $kpp = get_post_meta( $order_id, '_billing_kpp', true );
-    $company_name = get_post_meta( $order_id, '_billing_company_name', true );
+    $company_name = get_post_meta( $order_id, '_billing_company', true );
     $legal_address = get_post_meta( $order_id, '_billing_legal_address', true );
     $passport_address = get_post_meta( $order_id, '_billing_passport_address', true );
     
@@ -433,6 +488,57 @@ function enotary_add_custom_fields_to_emails( $order, $sent_to_admin, $plain_tex
             if ( $passport_address ) echo '<li><strong>Адрес (по паспорту):</strong> ' . esc_html( $passport_address ) . '</li>';
             echo '</ul>';
         }
+    }
+}
+
+/**
+ * Автозаполнение скрытых обязательных полей
+ * 
+ * Заполняет пустые служебные поля дефолтными значениями
+ * чтобы избежать блокировки заказа при отключенном debug-режиме
+ * 
+ * @param array $data Данные чекаута
+ * @param WP_Error $errors Объект ошибок
+ */
+add_action( 'woocommerce_after_checkout_validation', 'enotary_autofill_hidden_fields', 5, 2 );
+
+function enotary_autofill_hidden_fields( $data, $errors ) {
+    // Автозаполнение billing_last_name из billing_first_name
+    if ( empty( $_POST['billing_last_name'] ) && ! empty( $_POST['billing_first_name'] ) ) {
+        $_POST['billing_last_name'] = sanitize_text_field( $_POST['billing_first_name'] );
+    }
+    
+    // Автозаполнение billing_state (область/регион)
+    if ( empty( $_POST['billing_state'] ) ) {
+        $_POST['billing_state'] = 'RU';
+    }
+    
+    // Автозаполнение billing_address_1 из passport_address или legal_address
+    if ( empty( $_POST['billing_address_1'] ) ) {
+        if ( ! empty( $_POST['billing_passport_address'] ) ) {
+            $_POST['billing_address_1'] = sanitize_text_field( $_POST['billing_passport_address'] );
+        } elseif ( ! empty( $_POST['billing_legal_address'] ) ) {
+            $_POST['billing_address_1'] = sanitize_text_field( $_POST['billing_legal_address'] );
+        } else {
+            $_POST['billing_address_1'] = 'Не указан';
+        }
+    }
+    
+    // Автозаполнение billing_city
+    if ( empty( $_POST['billing_city'] ) ) {
+        $_POST['billing_city'] = 'Москва';
+    }
+    
+    // Автозаполнение billing_postcode из billing_postcode_custom
+    if ( empty( $_POST['billing_postcode'] ) && ! empty( $_POST['billing_postcode_custom'] ) ) {
+        $_POST['billing_postcode'] = sanitize_text_field( $_POST['billing_postcode_custom'] );
+    } elseif ( empty( $_POST['billing_postcode'] ) ) {
+        $_POST['billing_postcode'] = '000000';
+    }
+    
+    // Автозаполнение billing_country
+    if ( empty( $_POST['billing_country'] ) ) {
+        $_POST['billing_country'] = 'RU';
     }
 }
 

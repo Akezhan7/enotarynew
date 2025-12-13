@@ -37,18 +37,10 @@ function add_custom_bundle_to_cart() {
     $payer_type = isset( $_POST['payer_type'] ) ? sanitize_text_field( $_POST['payer_type'] ) : '';
     $base_product_id = isset( $_POST['base_product_id'] ) ? intval( $_POST['base_product_id'] ) : 0;
     
-    // Нормализация типа плательщика для единообразия
-    $payer_type_normalized = '';
-    if ( ! empty( $payer_type ) ) {
-        if ( stripos( $payer_type, 'Физическое' ) !== false || stripos( $payer_type, 'физ' ) !== false ) {
-            $payer_type_normalized = 'individual';
-        } elseif ( stripos( $payer_type, 'Индивидуальный' ) !== false || stripos( $payer_type, 'ИП' ) !== false ) {
-            $payer_type_normalized = 'entrepreneur';
-        } elseif ( stripos( $payer_type, 'Юридическое' ) !== false || stripos( $payer_type, 'юр' ) !== false ) {
-            $payer_type_normalized = 'legal';
-        } else {
-            $payer_type_normalized = 'individual'; // Дефолт
-        }
+    // Валидация типа плательщика (должен быть: 'individual', 'entrepreneur' или 'legal')
+    $allowed_payer_types = array( 'individual', 'entrepreneur', 'legal' );
+    if ( ! empty( $payer_type ) && ! in_array( $payer_type, $allowed_payer_types, true ) ) {
+        $payer_type = 'individual'; // Дефолт, если пришло что-то некорректное
     }
     
     // Валидация данных
@@ -95,10 +87,19 @@ function add_custom_bundle_to_cart() {
     }
     
     // Сохранение типа плательщика в сессию
-    if ( ! empty( $payer_type_normalized ) ) {
-        WC()->session->set( 'active_payer_type', $payer_type_normalized );
-        // Сохраняем также оригинальное значение для отображения
-        WC()->session->set( 'payer_type_label', $payer_type );
+    if ( ! empty( $payer_type ) ) {
+        WC()->session->set( 'active_payer_type', $payer_type );
+        
+        // Добавление товара типа плательщика в корзину
+        $payer_types_data = get_payer_types_options();
+        if ( isset( $payer_types_data[ $payer_type ] ) && ! empty( $payer_types_data[ $payer_type ]['product_id'] ) ) {
+            $payer_product_id = $payer_types_data[ $payer_type ]['product_id'];
+            $payer_product = wc_get_product( $payer_product_id );
+            
+            if ( $payer_product ) {
+                WC()->cart->add_to_cart( $payer_product_id, 1 );
+            }
+        }
     }
     
     // Сохранение ID базового товара

@@ -40,13 +40,13 @@ $payer_types = get_payer_types_options();
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="<?php echo esc_attr( $payer_types['ul']['value'] ); ?>" 
+                    value="<?php echo esc_attr( $payer_types['legal']['value'] ); ?>" 
                     class="hidden"
-                    data-base-price="<?php echo esc_attr( $payer_types['ul']['price'] ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['legal']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['ul']['label'] ); ?></p>
+                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['legal']['label'] ); ?></p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['ul']['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['legal']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
             
@@ -55,13 +55,13 @@ $payer_types = get_payer_types_options();
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="<?php echo esc_attr( $payer_types['fl']['value'] ); ?>" 
+                    value="<?php echo esc_attr( $payer_types['individual']['value'] ); ?>" 
                     class="hidden"
-                    data-base-price="<?php echo esc_attr( $payer_types['fl']['price'] ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['individual']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['fl']['label'] ); ?></p>
+                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['individual']['label'] ); ?></p>
                 <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['fl']['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['individual']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
             
@@ -70,14 +70,14 @@ $payer_types = get_payer_types_options();
                 <input 
                     type="radio" 
                     name="payer_type" 
-                    value="<?php echo esc_attr( $payer_types['ip']['value'] ); ?>" 
+                    value="<?php echo esc_attr( $payer_types['entrepreneur']['value'] ); ?>" 
                     class="hidden"
                     checked
-                    data-base-price="<?php echo esc_attr( $payer_types['ip']['price'] ); ?>"
+                    data-base-price="<?php echo esc_attr( $payer_types['entrepreneur']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['ip']['label'] ); ?></p>
+                <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['entrepreneur']['label'] ); ?></p>
                 <div class="bg-white rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['ip']['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                    <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['entrepreneur']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
         </section>

@@ -19,6 +19,28 @@
     display: none !important;
 }
 
+/* Скрытие ненужных элементов на чекауте */
+.woocommerce-form-coupon-toggle,
+.woocommerce-checkout .checkout_coupon,
+.woocommerce-shipping-fields,
+.woocommerce-additional-fields,
+#order_comments_field,
+.woocommerce-checkout-review-order .woocommerce-form-coupon {
+    display: none !important;
+}
+
+/* Скрытие блока доставки если он есть */
+#customer_details .col-2,
+.woocommerce-shipping-fields__field-wrapper {
+    display: none !important;
+}
+
+/* Растягиваем billing на всю ширину если shipping скрыт */
+#customer_details .col-1 {
+    width: 100% !important;
+    float: none !important;
+}
+
 /* Кастомные поля чекаута */
 .enotary-field-inn input,
 .enotary-field-kpp input,
@@ -191,4 +213,66 @@
 /* Секции форм */
 .woocommerce-billing-fields .form-row {
     margin-bottom: 15px;
+}
+
+/* Кастомный чекбокс согласия (как в HTML-эталоне) */
+.checkbox-custom-agree {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.checkbox-custom-agree.checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 7px;
+    border-left: 2px solid #375d74;
+    border-bottom: 2px solid #375d74;
+    transform: translate(-50%, -60%) rotate(-45deg);
+}
+
+.checkbox-custom-agree:hover {
+    opacity: 0.8;
+}
+
+/* Адаптивные размеры чекбокса */
+@media (min-width: 640px) {
+    .checkbox-custom-agree {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        min-height: 22px;
+    }
+    
+    .checkbox-custom-agree.checked::after {
+        width: 11px;
+        height: 8px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .checkbox-custom-agree {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+    }
+    
+    .checkbox-custom-agree.checked::after {
+        width: 12px;
+        height: 9px;
+    }
 }
