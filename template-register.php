@@ -57,8 +57,12 @@ if ( isset( $_POST['enotary_register_submit'] ) ) {
                 wp_set_current_user( $user_id );
                 wp_set_auth_cookie( $user_id );
 
-                // Редирект на главную или чекаут
-                $redirect_to = isset( $_GET['redirect_to'] ) ? esc_url_raw( $_GET['redirect_to'] ) : home_url();
+                // Успешная регистрация - редирект
+                // Проверяем параметр redirect_to из URL
+                $redirect_to = isset( $_GET['redirect_to'] ) && ! empty( $_GET['redirect_to'] ) 
+                    ? esc_url_raw( urldecode( $_GET['redirect_to'] ) ) 
+                    : home_url();
+                
                 wp_redirect( $redirect_to );
                 exit;
             }

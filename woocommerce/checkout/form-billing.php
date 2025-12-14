@@ -39,7 +39,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- Контактный телефон и Электронная почта -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Контактный телефон</label>
             <input type="tel" 
                    name="billing_phone" 
@@ -49,7 +49,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
             <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">Введите номер в формате 8 (ХХХ) ХХХ ХХ ХХ</p>
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Электронная почта</label>
             <input type="email" 
                    name="billing_email" 
@@ -80,7 +80,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- Адрес (по паспорту) и Почтовый индекс -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Адрес (по паспорту)</label>
             <input type="text" 
                    name="billing_passport_address" 
@@ -89,7 +89,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    value="<?php echo esc_attr( $checkout->get_value( 'billing_passport_address' ) ); ?>"
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Почтовый индекс</label>
             <input type="text" 
                    name="billing_postcode_custom" 
@@ -164,7 +164,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- Контактный телефон и Электронная почта -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Контактный телефон</label>
             <input type="tel" 
                    name="billing_phone" 
@@ -174,7 +174,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
             <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">Введите номер в формате 8 (ХХХ) ХХХ ХХ ХХ</p>
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Электронная почта</label>
             <input type="email" 
                    name="billing_email" 
@@ -205,7 +205,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- Адрес (по паспорту) и Почтовый индекс -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Адрес (по паспорту)</label>
             <input type="text" 
                    name="billing_passport_address" 
@@ -214,7 +214,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    value="<?php echo esc_attr( $checkout->get_value( 'billing_passport_address' ) ); ?>"
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Почтовый индекс</label>
             <input type="text" 
                    name="billing_postcode_custom" 
@@ -291,7 +291,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- Контактный телефон и Электронная почта -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Контактный телефон</label>
             <input type="tel" 
                    name="billing_phone" 
@@ -301,7 +301,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
             <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">Введите номер в формате 8 (ХХХ) ХХХ ХХ ХХ</p>
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Электронная почта</label>
             <input type="email" 
                    name="billing_email" 
@@ -320,7 +320,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- Наименование юр-го лица и ИНН (юр-го лица) -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Наименование юр-го лица</label>
             <input type="text" 
                    name="billing_company" 
@@ -330,7 +330,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
             <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">Минимум 5 символов</p>
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">ИНН (юр-го лица)</label>
             <input type="text" 
                    name="billing_inn" 
@@ -344,7 +344,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- КПП и ОКПО -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">КПП</label>
             <input type="text" 
                    name="billing_kpp" 
@@ -354,7 +354,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
             <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">Номер из 9 цифр</p>
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">ОКПО</label>
             <input type="text" 
                    name="billing_okpo" 
@@ -368,7 +368,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
     
     <!-- Юридический адрес и Почтовый индекс -->
     <div class="flex flex-col lg:flex-row">
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Юридический адрес</label>
             <input type="text" 
                    name="billing_legal_address" 
@@ -378,7 +378,7 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
                    class="form-input bg-white border border-[rgba(0,0,0,0.05)] rounded-[8px] sm:rounded-[10px] px-3 sm:px-3.5 lg:px-2.5 py-3 sm:py-2.5 min-h-[44px] sm:min-h-[46px] lg:h-[46px] font-semibold text-[14px] sm:text-[15px] lg:text-base text-secondary leading-[1.15] focus:outline-none focus:border-primary transition-colors w-full">
             <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">Минимум 5 символов</p>
         </div>
-        <div class="sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
+        <div class="p-3.5 sm:p-4 lg:p-5 flex flex-col gap-2 sm:gap-2.5 flex-1">
             <label class="font-semibold text-[14px] sm:text-[15px] lg:text-base text-black leading-[1.15]">Почтовый индекс</label>
             <input type="text" 
                    name="billing_postcode_custom" 

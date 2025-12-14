@@ -113,18 +113,34 @@ function initStickyHeader() {
     function setHeaderOffset() {
         const headerHeight = header.offsetHeight;
         
-        // Пробуем разные селекторы для разных типов страниц
-        let mainContent = document.querySelector('body > .flex:first-child');
+        // Ищем первый контентный элемент после header
+        // Исключаем только WordPress админку и служебные элементы
+        let mainContent = null;
         
-        // Для страниц WooCommerce (личный кабинет, чекаут)
-        if (!mainContent) {
-            mainContent = document.querySelector('.woocommerce-MyAccount-wrapper');
-        }
+        // Получаем все прямые дочерние элементы body
+        const bodyChildren = Array.from(document.body.children);
         
-        // Если все еще не найден - ищем main или любой первый дочерний div
-        if (!mainContent) {
-            mainContent = document.querySelector('main') || 
-                         document.querySelector('body > div:first-of-type');
+        // Находим первый элемент, который НЕ является:
+        // - WordPress админкой (#wpadminbar)
+        // - Header'ом
+        // - Script/Style
+        for (let element of bodyChildren) {
+            const tagName = element.tagName.toLowerCase();
+            const id = element.id;
+            const classes = element.className;
+            
+            // Пропускаем служебные элементы
+            if (id === 'wpadminbar' || 
+                tagName === 'script' || 
+                tagName === 'style' ||
+                tagName === 'header' ||
+                classes.includes('nojq')) {
+                continue;
+            }
+            
+            // Это наш первый контентный элемент!
+            mainContent = element;
+            break;
         }
         
         if (mainContent) {
@@ -350,53 +366,69 @@ function initEntityCards() {
     
     if (entityCards.length === 0) return;
 
+    // Функция применения стилей для неактивной карточки
+    function setInactiveStyles(card) {
+        card.classList.remove('entity-card-active', 'bg-primary');
+        card.classList.add('bg-white');
+        
+        const label = card.querySelector('.entity-card-label');
+        const priceBox = card.querySelector('.entity-card-price-box');
+        const priceText = card.querySelector('.entity-card-price-text');
+        
+        if (label) {
+            label.classList.remove('text-white');
+            label.classList.add('text-[#262626]');
+        }
+        if (priceBox) {
+            priceBox.classList.remove('bg-white');
+            priceBox.classList.add('bg-secondary');
+        }
+        if (priceText) {
+            priceText.classList.remove('text-[#262626]');
+            priceText.classList.add('text-white');
+        }
+    }
+    
+    // Функция применения стилей для активной карточки
+    function setActiveStyles(card) {
+        card.classList.remove('bg-white');
+        card.classList.add('entity-card-active', 'bg-primary');
+        
+        const label = card.querySelector('.entity-card-label');
+        const priceBox = card.querySelector('.entity-card-price-box');
+        const priceText = card.querySelector('.entity-card-price-text');
+        
+        if (label) {
+            label.classList.remove('text-[#262626]');
+            label.classList.add('text-white');
+        }
+        if (priceBox) {
+            priceBox.classList.remove('bg-secondary');
+            priceBox.classList.add('bg-white');
+        }
+        if (priceText) {
+            priceText.classList.remove('text-white');
+            priceText.classList.add('text-[#262626]');
+        }
+    }
+    
+    // Применяем правильные стили при загрузке страницы
+    entityCards.forEach(card => {
+        if (card.classList.contains('entity-card-active')) {
+            setActiveStyles(card);
+        } else {
+            setInactiveStyles(card);
+        }
+    });
+
+    // Обработчик клика
     entityCards.forEach(card => {
         card.addEventListener('click', function() {
-            // Сбрасываем все карточки к неактивному состоянию
-            entityCards.forEach(c => {
-                c.classList.remove('entity-card-active', 'bg-primary');
-                c.classList.add('bg-white');
-                
-                const text = c.querySelector('p:first-child');
-                const priceBox = c.querySelector('div');
-                const priceText = priceBox ? priceBox.querySelector('p') : null;
-                
-                // Неактивная карточка: черный текст, серый фон цены с белым текстом
-                if (text) {
-                    text.classList.remove('text-white');
-                    text.classList.add('text-[#262626]');
-                }
-                if (priceBox) {
-                    priceBox.classList.remove('bg-white');
-                    priceBox.classList.add('bg-secondary');
-                }
-                if (priceText) {
-                    priceText.classList.remove('text-[#262626]');
-                    priceText.classList.add('text-white');
-                }
-            });
+            // Сбрасываем все карточки
+            entityCards.forEach(c => setInactiveStyles(c));
             
-            // Активируем выбранную карточку
-            this.classList.remove('bg-white');
-            this.classList.add('entity-card-active', 'bg-primary');
-            
-            const text = this.querySelector('p:first-child');
-            const priceBox = this.querySelector('div');
-            const priceText = priceBox ? priceBox.querySelector('p') : null;
-            
-            // Активная карточка: белый текст, белый фон цены с черным текстом
-            if (text) {
-                text.classList.remove('text-[#262626]');
-                text.classList.add('text-white');
-            }
-            if (priceBox) {
-                priceBox.classList.remove('bg-secondary');
-                priceBox.classList.add('bg-white');
-            }
-            if (priceText) {
-                priceText.classList.remove('text-white');
-                priceText.classList.add('text-[#262626]');
-            }
+            // Активируем выбранную
+            setActiveStyles(this);
             
             // Обновить итоговую сумму если функция существует
             if (typeof updateTotal === 'function') {

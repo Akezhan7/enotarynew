@@ -8,9 +8,11 @@
 get_header();
 ?>
 
-<div id="primary w-full" class="content-area">
-	<main id="main w-full" class="site-main">
-		<?php woocommerce_content(); ?>
+<div id="primary" class="content-area w-full">
+	<main id="main" class="site-main w-full">
+		<div class="responsive-container py-8 md:py-10 lg:py-12">
+			<?php woocommerce_content(); ?>
+		</div>
 	</main><!-- #main -->
 </div><!-- #primary -->
 

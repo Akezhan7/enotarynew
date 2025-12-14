@@ -493,3 +493,22 @@ function enotary_enable_user_registration() {
 }
 add_action( 'after_setup_theme', 'enotary_enable_user_registration' );
 
+/**
+ * "Ядерный вариант" - Полная замена шаблона страницы входа WooCommerce
+ * Если пользователь НЕ залогинен на странице "Мой аккаунт" - загружаем template-login.php
+ * Это гарантирует 100% идентичность визуала
+ */
+function enotary_replace_wc_login_template() {
+    // Проверяем: это страница "Мой аккаунт" И пользователь НЕ залогинен
+    if ( is_account_page() && ! is_user_logged_in() ) {
+        // Получаем путь к template-login.php
+        $template_login = get_template_directory() . '/template-login.php';
+        
+        // Если файл существует - загружаем его и останавливаем дальнейшую обработку
+        if ( file_exists( $template_login ) ) {
+            include( $template_login );
+            exit; // ВАЖНО: останавливаем WordPress, чтобы не загружался стандартный шаблон
+        }
+    }
+}
+add_action( 'template_redirect', 'enotary_replace_wc_login_template', 1 );

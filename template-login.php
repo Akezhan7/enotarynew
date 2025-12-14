@@ -38,7 +38,11 @@ if ( isset( $_POST['enotary_login_submit'] ) ) {
             $login_error = 'Неверный email или пароль.';
         } else {
             // Успешный вход - редирект
-            $redirect_to = isset( $_GET['redirect_to'] ) ? esc_url_raw( $_GET['redirect_to'] ) : home_url();
+            // Проверяем параметр redirect_to из URL
+            $redirect_to = isset( $_GET['redirect_to'] ) && ! empty( $_GET['redirect_to'] ) 
+                ? esc_url_raw( urldecode( $_GET['redirect_to'] ) ) 
+                : home_url();
+            
             wp_redirect( $redirect_to );
             exit;
         }

@@ -45,9 +45,9 @@ $payer_types = get_payer_types_options();
                     class="hidden"
                     data-base-price="<?php echo esc_attr( $payer_types['legal']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['legal']['label'] ); ?></p>
-                <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['legal']['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                <p class="entity-card-label font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['legal']['label'] ); ?></p>
+                <div class="entity-card-price-box rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
+                    <p class="entity-card-price-text font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['legal']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
             
@@ -60,9 +60,9 @@ $payer_types = get_payer_types_options();
                     class="hidden"
                     data-base-price="<?php echo esc_attr( $payer_types['individual']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['individual']['label'] ); ?></p>
-                <div class="bg-secondary rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['individual']['price'], 0, ',', ' ' ) ); ?> руб.</p>
+                <p class="entity-card-label font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['individual']['label'] ); ?></p>
+                <div class="entity-card-price-box rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
+                    <p class="entity-card-price-text font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['individual']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
             
@@ -76,8 +76,8 @@ $payer_types = get_payer_types_options();
                     checked
                     data-base-price="<?php echo esc_attr( $payer_types['entrepreneur']['price'] ); ?>"
                 >
-                <p class="font-bold text-sm sm:text-base text-center text-white leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['entrepreneur']['label'] ); ?></p>
-                <div class="bg-white rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
+                <p class="entity-card-label font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['entrepreneur']['label'] ); ?></p>
+                <div class="entity-card-price-box rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
                     <p class="font-bold text-sm sm:text-base text-center text-[#262626] leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['entrepreneur']['price'], 0, ',', ' ' ) ); ?> руб.</p>
                 </div>
             </div>
