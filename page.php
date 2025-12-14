@@ -15,7 +15,7 @@
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+	<main id="primary w-full" class="site-main" style="width: 100%;">
 
 		<?php
 		while ( have_posts() ) :

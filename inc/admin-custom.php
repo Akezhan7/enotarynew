@@ -122,6 +122,27 @@ function enotary_certificate_meta_box_callback( $post_or_order_object ) {
         </p>
     </div>
     
+    <hr style="margin: 20px 0;">
+    
+    <p>
+        <label for="software_license_key" style="display: block; margin-bottom: 5px; font-weight: 600;">
+            Лицензионный ключ (для ПО):
+        </label>
+        <?php
+        $license_key = $order->get_meta( '_software_license_key', true );
+        ?>
+        <textarea 
+            id="software_license_key" 
+            name="software_license_key" 
+            rows="4" 
+            style="width: 100%; font-family: monospace;"
+            placeholder="Введите лицензионные ключи (если применимо)"
+        ><?php echo esc_textarea( $license_key ); ?></textarea>
+    </p>
+    <p class="description" style="margin-top: -5px;">
+        Укажите лицензионные ключи для программного обеспечения (КриптоПро, Signal-COM и т.д.). Клиент увидит эти ключи в личном кабинете.
+    </p>
+    
     <script type="text/javascript">
     jQuery(document).ready(function($) {
         var fileFrame;
@@ -224,6 +245,12 @@ function enotary_save_certificate_meta_box_data( $post_id ) {
             }
         }
         
+        // Сохранить лицензионный ключ
+        if ( isset( $_POST['software_license_key'] ) ) {
+            $license_key = sanitize_textarea_field( $_POST['software_license_key'] );
+            $order->update_meta_data( '_software_license_key', $license_key );
+        }
+        
         $order->save();
     }
 }
@@ -257,6 +284,12 @@ function enotary_save_certificate_hpos_data( $order_id, $order ) {
         } else {
             $order->delete_meta_data( '_certificate_file_id' );
         }
+    }
+    
+    // Сохранить лицензионный ключ
+    if ( isset( $_POST['software_license_key'] ) ) {
+        $license_key = sanitize_textarea_field( $_POST['software_license_key'] );
+        $order->update_meta_data( '_software_license_key', $license_key );
     }
     
     $order->save();

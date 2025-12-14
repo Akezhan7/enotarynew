@@ -1,0 +1,457 @@
+/**
+ * Стили для личного кабинета WooCommerce (My Account)
+ * 
+ * E-Notary Theme - My Account Custom Styles
+ * В дополнение к Tailwind CSS классам
+ * 
+ * @package enotarynew
+ * @version 1.0.2
+ */
+
+/* ============================================
+   СБРОС СТИЛЕЙ WOOCOMMERCE
+   ============================================ */
+
+/* Отключаем дефолтную сетку WooCommerce */
+
+/* ============================================
+   НАВИГАЦИЯ
+   ============================================ */
+
+
+/* ============================================
+   ФОРМЫ ВХОДА / РЕГИСТРАЦИИ
+   ============================================ */
+
+.my-account-auth-wrapper {
+    width: 100%;
+}
+
+/* Адаптивность форм */
+@media (max-width: 1023px) {
+    .auth-forms-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+
+/* Стили для WooCommerce уведомлений */
+.woocommerce-error,
+.woocommerce-message,
+.woocommerce-info {
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    border-radius: 10px !important;
+    border-left: 4px solid !important;
+}
+
+.woocommerce-error {
+    background: #FEF2F2 !important;
+    border-color: #EF4444 !important;
+    color: #991B1B !important;
+}
+
+.woocommerce-message {
+    background: #F0FDF4 !important;
+    border-color: #10B981 !important;
+    color: #065F46 !important;
+}
+
+.woocommerce-info {
+    background: #EFF6FF !important;
+    border-color: #3B82F6 !important;
+    color: #1E40AF !important;
+}
+
+/* ============================================
+   ТАБЛИЦА ЗАКАЗОВ
+   ============================================ */
+
+/* Адаптивная таблица */
+@media (max-width: 768px) {
+    .woocommerce-orders-table thead {
+        display: none;
+    }
+    
+    .woocommerce-orders-table tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 2px solid #E5E7EB;
+        border-radius: 12px;
+        padding: 1rem;
+        background: white;
+    }
+    
+    .woocommerce-orders-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0 !important;
+        border: none !important;
+    }
+    
+    .woocommerce-orders-table td::before {
+        content: attr(data-title);
+        font-weight: 700;
+        color: #262626;
+        flex-shrink: 0;
+        margin-right: 1rem;
+    }
+    
+    .woocommerce-orders-table td:last-child {
+        border-bottom: none !important;
+    }
+}
+
+/* Пагинация заказов */
+.woocommerce-pagination {
+    flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+    .woocommerce-pagination a {
+        width: 100%;
+        justify-content: center;
+        margin: 0 0 0.5rem 0 !important;
+    }
+}
+
+/* ============================================
+   DASHBOARD (ГЛАВНАЯ СТРАНИЦА ЛК)
+   ============================================ */
+
+/* Карточки статистики */
+.dashboard-stats-grid .stat-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-stats-grid .stat-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dashboard-stats-grid .stat-card:hover::after {
+    opacity: 1;
+}
+
+/* Анимация при загрузке */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-card {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Быстрые действия */
+.quick-action-card {
+    text-decoration: none;
+}
+
+/* ============================================
+   ДЕТАЛИ ЗАКАЗА
+   ============================================ */
+
+/* Блоки информации о сертификатах */
+.enotary-customer-blocks {
+    margin-bottom: 2rem;
+}
+
+.enotary-info-block {
+    background: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.enotary-info-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.enotary-info-block h3 {
+    margin: 0 0 1rem 0;
+    color: #262626;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Блок сертификата */
+.certificate-block {
+    border-left: 5px solid #10B981;
+    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+}
+
+.certificate-block.warning {
+    border-left-color: #F59E0B;
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+}
+
+.certificate-block.expired {
+    border-left-color: #EF4444;
+    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+}
+
+/* Блок ожидания */
+.pending-block {
+    border-left: 5px solid #F59E0B;
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+}
+
+/* Блок ПО */
+.software-block {
+    border-left: 5px solid #3B82F6;
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+}
+
+/* Блок реферальных ссылок */
+.referral-block {
+    border-left: 5px solid #8B5CF6;
+    background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
+}
+
+/* Блок инструкций */
+.instructions-block {
+    border-left: 5px solid #F59E0B;
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+}
+
+/* Кнопка скачивания */
+.download-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #375d74;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.download-button:hover {
+    background: #2d4d5f;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(55, 93, 116, 0.3);
+}
+
+/* ============================================
+   РЕДАКТИРОВАНИЕ АККАУНТА
+   ============================================ */
+
+/* Формы редактирования */
+.woocommerce-EditAccountForm,
+.woocommerce-address-fields {
+    max-width: 600px;
+}
+
+.woocommerce-EditAccountForm .form-row,
+.woocommerce-address-fields .form-row {
+    margin-bottom: 1.5rem;
+}
+
+.woocommerce-EditAccountForm label,
+.woocommerce-address-fields label {
+    display: block;
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 0.5rem;
+}
+
+.woocommerce-EditAccountForm input[type="text"],
+.woocommerce-EditAccountForm input[type="email"],
+.woocommerce-EditAccountForm input[type="password"],
+.woocommerce-address-fields input[type="text"],
+.woocommerce-address-fields input[type="email"],
+.woocommerce-address-fields select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.woocommerce-EditAccountForm input:focus,
+.woocommerce-address-fields input:focus,
+.woocommerce-address-fields select:focus {
+    outline: none;
+    border-color: #375d74;
+    box-shadow: 0 0 0 3px rgba(55, 93, 116, 0.1);
+}
+
+/* Кнопка сохранения */
+.woocommerce-Button[type="submit"] {
+    background: #375d74 !important;
+    color: white !important;
+    padding: 0.875rem 2rem !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.woocommerce-Button[type="submit"]:hover {
+    background: #2d4d5f !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(55, 93, 116, 0.3) !important;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 1023px) {
+    .woocommerce-MyAccount-wrapper {
+        padding: 40px 0;
+    }
+    
+    .my-account-grid {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .woocommerce-MyAccount-wrapper {
+        padding: 30px 0;
+    }
+    
+    .my-account-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .dashboard-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-card p:first-of-type {
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-quick-actions .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .enotary-info-block {
+        padding: 1rem;
+    }
+    
+    .download-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ============================================
+   АНИМАЦИИ И ПЕРЕХОДЫ
+   ============================================ */
+
+/* Плавное появление контента */
+.woocommerce-MyAccount-content {
+    animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Hover эффекты */
+a, button, .nav-link-item, .quick-action-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   УТИЛИТЫ
+   ============================================ */
+
+/* Скрытие элементов на мобильных */
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+/* Показ только на мобильных */
+@media (min-width: 769px) {
+    .show-mobile {
+        display: none !important;
+    }
+}
+
+/* Текст с ellipsis */
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ============================================
+   КАСТОМИЗАЦИЯ СКРОЛЛБАРА (опционально)
+   ============================================ */
+
+.woocommerce-MyAccount-wrapper ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.woocommerce-MyAccount-wrapper ::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 4px;
+}
+
+.woocommerce-MyAccount-wrapper ::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 4px;
+}
+
+.woocommerce-MyAccount-wrapper ::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+}
+
+.woocommerce-MyAccount-content {
+    width: 100% !important;
+}
+.entry-title {
+    display: none;
+}

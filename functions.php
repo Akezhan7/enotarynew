@@ -282,6 +282,12 @@ function enotarynew_load_woocommerce_files() {
 	
 	// Certificate Expiry Notifications System (ТЗ п. 215)
 	require_once get_template_directory() . '/inc/notifications.php';
+	
+	// My Account Customization (ТЗ п. 219, 229, 231)
+	require_once get_template_directory() . '/inc/my-account-custom.php';
+	
+	// Shop Settings Page (ACF Options)
+	require_once get_template_directory() . '/inc/admin-settings.php';
 }
 add_action( 'init', 'enotarynew_load_woocommerce_files', 20 );
 

@@ -112,7 +112,21 @@ function initStickyHeader() {
     // Добавляем отступ для контента под фиксированной шапкой
     function setHeaderOffset() {
         const headerHeight = header.offsetHeight;
-        const mainContent = document.querySelector('body > .flex:first-child');
+        
+        // Пробуем разные селекторы для разных типов страниц
+        let mainContent = document.querySelector('body > .flex:first-child');
+        
+        // Для страниц WooCommerce (личный кабинет, чекаут)
+        if (!mainContent) {
+            mainContent = document.querySelector('.woocommerce-MyAccount-wrapper');
+        }
+        
+        // Если все еще не найден - ищем main или любой первый дочерний div
+        if (!mainContent) {
+            mainContent = document.querySelector('main') || 
+                         document.querySelector('body > div:first-of-type');
+        }
+        
         if (mainContent) {
             mainContent.style.paddingTop = headerHeight + 'px';
         }
@@ -121,6 +135,13 @@ function initStickyHeader() {
     // Устанавливаем отступ при загрузке и изменении размера окна
     setHeaderOffset();
     window.addEventListener('resize', setHeaderOffset);
+    
+    // Дополнительная проверка для WooCommerce страниц (они могут загружаться позже)
+    if (document.body.classList.contains('woocommerce-account') || 
+        document.body.classList.contains('woocommerce-checkout')) {
+        setTimeout(setHeaderOffset, 100);
+        setTimeout(setHeaderOffset, 300);
+    }
     
     function updateHeader() {
         const currentScroll = window.pageYOffset;

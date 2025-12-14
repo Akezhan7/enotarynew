@@ -8,11 +8,9 @@
 get_header();
 ?>
 
-<div id="primary" class="content-area">
-	<main id="main" class="site-main">
-
+<div id="primary w-full" class="content-area">
+	<main id="main w-full" class="site-main">
 		<?php woocommerce_content(); ?>
-
 	</main><!-- #main -->
 </div><!-- #primary -->
 

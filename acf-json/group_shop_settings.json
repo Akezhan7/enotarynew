@@ -1,0 +1,107 @@
+{
+    "key": "group_shop_settings",
+    "title": "Настройки инструкций и ПО",
+    "fields": [
+        {
+            "key": "field_instructions_tab",
+            "label": "Инструкции",
+            "name": "",
+            "type": "tab",
+            "instructions": "Загрузите PDF-файлы инструкций для клиентов",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_instruction_unep",
+            "label": "Инструкция: Формирование запроса (УНЭП)",
+            "name": "instruction_unep",
+            "type": "file",
+            "instructions": "PDF-файл инструкции для заказа УНЭП",
+            "required": 0,
+            "conditional_logic": 0,
+            "return_format": "array",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "pdf"
+        },
+        {
+            "key": "field_instruction_mchd",
+            "label": "Инструкция: Заказ МЧД",
+            "name": "instruction_mchd",
+            "type": "file",
+            "instructions": "PDF-файл инструкции для заказа МЧД",
+            "required": 0,
+            "conditional_logic": 0,
+            "return_format": "array",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "pdf"
+        },
+        {
+            "key": "field_software_tab",
+            "label": "Программное обеспечение",
+            "name": "",
+            "type": "tab",
+            "instructions": "Ссылки на скачивание драйверов и ПО",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_driver_rutoken",
+            "label": "Ссылка: Драйверы Рутокен",
+            "name": "driver_rutoken",
+            "type": "url",
+            "instructions": "Ссылка на скачивание драйверов Рутокен",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "https://example.com/rutoken-drivers"
+        },
+        {
+            "key": "field_driver_cryptopro",
+            "label": "Ссылка: КриптоПро CSP",
+            "name": "driver_cryptopro",
+            "type": "url",
+            "instructions": "Ссылка на скачивание КриптоПро CSP",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "https://example.com/cryptopro"
+        },
+        {
+            "key": "field_distr_signalcom",
+            "label": "Ссылка: Signal-COM",
+            "name": "distr_signalcom",
+            "type": "url",
+            "instructions": "Ссылка на скачивание Signal-COM",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "https://example.com/signal-com"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-general-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}
