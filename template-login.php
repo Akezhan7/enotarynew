@@ -129,7 +129,14 @@ if ( isset( $_POST['enotary_login_submit'] ) ) {
                 <!-- Ссылка на регистрацию -->
                 <p class="auth-switch-link">
                     Нет аккаунта? 
-                    <a href="<?php echo esc_url( wp_registration_url() ); ?>">
+                    <a href="<?php 
+                        $register_url = wp_registration_url();
+                        // Передаём параметр redirect_to на страницу регистрации, если он есть
+                        if ( isset( $_GET['redirect_to'] ) && ! empty( $_GET['redirect_to'] ) ) {
+                            $register_url = add_query_arg( 'redirect_to', urlencode( $_GET['redirect_to'] ), $register_url );
+                        }
+                        echo esc_url( $register_url );
+                    ?>">
                         Создайте новую учётную запись
                     </a>
                 </p>

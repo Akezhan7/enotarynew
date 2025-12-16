@@ -639,6 +639,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initEntityCards();
     initDocumentModal();
     initDropdownMenu();
+    initCertificateHelpModal(); // Модальное окно подбора сертификата (ТЗ п.230)
     
     // Инициализация AOS анимаций
     initAOS();
@@ -648,3 +649,135 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTotal();
     }
 });
+
+// ===========================
+// МОДАЛЬНОЕ ОКНО ПОДБОРА СЕРТИФИКАТА (ТЗ П.230)
+// ===========================
+
+function initCertificateHelpModal() {
+    const modal = document.getElementById('certificateHelpModal');
+    const openBtn = document.getElementById('openHelpModal');
+    const closeBtn = document.getElementById('closeHelpModal');
+    const form = document.getElementById('certificateHelpForm');
+    const messageDiv = document.getElementById('helpFormMessage');
+    
+    if (!modal || !form) return;
+    
+    // Открытие модалки
+    if (openBtn) {
+        openBtn.addEventListener('click', function() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Закрытие модалки
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        form.reset();
+        messageDiv.innerHTML = '';
+        messageDiv.className = 'form-message';
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+    
+    // Закрытие при клике на overlay
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target.classList.contains('modal-overlay')) {
+            closeModal();
+        }
+    });
+    
+    // Закрытие по ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+    
+    // Маска для телефона
+    const phoneInput = document.getElementById('help_phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            let formatted = '';
+            
+            if (value.length > 0) {
+                formatted = '+7 ';
+                if (value.length > 1) {
+                    formatted += '(' + value.substring(1, 4);
+                }
+                if (value.length >= 4) {
+                    formatted += ') ' + value.substring(4, 7);
+                }
+                if (value.length >= 7) {
+                    formatted += '-' + value.substring(7, 9);
+                }
+                if (value.length >= 9) {
+                    formatted += '-' + value.substring(9, 11);
+                }
+            }
+            
+            e.target.value = formatted;
+        });
+    }
+    
+    // Отправка формы
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const submitBtn = form.querySelector('.submit-btn');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoader = submitBtn.querySelector('.btn-loader');
+        
+        // Получаем данные формы
+        const formData = new FormData();
+        formData.append('action', 'submit_certificate_help');
+        formData.append('nonce', certificateHelpData.nonce);
+        formData.append('name', document.getElementById('help_name').value);
+        formData.append('phone', document.getElementById('help_phone').value);
+        formData.append('comment', document.getElementById('help_comment').value);
+        
+        // Показываем загрузчик
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline-block';
+        messageDiv.innerHTML = '';
+        messageDiv.className = 'form-message';
+        
+        // Отправляем AJAX запрос
+        fetch(certificateHelpData.ajaxUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            submitBtn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+            
+            if (data.success) {
+                messageDiv.className = 'form-message success';
+                messageDiv.innerHTML = data.data.message;
+                form.reset();
+                
+                // Закрываем модалку через 3 секунды
+                setTimeout(closeModal, 3000);
+            } else {
+                messageDiv.className = 'form-message error';
+                messageDiv.innerHTML = data.data.message;
+            }
+        })
+        .catch(error => {
+            submitBtn.disabled = false;
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+            
+            messageDiv.className = 'form-message error';
+            messageDiv.innerHTML = 'Произошла ошибка. Пожалуйста, попробуйте позже.';
+        });
+    });
+}

@@ -78,19 +78,48 @@
                 </button>
                 <!-- Десктопное меню -->
                 <div class="desktop-nav hidden lg:flex flex-1 gap-5 xl:gap-7 items-center justify-end">
-                    <?php
-                    wp_nav_menu(
-                        array(
-                            'theme_location' => 'menu-1',
-                            'menu_class'     => 'flex gap-5 xl:gap-7 items-center',
-                            'container'      => false,
-                            'fallback_cb'    => false,
-                            'items_wrap'     => '%3$s',
-                            'link_before'    => '<span class="nav-link font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap">',
-                            'link_after'     => '</span>',
-                        )
-                    );
-                    ?>
+                    <nav class="flex gap-5 xl:gap-7 items-center">
+                        <?php
+                        wp_nav_menu(
+                            array(
+                                'theme_location' => 'menu-1',
+                                'menu_class'     => '',
+                                'container'      => false,
+                                'fallback_cb'    => '__return_false',
+                                'items_wrap'     => '<ul class="flex gap-5 xl:gap-7 items-center list-none m-0 p-0">%3$s</ul>',
+                                'link_before'    => '',
+                                'link_after'     => '',
+                                'walker'         => new class extends Walker_Nav_Menu {
+                                    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+                                        $classes = empty($item->classes) ? array() : (array) $item->classes;
+                                        $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
+                                        
+                                        $output .= '<li class="' . esc_attr($class_names) . '">';
+                                        
+                                        $atts = array();
+                                        $atts['href'] = !empty($item->url) ? $item->url : '';
+                                        $atts['class'] = 'font-bold text-sm xl:text-base text-[#262626] leading-[1.15] whitespace-nowrap hover:text-primary transition-colors no-underline';
+                                        
+                                        $attributes = '';
+                                        foreach ($atts as $attr => $value) {
+                                            if (!empty($value)) {
+                                                $attributes .= ' ' . $attr . '="' . esc_attr($value) . '"';
+                                            }
+                                        }
+                                        
+                                        $output .= '<a' . $attributes . '>';
+                                        $output .= apply_filters('the_title', $item->title, $item->ID);
+                                        $output .= '</a>';
+                                    }
+                                    
+                                    function end_el(&$output, $item, $depth = 0, $args = null) {
+                                        $output .= "</li>\n";
+                                    }
+                                },
+                            )
+                        );
+                        ?>
+                    </nav>
                 </div>
             </div>
             </div>
@@ -107,61 +136,32 @@
                 </div>
             </button>
             
-            <div class="menu-item-with-submenu">
-                <div class="menu-item cursor-pointer">
-                    <a href="#" class="menu-item-link" onclick="event.stopPropagation()">
-                        <p>ПО&Токены&Услуги</p>
-                    </a>
-                    <svg class="submenu-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="toggleMobileSubmenu(event)">
-                        <path d="M5 7.5L10 12.5L15 7.5" stroke="#262626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <div class="mobile-submenu">
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Справочник квалифицированных сертификатов</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Справочник сертификатов</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Облачная подпись</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Сервер штампов времени</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Проверка электронной подписи</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Сервис подписи документов</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Экспертиза электронной подписи</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Служба OCSP</p>
-                    </a>
-                    <a href="#" class="mobile-submenu-item" onclick="closeMobileMenu()">
-                        <p>Свой УЦ или Аутсорсинг?</p>
-                    </a>
-                </div>
-            </div>
             <?php
-            // Мобильное меню (упрощенная версия)
+            // Мобильное меню
             wp_nav_menu(
                 array(
                     'theme_location' => 'menu-1',
                     'menu_class'     => '',
                     'container'      => false,
-                    'fallback_cb'    => false,
+                    'fallback_cb'    => '__return_false',
                     'items_wrap'     => '%3$s',
-                    'link_before'    => '<p>',
-                    'link_after'     => '</p>',
-                    'before'         => '',
-                    'after'          => '',
+                    'walker'         => new class extends Walker_Nav_Menu {
+                        function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+                            $output .= '<div class="menu-item">';
+                            $output .= '<a href="' . esc_url($item->url) . '" class="menu-item-link" onclick="closeMobileMenu()">';
+                            $output .= '<p>' . esc_html($item->title) . '</p>';
+                            $output .= '</a>';
+                            $output .= '</div>';
+                        }
+                        
+                        function end_el(&$output, $item, $depth = 0, $args = null) {
+                            // Ничего не добавляем, всё уже в start_el
+                        }
+                    },
                 )
             );
             ?>
+            
             <!-- Контактная информация в меню -->
             <div class="menu-item mt-10">
                 <div class="flex flex-col gap-4 items-center">

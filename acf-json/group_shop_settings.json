@@ -84,6 +84,42 @@
             "conditional_logic": 0,
             "default_value": "",
             "placeholder": "https://example.com/signal-com"
+        },
+        {
+            "key": "field_referral_tab",
+            "label": "Реферальный блок",
+            "name": "",
+            "type": "tab",
+            "instructions": "Настройка реферального блока для ФЛ и ИП на странице благодарности (ТЗ п.229)",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_referral_title",
+            "label": "Заголовок блока",
+            "name": "referral_title",
+            "type": "text",
+            "instructions": "Заголовок реферального блока (например: \"Полезные сервисы для вас\")",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "Полезные сервисы для вас",
+            "placeholder": "Полезные сервисы для вас"
+        },
+        {
+            "key": "field_referral_content",
+            "label": "Содержимое блока",
+            "name": "referral_content",
+            "type": "wysiwyg",
+            "instructions": "HTML-контент с реферальными ссылками, баннерами и т.д. Показывается только для ФЛ и ИП при заказе УКЭП.",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         }
     ],
     "location": [

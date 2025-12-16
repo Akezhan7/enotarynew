@@ -567,3 +567,283 @@ function enotary_display_notification_info( $order ) {
         <?php
     }
 }
+
+/**
+ * ============================================
+ * ЗАДАЧА 4: ОТПРАВКА ИНСТРУКЦИИ УНЭП НА EMAIL (ТЗ пункт 231)
+ * ============================================
+ * 
+ * При заказе услуги УНЭП автоматически отправляется письмо
+ * с прикрепленным файлом инструкции по формированию запроса
+ */
+
+/**
+ * Хук на изменение статуса заказа
+ * Отправляем инструкцию УНЭП когда заказ переходит в статус "processing" или "completed"
+ */
+add_action( 'woocommerce_order_status_changed', 'enotary_send_unep_instruction_email', 10, 4 );
+
+function enotary_send_unep_instruction_email( $order_id, $old_status, $new_status, $order ) {
+    // Отправляем только при переходе в processing или completed
+    if ( ! in_array( $new_status, array( 'processing', 'completed' ) ) ) {
+        return;
+    }
+    
+    // Проверяем, не отправляли ли уже инструкцию
+    $already_sent = $order->get_meta( '_unep_instruction_sent', true );
+    if ( $already_sent === 'yes' ) {
+        return; // Уже отправляли
+    }
+    
+    // Проверяем, есть ли в заказе товары УНЭП
+    $has_unep = enotary_order_has_unep( $order );
+    if ( ! $has_unep ) {
+        return; // Нет товаров УНЭП
+    }
+    
+    // Получаем файл инструкции из ACF настроек
+    $instruction_unep = get_field( 'instruction_unep', 'option' );
+    if ( ! $instruction_unep || empty( $instruction_unep['url'] ) ) {
+        // Инструкция не загружена в настройках
+        $order->add_order_note( '⚠️ Не удалось отправить инструкцию УНЭП: файл не загружен в настройках магазина.' );
+        return;
+    }
+    
+    // Отправляем письмо
+    $sent = enotary_send_unep_instruction_mail( $order, $instruction_unep );
+    
+    if ( $sent ) {
+        // Помечаем, что инструкция отправлена
+        $order->update_meta_data( '_unep_instruction_sent', 'yes' );
+        $order->update_meta_data( '_unep_instruction_sent_date', current_time( 'mysql' ) );
+        $order->save();
+        
+        // Добавляем заметку к заказу
+        $order->add_order_note( 
+            '✅ Инструкция УНЭП отправлена на email: ' . $order->get_billing_email() 
+        );
+    } else {
+        // Ошибка отправки
+        $order->add_order_note( 
+            '❌ Не удалось отправить инструкцию УНЭП на email: ' . $order->get_billing_email() 
+        );
+    }
+}
+
+/**
+ * Проверяет, содержит ли заказ товары УНЭП
+ */
+function enotary_order_has_unep( $order ) {
+    foreach ( $order->get_items() as $item ) {
+        $product = $item->get_product();
+        
+        // Проверяем по названию товара
+        $product_name = $item->get_name();
+        if ( 
+            stripos( $product_name, 'унэп' ) !== false ||
+            stripos( $product_name, 'неквалифицированный' ) !== false
+        ) {
+            return true;
+        }
+        
+        // Проверяем по категориям товара
+        if ( $product ) {
+            $categories = wp_get_post_terms( $product->get_id(), 'product_cat', array( 'fields' => 'slugs' ) );
+            if ( ! is_wp_error( $categories ) ) {
+                foreach ( $categories as $cat_slug ) {
+                    if ( 
+                        strpos( $cat_slug, 'nekvalificzirovannyj' ) !== false ||
+                        strpos( $cat_slug, 'usilennyj' ) !== false ||
+                        strpos( $cat_slug, 'unep' ) !== false
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    
+    return false;
+}
+
+/**
+ * Отправляет email с прикрепленной инструкцией УНЭП
+ */
+function enotary_send_unep_instruction_mail( $order, $instruction_file ) {
+    $to = $order->get_billing_email();
+    $subject = 'Инструкция по формированию запроса УНЭП - Заказ #' . $order->get_order_number();
+    
+    // Получаем имя клиента
+    $customer_name = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
+    if ( empty( trim( $customer_name ) ) ) {
+        $customer_name = 'Уважаемый клиент';
+    }
+    
+    // HTML письмо
+    $message = enotary_get_unep_instruction_email_html( $order, $customer_name );
+    
+    // Заголовки для HTML письма
+    $headers = array(
+        'Content-Type: text/html; charset=UTF-8',
+        'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
+    );
+    
+    // Прикрепляем файл инструкции
+    $attachments = array();
+    $file_path = get_attached_file( $instruction_file['ID'] );
+    if ( $file_path && file_exists( $file_path ) ) {
+        $attachments[] = $file_path;
+    }
+    
+    // Отправляем письмо
+    return wp_mail( $to, $subject, $message, $headers, $attachments );
+}
+
+/**
+ * HTML шаблон письма с инструкцией УНЭП
+ */
+function enotary_get_unep_instruction_email_html( $order, $customer_name ) {
+    $order_number = $order->get_order_number();
+    $order_date = $order->get_date_created()->format( 'd.m.Y' );
+    $site_name = get_bloginfo( 'name' );
+    
+    ob_start();
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #f5f5f5;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 20px;">
+            <tr>
+                <td align="center">
+                    <!-- Основной контейнер -->
+                    <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        
+                        <!-- Шапка письма -->
+                        <tr>
+                            <td style="background: linear-gradient(135deg, #375d74 0%, #2a4a5e 100%); padding: 30px; text-align: center;">
+                                <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: bold;">
+                                    📄 Инструкция УНЭП
+                                </h1>
+                                <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">
+                                    Заказ #<?php echo esc_html( $order_number ); ?> от <?php echo esc_html( $order_date ); ?>
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Основное содержимое -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="margin: 0 0 20px 0; font-size: 16px; color: #262626; line-height: 1.6;">
+                                    Здравствуйте, <strong><?php echo esc_html( $customer_name ); ?></strong>!
+                                </p>
+                                
+                                <p style="margin: 0 0 20px 0; font-size: 15px; color: #333333; line-height: 1.6;">
+                                    Спасибо за заказ услуги <strong>УНЭП</strong> (Усиленная неквалифицированная электронная подпись).
+                                </p>
+                                
+                                <p style="margin: 0 0 20px 0; font-size: 15px; color: #333333; line-height: 1.6;">
+                                    К этому письму прикреплена <strong>инструкция по формированию файла запроса</strong> для получения сертификата УНЭП.
+                                </p>
+                                
+                                <!-- Блок с важной информацией -->
+                                <div style="background-color: #f0f8ff; border-left: 4px solid #375d74; padding: 20px; margin: 25px 0; border-radius: 5px;">
+                                    <p style="margin: 0 0 12px 0; font-size: 14px; color: #262626; font-weight: bold;">
+                                        ℹ️ Важно:
+                                    </p>
+                                    <ul style="margin: 0; padding-left: 20px; color: #333333; font-size: 14px; line-height: 1.7;">
+                                        <li style="margin-bottom: 8px;">Внимательно следуйте инструкциям в прикрепленном файле</li>
+                                        <li style="margin-bottom: 8px;">Используйте рекомендуемое программное обеспечение</li>
+                                        <li style="margin-bottom: 0;">При возникновении вопросов - свяжитесь с нашей службой поддержки</li>
+                                    </ul>
+                                </div>
+                                
+                                <p style="margin: 25px 0 0 0; font-size: 15px; color: #333333; line-height: 1.6;">
+                                    Если у вас возникнут вопросы, мы всегда готовы помочь:
+                                </p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Контакты -->
+                        <tr>
+                            <td style="padding: 0 30px 30px 30px;">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td style="padding: 15px; background-color: #fafafa; border-radius: 8px;">
+                                            <table width="100%" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="50%" style="padding: 5px 10px;">
+                                                        <a href="tel:+74953633093" style="color: #375d74; text-decoration: none; font-size: 15px; font-weight: bold; display: flex; align-items: center;">
+                                                            📞 +7 (495) 363-30-93
+                                                        </a>
+                                                    </td>
+                                                    <td width="50%" style="padding: 5px 10px; text-align: right;">
+                                                        <a href="mailto:<?php echo esc_attr( get_option('admin_email') ); ?>" style="color: #375d74; text-decoration: none; font-size: 15px; font-weight: bold;">
+                                                            ✉️ Написать нам
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        <!-- Футер -->
+                        <tr>
+                            <td style="background-color: #f9f9f9; padding: 20px 30px; text-align: center; border-top: 1px solid #eeeeee;">
+                                <p style="margin: 0 0 8px 0; font-size: 13px; color: #666666;">
+                                    С уважением, команда <strong><?php echo esc_html( $site_name ); ?></strong>
+                                </p>
+                                <p style="margin: 0; font-size: 12px; color: #999999;">
+                                    Это письмо отправлено автоматически, пожалуйста, не отвечайте на него.
+                                </p>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    <?php
+    return ob_get_clean();
+}
+
+/**
+ * Отображение информации об отправке инструкции в админке заказа
+ */
+add_action( 'woocommerce_admin_order_data_after_order_details', 'enotary_display_unep_instruction_info' );
+
+function enotary_display_unep_instruction_info( $order ) {
+    $instruction_sent = $order->get_meta( '_unep_instruction_sent', true );
+    $instruction_date = $order->get_meta( '_unep_instruction_sent_date', true );
+    
+    if ( $instruction_sent === 'yes' && ! empty( $instruction_date ) ) {
+        ?>
+        <div class="order_data_column" style="clear:both; padding-top: 13px;">
+            <h3>📧 Инструкция УНЭП</h3>
+            <p class="form-field">
+                <strong>Статус:</strong> ✅ Отправлена<br>
+                <strong>Дата отправки:</strong> <?php echo esc_html( date( 'd.m.Y H:i', strtotime( $instruction_date ) ) ); ?><br>
+                <strong>Email:</strong> <?php echo esc_html( $order->get_billing_email() ); ?>
+            </p>
+        </div>
+        <?php
+    } elseif ( enotary_order_has_unep( $order ) ) {
+        ?>
+        <div class="order_data_column" style="clear:both; padding-top: 13px;">
+            <h3>📧 Инструкция УНЭП</h3>
+            <p class="form-field">
+                <strong>Статус:</strong> ⏳ Ожидает отправки<br>
+                <em style="color: #999;">Будет отправлена автоматически при смене статуса на "В обработке" или "Выполнен"</em>
+            </p>
+        </div>
+        <?php
+    }
+}

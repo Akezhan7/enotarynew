@@ -288,6 +288,9 @@ function enotarynew_load_woocommerce_files() {
 	
 	// Shop Settings Page (ACF Options)
 	require_once get_template_directory() . '/inc/admin-settings.php';
+	
+	// Certificate Help Modal System (ТЗ п. 230)
+	require_once get_template_directory() . '/inc/certificate-help-modal.php';
 }
 add_action( 'init', 'enotarynew_load_woocommerce_files', 20 );
 

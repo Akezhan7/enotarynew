@@ -155,6 +155,11 @@ $payer_types = get_payer_types_options();
         </section>
 
 <?php
+// Кнопка помощи в подборе сертификата (ТЗ п.230)
+if ( function_exists( 'enotary_certificate_help_button_html' ) ) {
+    enotary_certificate_help_button_html( 'Заказ УКЭП' );
+}
+
 get_footer();
 ?>
 

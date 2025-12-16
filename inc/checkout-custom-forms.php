@@ -636,3 +636,179 @@ function enotary_validate_custom_checkout_fields( $data, $errors ) {
         }
     }
 }
+
+/**
+ * ============================================
+ * РЕФЕРАЛЬНАЯ СИСТЕМА НА THANK YOU PAGE (ТЗ п.229)
+ * ============================================
+ * 
+ * "Если выполнен заказ УКЭП ФЛ и ИП, проверить оплату и 
+ * вывести форму с реферальными ссылками"
+ */
+
+/**
+ * Вывод реферального блока на странице благодарности
+ */
+add_action( 'woocommerce_thankyou', 'enotary_display_referral_block', 20 );
+
+function enotary_display_referral_block( $order_id ) {
+    // Проверяем условия показа блока
+    if ( ! enotary_should_show_referral_block( $order_id ) ) {
+        return;
+    }
+    
+    // Получаем контент из ACF
+    $referral_title = get_field( 'referral_title', 'option' );
+    $referral_content = get_field( 'referral_content', 'option' );
+    
+    // Если контент не заполнен - не показываем
+    if ( empty( $referral_content ) ) {
+        return;
+    }
+    
+    // Устанавливаем заголовок по умолчанию если не задан
+    if ( empty( $referral_title ) ) {
+        $referral_title = 'Полезные сервисы для вас';
+    }
+    
+    ?>
+    <!-- Реферальный блок (ТЗ п.229) -->
+    <div class="enotary-referral-block responsive-container mt-6 sm:mt-8">
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-[rgba(55,93,116,0.1)] rounded-[12px] sm:rounded-[15px] lg:rounded-[20px] shadow-[0_10px_40px_rgba(0,0,0,0.06)] px-4 sm:px-5 lg:px-6 py-5 sm:py-6 lg:py-7">
+            
+            <!-- Заголовок блока -->
+            <div class="flex items-center gap-3 mb-4 sm:mb-5">
+                <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-[#262626]">
+                    <?php echo esc_html( $referral_title ); ?>
+                </h3>
+            </div>
+            
+            <!-- Контент с реферальными ссылками -->
+            <div class="referral-content text-[14px] sm:text-[15px] text-[#333] leading-relaxed">
+                <?php echo wp_kses_post( $referral_content ); ?>
+            </div>
+            
+        </div>
+    </div>
+    
+    <style>
+        /* Стили для реферального блока */
+        .enotary-referral-block .referral-content a {
+            color: #375d74;
+            font-weight: 600;
+            text-decoration: underline;
+            transition: opacity 0.2s;
+        }
+        .enotary-referral-block .referral-content a:hover {
+            opacity: 0.7;
+        }
+        .enotary-referral-block .referral-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .enotary-referral-block .referral-content ul,
+        .enotary-referral-block .referral-content ol {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        .enotary-referral-block .referral-content li {
+            margin-bottom: 8px;
+        }
+    </style>
+    <?php
+}
+
+/**
+ * Проверка условий показа реферального блока
+ * 
+ * Условия (ТЗ п.229):
+ * 1. Заказ содержит товары УКЭП
+ * 2. Тип плательщика - ФЛ или ИП (НЕ ЮЛ)
+ * 3. Заказ оформлен (on-hold, processing или completed)
+ */
+function enotary_should_show_referral_block( $order_id ) {
+    if ( ! $order_id ) {
+        return false;
+    }
+    
+    $order = wc_get_order( $order_id );
+    if ( ! $order ) {
+        return false;
+    }
+    
+    // Проверка 1: Заказ должен быть оформлен (включая "На удержании")
+    $allowed_statuses = array( 'on-hold', 'processing', 'completed' );
+    if ( ! $order->has_status( $allowed_statuses ) ) {
+        return false;
+    }
+    
+    // Проверка 2: Тип плательщика должен быть ФЛ или ИП (НЕ ЮЛ)
+    $payer_type = $order->get_meta( '_active_payer_type', true );
+    
+    // Если нет мета-поля, пробуем определить по методу оплаты
+    if ( empty( $payer_type ) ) {
+        $payment_method = $order->get_payment_method();
+        // bacs = Банковский перевод = Только ЮЛ
+        // Значит все остальные = ФЛ или ИП
+        if ( $payment_method === 'bacs' ) {
+            return false; // Это ЮЛ
+        }
+    } else {
+        // Если мета есть, проверяем точно
+        if ( $payer_type === 'legal' ) {
+            return false; // Это ЮЛ
+        }
+    }
+    
+    // Проверка 3: Заказ должен содержать товары УКЭП
+    $has_ukep = enotary_order_has_ukep( $order );
+    if ( ! $has_ukep ) {
+        return false;
+    }
+    
+    return true;
+}
+
+/**
+ * Проверяет, содержит ли заказ товары УКЭП
+ */
+function enotary_order_has_ukep( $order ) {
+    foreach ( $order->get_items() as $item ) {
+        $product = $item->get_product();
+        
+        // Проверяем по названию товара
+        $product_name = $item->get_name();
+        if ( 
+            stripos( $product_name, 'укэп' ) !== false ||
+            stripos( $product_name, 'квалифицированн' ) !== false ||
+            stripos( $product_name, 'кэп' ) !== false
+        ) {
+            return true;
+        }
+        
+        // Проверяем по категориям товара
+        if ( $product ) {
+            $categories = wp_get_post_terms( $product->get_id(), 'product_cat', array( 'fields' => 'slugs' ) );
+            if ( ! is_wp_error( $categories ) ) {
+                foreach ( $categories as $cat_slug ) {
+                    if ( 
+                        strpos( $cat_slug, 'kvalificzirovannye' ) !== false ||
+                        strpos( $cat_slug, 'ukep' ) !== false ||
+                        strpos( $cat_slug, 'kep' ) !== false
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    
+    return false;
+}
