@@ -94,7 +94,7 @@ $blog_query = new WP_Query($args);
                         </div>
                         <div class="p-2.5 flex flex-col gap-2.5 flex-1">
                             <div class="blog-card-content flex flex-col gap-2.5">
-                                <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15] whitespace-pre-wrap">
+                                <p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15]">
                                     <?php 
                                     $categories = get_the_category();
                                     if (!empty($categories)) {
@@ -104,8 +104,8 @@ $blog_query = new WP_Query($args);
                                     }
                                     ?>
                                 </p>
-                                <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15] whitespace-pre-wrap"><?php the_title(); ?></p>
-                                <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15] whitespace-pre-wrap">
+                                <p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15]"><?php the_title(); ?></p>
+                                <p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15]">
                                     <?php echo wp_trim_words(get_the_excerpt(), 30, '...'); ?>
                                 </p>
                             </div>
