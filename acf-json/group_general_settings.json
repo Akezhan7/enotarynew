@@ -1,0 +1,287 @@
+{
+    "key": "group_general_settings",
+    "title": "Общие настройки сайта",
+    "fields": [
+        {
+            "key": "field_contacts_tab",
+            "label": "Контакты",
+            "name": "",
+            "type": "tab",
+            "instructions": "Основные контактные данные компании",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_company_phone",
+            "label": "Телефон компании",
+            "name": "company_phone",
+            "type": "text",
+            "instructions": "Основной телефон для связи (с форматированием)",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "+7 (495) 363-30-93",
+            "placeholder": "+7 (___) ___-__-__"
+        },
+        {
+            "key": "field_company_phone_clean",
+            "label": "Телефон (для тега tel:)",
+            "name": "company_phone_clean",
+            "type": "text",
+            "instructions": "Телефон без форматирования для ссылки tel: (например: +74953633093)",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "+74953633093",
+            "placeholder": "+79001234567"
+        },
+        {
+            "key": "field_company_telegram",
+            "label": "Telegram",
+            "name": "company_telegram",
+            "type": "text",
+            "instructions": "Telegram username (например: @SmartTokenPro1)",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "@SmartTokenPro1",
+            "placeholder": "@username"
+        },
+        {
+            "key": "field_company_telegram_link",
+            "label": "Ссылка на Telegram",
+            "name": "company_telegram_link",
+            "type": "url",
+            "instructions": "Полная ссылка на Telegram канал/чат",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "https://t.me/SmartTokenPro1",
+            "placeholder": "https://t.me/username"
+        },
+        {
+            "key": "field_company_email",
+            "label": "Email",
+            "name": "company_email",
+            "type": "email",
+            "instructions": "Email для связи",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "info@example.com"
+        },
+        {
+            "key": "field_company_address",
+            "label": "Адрес компании",
+            "name": "company_address",
+            "type": "textarea",
+            "instructions": "Физический адрес офиса",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "г. Москва, ул. Примерная, д. 1",
+            "rows": 3
+        },
+        {
+            "key": "field_branding_tab",
+            "label": "Брендинг",
+            "name": "",
+            "type": "tab",
+            "instructions": "Логотипы и название компании",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_company_name",
+            "label": "Название компании",
+            "name": "company_name",
+            "type": "text",
+            "instructions": "Полное название (отображается в шапке)",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "Сигнал-КОМ e-Notary Удостоверяющий Центр",
+            "placeholder": "Название компании"
+        },
+        {
+            "key": "field_logo_main",
+            "label": "Логотип #1 (основной)",
+            "name": "logo_main",
+            "type": "image",
+            "instructions": "Первый логотип в шапке сайта (SVG предпочтительно)",
+            "required": 0,
+            "conditional_logic": 0,
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all",
+            "mime_types": "svg,png,jpg"
+        },
+        {
+            "key": "field_logo_secondary",
+            "label": "Логотип #2 (дополнительный)",
+            "name": "logo_secondary",
+            "type": "image",
+            "instructions": "Второй логотип в шапке сайта",
+            "required": 0,
+            "conditional_logic": 0,
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all",
+            "mime_types": "svg,png,jpg"
+        },
+        {
+            "key": "field_favicon",
+            "label": "Favicon",
+            "name": "site_favicon",
+            "type": "image",
+            "instructions": "Иконка сайта (32x32 или 64x64 px)",
+            "required": 0,
+            "conditional_logic": 0,
+            "return_format": "url",
+            "preview_size": "thumbnail",
+            "library": "all",
+            "mime_types": "ico,png"
+        },
+        {
+            "key": "field_footer_tab",
+            "label": "Футер",
+            "name": "",
+            "type": "tab",
+            "instructions": "Настройки футера сайта",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_copyright_text",
+            "label": "Копирайт",
+            "name": "copyright_text",
+            "type": "text",
+            "instructions": "Текст копирайта в футере",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "2025 © ООО «Енот»",
+            "placeholder": "2025 © Компания"
+        },
+        {
+            "key": "field_footer_menu_1",
+            "label": "Колонка 1: Главная (не используется, выводится главное меню WP)",
+            "name": "footer_menu_1",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "message": "В первой колонке футера автоматически выводится главное меню WordPress (menu-1). Редактируйте его в разделе \"Внешний вид > Меню\".",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_footer_menu_2",
+            "label": "Колонка 2: Информация (юридические документы)",
+            "name": "footer_menu_2",
+            "type": "repeater",
+            "instructions": "Ссылки на важные документы: Оферта, Регламент, Политика конфиденциальности и т.д.",
+            "required": 0,
+            "conditional_logic": 0,
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Добавить ссылку",
+            "sub_fields": [
+                {
+                    "key": "field_footer_menu_2_text",
+                    "label": "Текст ссылки",
+                    "name": "text",
+                    "type": "text",
+                    "required": 1,
+                    "default_value": "",
+                    "placeholder": "Договор оферты"
+                },
+                {
+                    "key": "field_footer_menu_2_url",
+                    "label": "URL",
+                    "name": "url",
+                    "type": "url",
+                    "required": 1,
+                    "default_value": "",
+                    "placeholder": "https://"
+                }
+            ]
+        },
+        {
+            "key": "field_footer_menu_3",
+            "label": "Колонка 3: Услуги (не используется)",
+            "name": "footer_menu_3",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "message": "В третьей колонке футера выводится одна ссылка \"ПО и Токены\" на страницу products-services. Редактировать через код.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_social_tab",
+            "label": "Соцсети",
+            "name": "",
+            "type": "tab",
+            "instructions": "Ссылки на социальные сети",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_social_vk",
+            "label": "ВКонтакте",
+            "name": "social_vk",
+            "type": "url",
+            "instructions": "Ссылка на группу/страницу ВК",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "https://vk.com/your_page"
+        },
+        {
+            "key": "field_social_youtube",
+            "label": "YouTube",
+            "name": "social_youtube",
+            "type": "url",
+            "instructions": "Ссылка на YouTube канал",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "https://youtube.com/@channel"
+        },
+        {
+            "key": "field_social_whatsapp",
+            "label": "WhatsApp",
+            "name": "social_whatsapp",
+            "type": "text",
+            "instructions": "Номер WhatsApp (формат: +79001234567)",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "+79001234567"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "theme-general-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Общие настройки темы: контакты, логотипы, футер, соцсети",
+    "show_in_rest": 0
+}

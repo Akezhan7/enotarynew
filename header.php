@@ -45,28 +45,28 @@
             <div class="responsive-container">
                 <!-- Верхняя часть -->
                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-5 items-start sm:items-center py-4 lg:py-5 border-b border-transparent flex-wrap">
-                    <p class="flex-1 font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] min-w-[200px]">Сигнал-КОМ	e-Notary Удостоверяющий Центр </p>
-                    <a href="https://t.me/SmartTokenPro1" target="_blank" rel="noopener noreferrer" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
+                    <p class="flex-1 font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] min-w-[200px]"><?php the_theme_option('company_name', 'Сигнал-КОМ e-Notary Удостоверяющий Центр'); ?></p>
+                    <a href="<?php echo esc_url(get_company_telegram(true)); ?>" target="_blank" rel="noopener noreferrer" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
                         <div class="w-5 h-[18px] overflow-hidden relative flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/mingcute_telegram-fill.png" alt="Telegram" class="block max-w-none w-full h-full object-contain">
                         </div>
-                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap">@SmartTokenPro1 </p>
+                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap"><?php the_theme_option('company_telegram', '@SmartTokenPro1'); ?></p>
                     </a>
-                    <a href="tel:+74953633093" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
+                    <a href="tel:<?php echo esc_attr(get_company_phone(true)); ?>" class="hidden lg:flex gap-2 items-center flex-shrink-0 hover:opacity-70 transition-opacity no-underline">
                         <div class="w-[18px] h-[18px] relative flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/basil_phone-solid.png" alt="Phone" class="block max-w-none w-full h-full object-contain">
                         </div>
-                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap">+7 (495) 363-30-93</p>
+                        <p class="font-semibold text-xs sm:text-sm lg:text-base text-secondary leading-[1.15] whitespace-nowrap"><?php echo esc_html(get_company_phone()); ?></p>
                     </a>
                 </div>
                 
                 <!-- Нижняя часть -->
                <div class="flex gap-3 md:gap-5 items-center pb-4 lg:pb-5 relative">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="h-[40px] sm:h-[44px] lg:h-[46px] w-[135px] sm:w-[150px] lg:w-[165px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo1.svg" alt="Logo" class="w-full h-full object-contain">
+                    <img src="<?php echo esc_url(get_site_logo('main')); ?>" alt="<?php bloginfo('name'); ?>" class="w-full h-full object-contain">
                 </a>
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="h-[40px] sm:h-[44px] lg:h-[46px] w-[95px] sm:w-[105px] lg:w-[116px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo2.svg" alt="Logo 2" class="w-full h-full object-contain">
+                    <img src="<?php echo esc_url(get_site_logo('secondary')); ?>" alt="<?php bloginfo('name'); ?>" class="w-full h-full object-contain">
                 </a>
                 <!-- Мобильная кнопка меню -->
                 <button class="mobile-menu-button ml-auto lg:hidden p-2 -mr-2" id="menuToggle" aria-label="Открыть меню">
@@ -165,17 +165,17 @@
             <!-- Контактная информация в меню -->
             <div class="menu-item mt-10">
                 <div class="flex flex-col gap-4 items-center">
-                    <a href="https://t.me/SmartTokenPro1" target="_blank" rel="noopener noreferrer" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
+                    <a href="<?php echo esc_url(get_company_telegram(true)); ?>" target="_blank" rel="noopener noreferrer" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
                         <div class="w-5 h-[18px] overflow-hidden relative flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/mingcute_telegram-fill.png" alt="Telegram" class="block max-w-none w-full h-full object-contain">
                         </div>
-                        <p class="font-semibold text-base text-secondary leading-[1.15]">@SmartTokenPro1</p>
+                        <p class="font-semibold text-base text-secondary leading-[1.15]"><?php echo esc_html(get_company_telegram()); ?></p>
                     </a>
-                    <a href="tel:+74953633093" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
+                    <a href="tel:<?php echo esc_attr(get_company_phone(true)); ?>" class="flex gap-2 items-center hover:opacity-70 transition-opacity no-underline">
                         <div class="w-[18px] h-[18px] relative flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/basil_phone-solid.png" alt="Phone" class="block max-w-none w-full h-full object-contain">
                         </div>
-                        <p class="font-semibold text-base text-secondary leading-[1.15]">+7 (495) 363-30-93</p>
+                        <p class="font-semibold text-base text-secondary leading-[1.15]"><?php echo esc_html(get_company_phone()); ?></p>
                     </a>
                 </div>
             </div>
