@@ -175,6 +175,10 @@ function enotarynew_scripts() {
 		wp_enqueue_style( 'enotarynew-documents', get_template_directory_uri() . '/assets/documents.css', array(), _S_VERSION );
 	}
 	
+	if ( is_page_template( 'page-products-services.php' ) ) {
+		wp_enqueue_style( 'enotarynew-order-ukep', get_template_directory_uri() . '/assets/order-ukep.css', array(), _S_VERSION );
+	}
+	
 	if ( is_page_template( 'page-terms.php' ) || is_page_template( 'page-politic.php' ) ) {
 		wp_enqueue_style( 'enotarynew-terms', get_template_directory_uri() . '/assets/terms.css', array(), _S_VERSION );
 	}

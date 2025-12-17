@@ -640,6 +640,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initDocumentModal();
     initDropdownMenu();
     initCertificateHelpModal(); // Модальное окно подбора сертификата (ТЗ п.230)
+    initVerificationModal(); // Модальное окно проверки УКЭП (страница ПО&Токены&Услуги)
     
     // Инициализация AOS анимаций
     initAOS();
@@ -779,5 +780,50 @@ function initCertificateHelpModal() {
             messageDiv.className = 'form-message error';
             messageDiv.innerHTML = 'Произошла ошибка. Пожалуйста, попробуйте позже.';
         });
+    });
+}
+
+// ===========================
+// MODALNOE OKNO PROVERKI UKEP (Stranitsa PO&Tokeny&Uslugi)
+// ===========================
+
+function initVerificationModal() {
+    const modal = document.getElementById('verificationModal');
+    const openBtn = document.getElementById('openVerificationModal');
+    const closeBtn = document.getElementById('closeVerificationModal');
+    
+    if (!modal) return;
+    
+    // Otkrytie modalki
+    if (openBtn) {
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Zakrytie modalki
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+    
+    // Zakrytie pri klike na overlay
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target.classList.contains('modal-overlay')) {
+            closeModal();
+        }
+    });
+    
+    // Zakrytie po ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
     });
 }
