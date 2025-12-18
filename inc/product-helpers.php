@@ -132,7 +132,7 @@ function render_checklist_by_category( $category_slug, $section_title = '', $arg
         $wrapper_align = ! empty( $product_description ) ? 'items-start' : 'items-center';
         
         ?>
-        <div class="flex <?php echo esc_attr( $wrapper_align ); ?> gap-2 sm:gap-2.5 p-4 sm:p-5 <?php echo esc_attr( $border_class ); ?>">
+        <div class="flex flex-wrap <?php echo esc_attr( $wrapper_align ); ?> gap-2 sm:gap-2.5 p-4 sm:p-5 <?php echo esc_attr( $border_class ); ?>">
             <div class="<?php echo esc_attr( $checkbox_class ); ?>"></div>
             <input 
                 type="checkbox" 

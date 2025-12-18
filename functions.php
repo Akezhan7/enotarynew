@@ -705,3 +705,15 @@ function enotary_replace_wc_login_template() {
     }
 }
 add_action( 'template_redirect', 'enotary_replace_wc_login_template', 1 );
+
+/**
+ * Редирект со страницы корзины на главную
+ * Страница корзины не используется - заказ формируется на страницах услуг
+ */
+function enotary_redirect_cart_to_home() {
+    if ( is_cart() ) {
+        wp_safe_redirect( home_url() );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'enotary_redirect_cart_to_home' );

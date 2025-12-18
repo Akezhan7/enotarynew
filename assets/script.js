@@ -492,7 +492,7 @@ function initEntityCards() {
             priceBox.classList.add('bg-secondary');
         }
         if (priceText) {
-            priceText.classList.remove('text-[#262626]');
+            priceText.classList.remove('text-[#262626]', 'text-black');
             priceText.classList.add('text-white');
         }
     }
@@ -516,7 +516,7 @@ function initEntityCards() {
         }
         if (priceText) {
             priceText.classList.remove('text-white');
-            priceText.classList.add('text-[#262626]');
+            priceText.classList.add('text-[#262626]', 'text-black');
         }
     }
     

@@ -1092,3 +1092,13 @@ img {
         height: 56px;
     }
 }
+
+/* Стили для карточек типа плательщика */
+.entity-card-price-text.text-white {
+    color: #fff !important;
+}
+
+.entity-card-price-text.text-black,
+.entity-card-price-box .text-[#262626] {
+    color: #262626 !important;
+}

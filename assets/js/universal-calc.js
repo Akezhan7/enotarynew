@@ -154,7 +154,7 @@
             // Показываем индикатор загрузки
             const $submitBtn = $('.submit-order-btn');
             const originalText = $submitBtn.text();
-            $submitBtn.prop('disabled', true).text('Обработка...');
+            $submitBtn.prop('disabled', true).text('Обработка...').addClass('text-white');
             
             // Отправляем AJAX запрос
             $.ajax({
