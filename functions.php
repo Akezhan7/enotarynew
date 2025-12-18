@@ -225,6 +225,11 @@ function enotarynew_scripts() {
 	// Navigation script
 	wp_enqueue_script( 'enotarynew-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 	
+	// Checkout validation script (клиентская валидация)
+	if ( is_checkout() ) {
+		wp_enqueue_script( 'enotarynew-checkout-validation', get_template_directory_uri() . '/assets/js/checkout-validation.js', array('jquery'), _S_VERSION, true );
+	}
+	
 	// Debug script for checkout (only when ?debug=1 is in URL)
 	if ( is_checkout() && isset( $_GET['debug'] ) && $_GET['debug'] == '1' ) {
 		wp_enqueue_script( 'enotarynew-checkout-debug', get_template_directory_uri() . '/assets/js/checkout-debug.js', array('jquery'), _S_VERSION, true );
@@ -470,6 +475,12 @@ function enotarynew_load_woocommerce_files() {
 	
 	// Certificate Help Modal System (ТЗ п. 230)
 	require_once get_template_directory() . '/inc/certificate-help-modal.php';
+	
+	// Checkout Validation (серверная валидация форм)
+	require_once get_template_directory() . '/inc/checkout-validation.php';
+	
+	// Cart Item Display (отображение названия услуги в корзине и заказах)
+	require_once get_template_directory() . '/inc/cart-item-display.php';
 }
 add_action( 'init', 'enotarynew_load_woocommerce_files', 20 );
 

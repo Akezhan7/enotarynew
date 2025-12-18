@@ -36,6 +36,7 @@ function add_custom_bundle_to_cart() {
     $items = isset( $_POST['items'] ) ? json_decode( stripslashes( $_POST['items'] ), true ) : array();
     $payer_type = isset( $_POST['payer_type'] ) ? sanitize_text_field( $_POST['payer_type'] ) : '';
     $base_product_id = isset( $_POST['base_product_id'] ) ? intval( $_POST['base_product_id'] ) : 0;
+    $service_name = isset( $_POST['service_name'] ) ? sanitize_text_field( $_POST['service_name'] ) : 'УКЭП';
     
     // Валидация типа плательщика (должен быть: 'individual', 'entrepreneur' или 'legal')
     $allowed_payer_types = array( 'individual', 'entrepreneur', 'legal' );
@@ -43,11 +44,16 @@ function add_custom_bundle_to_cart() {
         $payer_type = 'individual'; // Дефолт, если пришло что-то некорректное
     }
     
-    // Валидация данных
-    if ( empty( $items ) || ! is_array( $items ) ) {
+    // Валидация: обязательно должен быть выбран тип плательщика
+    if ( empty( $payer_type ) ) {
         wp_send_json_error( array(
-            'message' => 'Неверные данные. Пожалуйста, выберите хотя бы один товар.'
+            'message' => 'Пожалуйста, выберите тип плательщика.'
         ) );
+    }
+    
+    // Проверяем что items - это массив (может быть пустым, это нормально)
+    if ( ! is_array( $items ) ) {
+        $items = array();
     }
     
     // Очистка корзины
@@ -56,37 +62,7 @@ function add_custom_bundle_to_cart() {
     // Счетчик добавленных товаров
     $added_count = 0;
     
-    // Добавление товаров в корзину
-    foreach ( $items as $item ) {
-        $product_id = isset( $item['id'] ) ? intval( $item['id'] ) : 0;
-        $quantity = isset( $item['quantity'] ) ? intval( $item['quantity'] ) : 1;
-        
-        if ( ! $product_id || $quantity < 1 ) {
-            continue;
-        }
-        
-        // Проверка существования товара
-        $product = wc_get_product( $product_id );
-        if ( ! $product ) {
-            continue;
-        }
-        
-        // Добавление товара в корзину
-        $cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity );
-        
-        if ( $cart_item_key ) {
-            $added_count++;
-        }
-    }
-    
-    // Проверка что хотя бы один товар добавлен
-    if ( $added_count === 0 ) {
-        wp_send_json_error( array(
-            'message' => 'Не удалось добавить товары в корзину. Проверьте наличие товаров.'
-        ) );
-    }
-    
-    // Сохранение типа плательщика в сессию
+    // СНАЧАЛА добавляем товар типа плательщика (обязательный)
     if ( ! empty( $payer_type ) ) {
         WC()->session->set( 'active_payer_type', $payer_type );
         
@@ -97,9 +73,63 @@ function add_custom_bundle_to_cart() {
             $payer_product = wc_get_product( $payer_product_id );
             
             if ( $payer_product ) {
-                WC()->cart->add_to_cart( $payer_product_id, 1 );
+                // Добавляем товар с метаданными о названии услуги
+                $cart_item_key = WC()->cart->add_to_cart( 
+                    $payer_product_id, 
+                    1,
+                    0,
+                    array(),
+                    array( 
+                        '_service_name' => $service_name,
+                        '_is_payer_type' => true
+                    )
+                );
+                if ( $cart_item_key ) {
+                    $added_count++;
+                }
             }
         }
+    }
+    
+    // ПОТОМ добавляем дополнительные товары (необязательные)
+    if ( ! empty( $items ) && is_array( $items ) ) {
+        foreach ( $items as $item ) {
+            $product_id = isset( $item['id'] ) ? intval( $item['id'] ) : 0;
+            $quantity = isset( $item['quantity'] ) ? intval( $item['quantity'] ) : 1;
+            
+            if ( ! $product_id || $quantity < 1 ) {
+                continue;
+            }
+            
+            // Проверка существования товара
+            $product = wc_get_product( $product_id );
+            if ( ! $product ) {
+                continue;
+            }
+            
+            // Добавление товара в корзину с метаданными о названии услуги
+            $cart_item_key = WC()->cart->add_to_cart( 
+                $product_id, 
+                $quantity,
+                0,
+                array(),
+                array( 
+                    '_service_name' => $service_name,
+                    '_is_additional' => true
+                )
+            );
+            
+            if ( $cart_item_key ) {
+                $added_count++;
+            }
+        }
+    }
+    
+    // Проверка что хотя бы один товар добавлен (как минимум тип плательщика)
+    if ( $added_count === 0 ) {
+        wp_send_json_error( array(
+            'message' => 'Не удалось добавить товары в корзину. Проверьте наличие товаров.'
+        ) );
     }
     
     // Сохранение ID базового товара

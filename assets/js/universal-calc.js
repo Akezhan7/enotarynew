@@ -97,13 +97,8 @@
         function collectCartData() {
             const items = [];
             
-            // Добавляем базовый товар
-            if (baseProductId > 0) {
-                items.push({
-                    id: baseProductId,
-                    quantity: 1
-                });
-            }
+            // НЕ добавляем базовый товар в items, он добавится на сервере через payer_type
+            // baseProductId используется только для валидации и передается отдельно
             
             // Добавляем выбранные дополнительные товары с количеством
             $('.service-checkbox:checked').each(function() {
@@ -127,10 +122,14 @@
                 }
             });
             
+            // Получаем название услуги из data-атрибута секции
+            const serviceName = $('section[data-service-name]').attr('data-service-name') || 'УКЭП';
+            
             return {
                 items: items,
                 payer_type: currentPayerType,
-                base_product_id: baseProductId
+                base_product_id: baseProductId,
+                service_name: serviceName
             };
         }
         
@@ -140,8 +139,14 @@
         function sendToCart() {
             const cartData = collectCartData();
             
-            // Проверка что есть базовый товар
-            if (cartData.items.length === 0) {
+            console.log('Отправка в корзину:', cartData);
+            
+            // Проверка что выбран тип плательщика (достаточно только его, дополнения необязательны)
+            if (!cartData.payer_type || cartData.base_product_id <= 0) {
+                console.error('Валидация не прошла:', {
+                    payer_type: cartData.payer_type,
+                    base_product_id: cartData.base_product_id
+                });
                 alert('Пожалуйста, выберите тип плательщика');
                 return;
             }
@@ -160,7 +165,8 @@
                     nonce: enotaryBundleAjax.nonce,
                     items: JSON.stringify(cartData.items),
                     payer_type: cartData.payer_type,
-                    base_product_id: cartData.base_product_id
+                    base_product_id: cartData.base_product_id,
+                    service_name: cartData.service_name
                 },
                 success: function(response) {
                     if (response.success) {
