@@ -1,0 +1,272 @@
+{
+    "key": "group_documents_page",
+    "title": "Настройки страницы Документы",
+    "fields": [
+        {
+            "key": "field_documents_list",
+            "label": "Документы",
+            "name": "documents_list",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Добавьте документы для отображения на странице",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_document_title",
+            "button_label": "Добавить документ",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_document_icon",
+                    "label": "Иконка",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Иконка документа (по умолчанию PDF)",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_documents_list"
+                },
+                {
+                    "key": "field_document_subtitle",
+                    "label": "Подзаголовок",
+                    "name": "subtitle",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Серый текст над названием",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "70",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Набор документов для ознакомления с работой УЦ и помощи клиентам",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_documents_list"
+                },
+                {
+                    "key": "field_document_title",
+                    "label": "Название документа",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Основное название",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Например: Регламент УЦ по выпуску УКЭП",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_documents_list"
+                },
+                {
+                    "key": "field_document_type",
+                    "label": "Тип документа",
+                    "name": "document_type",
+                    "aria-label": "",
+                    "type": "radio",
+                    "instructions": "Одиночный файл откроется сразу, сборный - через модалку",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "single": "Одиночный документ (один PDF)",
+                        "multiple": "Сборный документ (несколько файлов)"
+                    },
+                    "default_value": "single",
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "layout": "horizontal",
+                    "save_other_choice": 0,
+                    "parent_repeater": "field_documents_list"
+                },
+                {
+                    "key": "field_document_single_file",
+                    "label": "Файл документа",
+                    "name": "single_file",
+                    "aria-label": "",
+                    "type": "file",
+                    "instructions": "PDF файл для скачивания",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_document_type",
+                                "operator": "==",
+                                "value": "single"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_size": "",
+                    "max_size": "",
+                    "mime_types": "pdf,doc,docx",
+                    "parent_repeater": "field_documents_list"
+                },
+                {
+                    "key": "field_document_files",
+                    "label": "Файлы документа",
+                    "name": "files",
+                    "aria-label": "",
+                    "type": "repeater",
+                    "instructions": "Добавьте несколько файлов для модального окна",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_document_type",
+                                "operator": "==",
+                                "value": "multiple"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "table",
+                    "pagination": 0,
+                    "min": 0,
+                    "max": 0,
+                    "collapsed": "field_file_title",
+                    "button_label": "Добавить файл",
+                    "rows_per_page": 20,
+                    "parent_repeater": "field_documents_list",
+                    "sub_fields": [
+                        {
+                            "key": "field_file_title",
+                            "label": "Название",
+                            "name": "title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "40",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "Например: Аккредитованный УЦ",
+                            "prepend": "",
+                            "append": "",
+                            "parent_repeater": "field_document_files"
+                        },
+                        {
+                            "key": "field_file_description",
+                            "label": "Описание",
+                            "name": "description",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "40",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "Краткое описание",
+                            "new_lines": "",
+                            "parent_repeater": "field_document_files"
+                        },
+                        {
+                            "key": "field_file_pdf",
+                            "label": "Файл",
+                            "name": "file",
+                            "aria-label": "",
+                            "type": "file",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "20",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "library": "all",
+                            "min_size": "",
+                            "max_size": "",
+                            "mime_types": "pdf,doc,docx",
+                            "parent_repeater": "field_document_files"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-documents.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content",
+        "excerpt",
+        "discussion",
+        "comments"
+    ],
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

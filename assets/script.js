@@ -208,27 +208,135 @@ function initBlogSearch() {
     const searchInput = document.getElementById('blogSearchInput');
     const searchIcon = document.getElementById('searchIcon');
     const clearIcon = document.getElementById('clearIcon');
+    const blogGrid = document.querySelector('.blog-grid');
 
-    if (!searchInput || !searchIcon || !clearIcon) return;
+    if (!searchInput || !searchIcon || !clearIcon || !blogGrid) return;
 
-    // Отслеживание ввода в input
-    searchInput.addEventListener('input', function() {
-        if (this.value.length > 0) {
+    let currentSearchQuery = '';
+    let isSearching = false;
+
+    // Показать/скрыть иконки при наличии текста
+    function toggleIcons() {
+        if (searchInput.value.length > 0) {
             searchIcon.classList.add('hidden');
             clearIcon.classList.remove('hidden');
         } else {
             searchIcon.classList.remove('hidden');
             clearIcon.classList.add('hidden');
         }
+    }
+
+    // Инициализация при загрузке
+    toggleIcons();
+
+    // Отслеживание ввода в input
+    searchInput.addEventListener('input', toggleIcons);
+
+    // Функция AJAX поиска
+    function performSearch(page = 1) {
+        if (isSearching) return;
+        
+        const searchQuery = searchInput.value.trim();
+        currentSearchQuery = searchQuery;
+        isSearching = true;
+
+        // Показываем loader
+        blogGrid.style.opacity = '0.5';
+        blogGrid.style.pointerEvents = 'none';
+
+        // AJAX запрос
+        fetch(ajaxurl || '/wp-admin/admin-ajax.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                action: 'blog_search',
+                search: searchQuery,
+                paged: page
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Обновляем контент
+                blogGrid.innerHTML = data.data.posts;
+                
+                // Обновляем пагинацию
+                const blogSection = blogGrid.closest('section');
+                const oldPagination = blogSection.querySelector('.pagination-container');
+                
+                if (data.data.pagination) {
+                    // Если пагинация есть в ответе
+                    if (oldPagination) {
+                        // Заменяем существующую
+                        oldPagination.outerHTML = data.data.pagination;
+                    } else {
+                        // Добавляем новую после blogGrid
+                        blogSection.insertAdjacentHTML('beforeend', data.data.pagination);
+                    }
+                    // Переинициализируем обработчики пагинации
+                    initPaginationHandlers();
+                } else {
+                    // Если пагинации нет в ответе, удаляем её
+                    if (oldPagination) {
+                        oldPagination.remove();
+                    }
+                }
+                
+                // Скроллим вверх к результатам
+                blogGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Восстанавливаем видимость
+                blogGrid.style.opacity = '1';
+                blogGrid.style.pointerEvents = 'auto';
+            }
+            isSearching = false;
+        })
+        .catch(error => {
+            console.error('Ошибка поиска:', error);
+            blogGrid.style.opacity = '1';
+            blogGrid.style.pointerEvents = 'auto';
+            isSearching = false;
+        });
+    }
+
+    // Обработчики пагинации
+    function initPaginationHandlers() {
+        const paginationBtns = document.querySelectorAll('.pagination-btn');
+        paginationBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = parseInt(this.getAttribute('data-page'));
+                performSearch(page);
+            });
+        });
+    }
+
+    // Поиск по Enter
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch(1);
+        }
+    });
+
+    // Поиск по клику на иконку
+    searchIcon.addEventListener('click', function() {
+        performSearch(1);
     });
 
     // Очистка поля поиска
     clearIcon.addEventListener('click', function() {
         searchInput.value = '';
-        searchIcon.classList.remove('hidden');
-        clearIcon.classList.add('hidden');
+        toggleIcons();
         searchInput.focus();
+        // Выполняем поиск с пустым запросом (показываем все)
+        performSearch(1);
     });
+
+    // Инициализируем обработчики пагинации при загрузке
+    initPaginationHandlers();
 }
 
 
@@ -521,8 +629,13 @@ function initDocumentModal() {
 
     if (!documentModal) return;
     
-    // Открытие модалки при клике на карточку документа
+    // Открытие модалки при клике на карточку документа (только для карточек без data-doc-type)
     documentCards.forEach(card => {
+        // Пропускаем карточки с ACF управлением (те, у которых есть data-doc-type)
+        if (card.hasAttribute('data-doc-type')) {
+            return;
+        }
+        
         card.addEventListener('click', function() {
             const title = this.querySelector('.font-bold.text-\\[18px\\], .font-bold.text-\\[20px\\]');
             if (title && modalDocumentTitle) {
@@ -641,6 +754,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initDropdownMenu();
     initCertificateHelpModal(); // Модальное окно подбора сертификата (ТЗ п.230)
     initVerificationModal(); // Модальное окно проверки УКЭП (страница ПО&Токены&Услуги)
+    initCustomCheckbox(); // Кастомный чекбокс на странице контактов
+    initContactForm(); // Форма обратной связи на странице контактов
     
     // Инициализация AOS анимаций
     initAOS();
@@ -826,4 +941,119 @@ function initVerificationModal() {
             closeModal();
         }
     });
+}
+
+// ===========================
+// КАСТОМНЫЙ ЧЕКБОКС
+// ===========================
+
+function initCustomCheckbox() {
+    const checkbox = document.getElementById('agreeCheckbox');
+    const customCheckbox = document.querySelector('.checkbox-custom');
+    
+    if (!checkbox || !customCheckbox) return;
+    
+    // Sync visual state with checkbox state on page load
+    if (checkbox.checked) {
+        customCheckbox.classList.add('checked');
+    }
+    
+    // Click on custom checkbox toggles real checkbox
+    customCheckbox.addEventListener('click', function(e) {
+        e.preventDefault();
+        checkbox.checked = !checkbox.checked;
+        
+        if (checkbox.checked) {
+            customCheckbox.classList.add('checked');
+        } else {
+            customCheckbox.classList.remove('checked');
+        }
+    });
+}
+
+// ===========================
+// ФОРМА ОБРАТНОЙ СВЯЗИ НА СТРАНИЦЕ КОНТАКТЫ
+// ===========================
+
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const messageDiv = document.getElementById('contactFormMessage');
+        const btnText = submitBtn.querySelector('p');
+        const originalText = btnText.textContent;
+        
+        // Validation
+        const name = form.querySelector('[name="contact_name"]').value.trim();
+        const email = form.querySelector('[name="contact_email"]').value.trim();
+        const agree = form.querySelector('[name="agree"]').checked;
+        
+        if (!name || !email) {
+            showMessage(messageDiv, 'Пожалуйста, заполните все обязательные поля', 'error');
+            return;
+        }
+        
+        if (!validateEmail(email)) {
+            showMessage(messageDiv, 'Пожалуйста, введите корректный email', 'error');
+            return;
+        }
+        
+        if (!agree) {
+            showMessage(messageDiv, 'Необходимо согласие на обработку персональных данных', 'error');
+            return;
+        }
+        
+        // Disable button
+        submitBtn.disabled = true;
+        btnText.textContent = 'Отправка...';
+        
+        try {
+            const formData = new FormData(form);
+            formData.append('action', 'contact_form_submit');
+            formData.append('nonce', enotaryAjax.nonce);
+            
+            const response = await fetch(enotaryAjax.ajaxurl, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showMessage(messageDiv, data.data.message || 'Сообщение успешно отправлено!', 'success');
+                form.reset();
+                // Reset custom checkbox
+                const customCheckbox = document.querySelector('.checkbox-custom');
+                if (customCheckbox) {
+                    customCheckbox.classList.remove('checked');
+                }
+            } else {
+                showMessage(messageDiv, data.data.message || 'Произошла ошибка при отправке', 'error');
+            }
+        } catch (error) {
+            showMessage(messageDiv, 'Ошибка соединения. Попробуйте позже', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            btnText.textContent = originalText;
+        }
+    });
+}
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function showMessage(element, text, type) {
+    element.textContent = text;
+    element.className = `form-message ${type}`;
+    element.classList.remove('hidden');
+    
+    setTimeout(() => {
+        element.classList.add('hidden');
+    }, 5000);
 }

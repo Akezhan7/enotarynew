@@ -34,6 +34,79 @@
     font-weight: bold;
 }
 
+/* Сообщения формы */
+.form-message {
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-message.success {
+    background: rgba(25, 189, 123, 0.1);
+    color: #19bd7b;
+    border: 1px solid rgba(25, 189, 123, 0.3);
+}
+
+.form-message.error {
+    background: rgba(211, 47, 47, 0.1);
+    color: #d32f2f;
+    border: 1px solid rgba(211, 47, 47, 0.3);
+}.form-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Контакты - специфичные стили */
+
+/* Кастомный чекбокс */
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkbox-custom:hover {
+    border-color: #375d74;
+    background: rgba(55, 93, 116, 0.1);
+}
+
+.checkbox-custom.checked {
+    background: #375d74;
+    border-color: #375d74;
+    position: relative;
+}
+
+.checkbox-custom.checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /* Базовые стили для контейнеров */
 .responsive-container {
     width: 100%;

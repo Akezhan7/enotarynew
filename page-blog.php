@@ -7,8 +7,18 @@
 
 get_header();
 
+// Добавляем ajaxurl для JavaScript
+?>
+<script>
+    var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+</script>
+<?php
+
 // Пагинация
 $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+// Получаем поисковый запрос
+$search_query = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
 
 // Получаем посты
 $args = array(
@@ -18,6 +28,12 @@ $args = array(
     'order' => 'DESC',
     'paged' => $paged
 );
+
+// Если есть поисковый запрос, добавляем его в аргументы
+if (!empty($search_query)) {
+    $args['s'] = $search_query;
+}
+
 $blog_query = new WP_Query($args);
 ?>
 
@@ -42,6 +58,7 @@ $blog_query = new WP_Query($args);
                         type="text" 
                         id="blogSearchInput" 
                         placeholder="Поиск" 
+                        value="<?php echo esc_attr($search_query); ?>"
                         class="flex-1 font-semibold text-base text-dark leading-[1.15] outline-none bg-transparent placeholder:text-secondary"
                     >
                     <!-- Иконка поиска -->
@@ -136,7 +153,12 @@ $blog_query = new WP_Query($args);
                 else :
                 ?>
                     <div class="col-span-full bg-white border border-[rgba(0,0,0,0.05)] rounded-[30px] p-8 text-center">
-                        <p class="font-semibold text-base text-secondary">Пока нет опубликованных статей</p>
+                        <?php if (!empty($search_query)) : ?>
+                            <p class="font-semibold text-base text-secondary">По запросу "<?php echo esc_html($search_query); ?>" ничего не найдено</p>
+                            <a href="<?php echo get_permalink(); ?>" class="inline-block mt-4 font-semibold text-sm text-primary hover:underline">Показать все статьи</a>
+                        <?php else : ?>
+                            <p class="font-semibold text-base text-secondary">Пока нет опубликованных статей</p>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -148,10 +170,19 @@ $blog_query = new WP_Query($args);
                 $current_page = max(1, $paged);
                 $total_pages = $blog_query->max_num_pages;
                 
+                // Функция для добавления поискового запроса в URL пагинации
+                function get_search_pagenum_link($pagenum, $search_query = '') {
+                    $link = get_pagenum_link($pagenum);
+                    if (!empty($search_query)) {
+                        $link = add_query_arg('s', urlencode($search_query), $link);
+                    }
+                    return $link;
+                }
+                
                 // Предыдущая страница
                 if ($current_page > 1) :
                 ?>
-                    <a href="<?php echo get_pagenum_link($current_page - 1); ?>" class="pagination-arrow w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors">
+                    <a href="<?php echo get_search_pagenum_link($current_page - 1, $search_query); ?>" class="pagination-arrow w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.5 15L7.5 10L12.5 5" stroke="#375d74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -168,7 +199,7 @@ $blog_query = new WP_Query($args);
                 ?>
                             <span class="pagination-number w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm"><?php echo $i; ?></span>
                         <?php else : ?>
-                            <a href="<?php echo get_pagenum_link($i); ?>" class="pagination-number w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors font-semibold text-sm text-dark"><?php echo $i; ?></a>
+                            <a href="<?php echo get_search_pagenum_link($i, $search_query); ?>" class="pagination-number w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors font-semibold text-sm text-dark"><?php echo $i; ?></a>
                         <?php endif; ?>
                     <?php elseif ($i == $current_page - $range - 1 || $i == $current_page + $range + 1) : ?>
                         <span class="pagination-dots text-secondary font-bold">...</span>
@@ -177,7 +208,7 @@ $blog_query = new WP_Query($args);
 
                 <!-- Следующая страница -->
                 <?php if ($current_page < $total_pages) : ?>
-                    <a href="<?php echo get_pagenum_link($current_page + 1); ?>" class="pagination-arrow w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors">
+                    <a href="<?php echo get_search_pagenum_link($current_page + 1, $search_query); ?>" class="pagination-arrow w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.5 5L12.5 10L7.5 15" stroke="#375d74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>

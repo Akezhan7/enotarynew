@@ -194,6 +194,12 @@ function enotarynew_scripts() {
 	// Main script.js
 	wp_enqueue_script( 'enotarynew-main-script', get_template_directory_uri() . '/assets/script.js', array('jquery'), _S_VERSION, true );
 	
+	// Localize main script with AJAX URL and nonce for contact form and other AJAX actions
+	wp_localize_script( 'enotarynew-main-script', 'enotaryAjax', array(
+		'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		'nonce' => wp_create_nonce( 'enotary-ajax-nonce' )
+	) );
+	
 	// Universal Calculator for order pages (UKEP, MCHD, UNEP)
 	if ( is_page_template( 'page-order-ukep.php' ) || is_page_template( 'page-order-mchd.php' ) || is_page_template( 'page-order-unep.php' ) ) {
 		wp_enqueue_script( 'enotarynew-universal-calc', get_template_directory_uri() . '/assets/js/universal-calc.js', array('jquery'), _S_VERSION, true );
@@ -231,6 +237,170 @@ function enotarynew_scripts() {
 add_action( 'wp_enqueue_scripts', 'enotarynew_scripts' );
 
 /**
+ * Настройка количества постов на странице поиска
+ */
+function enotarynew_search_posts_per_page( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
+		$query->set( 'posts_per_page', 9 );
+	}
+}
+add_action( 'pre_get_posts', 'enotarynew_search_posts_per_page' );
+
+/**
+ * AJAX обработчик для поиска в блоге
+ */
+function enotarynew_ajax_blog_search() {
+	$search_query = isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '';
+	$paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
+	
+	$args = array(
+		'post_type' => 'post',
+		'posts_per_page' => 9,
+		'orderby' => 'date',
+		'order' => 'DESC',
+		'paged' => $paged
+	);
+	
+	if (!empty($search_query)) {
+		$args['s'] = $search_query;
+	}
+	
+	$blog_query = new WP_Query($args);
+	
+	ob_start();
+	
+	if ($blog_query->have_posts()) :
+		$delay = 50;
+		while ($blog_query->have_posts()) : $blog_query->the_post();
+		?>
+		<a href="<?php the_permalink(); ?>" class="blog-card bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex flex-col gap-2.5 no-underline hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>">
+			<div class="blog-card-image h-[200px] relative rounded-[20px] overflow-hidden">
+				<?php if (has_post_thumbnail()) : ?>
+					<div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px]"></div>
+					<?php the_post_thumbnail('medium_large', array('class' => 'absolute inset-0 w-full h-full object-cover rounded-[20px]')); ?>
+				<?php else : ?>
+					<div class="absolute bg-[#d9d9d9] inset-0 rounded-[20px] flex items-center justify-center">
+						<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M45 50H15C13.9391 50 12.9217 49.5786 12.1716 48.8284C11.4214 48.0783 11 47.0609 11 46V14C11 12.9391 11.4214 11.9217 12.1716 11.1716C12.9217 10.4214 13.9391 10 15 10H45C46.0609 10 47.0783 10.4214 47.8284 11.1716C48.5786 11.9217 49 12.9391 49 14V46C49 47.0609 48.5786 48.0783 47.8284 48.8284C47.0783 49.5786 46.0609 50 45 50ZM45 14H15V46H45V14Z" fill="#979797"/>
+							<path d="M20 34L30 24L45 39" stroke="#979797" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							<circle cx="23" cy="23" r="3" fill="#979797"/>
+						</svg>
+					</div>
+				<?php endif; ?>
+			</div>
+			<div class="p-2.5 flex flex-col gap-2.5 flex-1">
+				<div class="blog-card-content flex flex-col gap-2.5">
+					<p class="blog-card-category font-semibold text-[14px] text-secondary leading-[1.15]">
+						<?php 
+						$categories = get_the_category();
+						if (!empty($categories)) {
+							echo esc_html($categories[0]->name);
+						} else {
+							echo 'Статья';
+						}
+						?>
+					</p>
+					<p class="blog-card-title font-bold text-[20px] text-dark leading-[1.15]"><?php the_title(); ?></p>
+					<p class="blog-card-description font-semibold text-base text-dark opacity-80 leading-[1.15]">
+						<?php echo wp_trim_words(get_the_excerpt(), 30, '...'); ?>
+					</p>
+				</div>
+				<div class="blog-card-meta flex gap-2.5 items-center flex-wrap">
+					<p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap"><?php echo get_the_date('j F Y г.'); ?></p>
+					<div class="w-[6px] h-[6px] flex-shrink-0">
+						<div class="w-full h-full bg-secondary rounded-full"></div>
+					</div>
+					<div class="flex gap-[6px] items-center">
+						<div class="overflow-clip relative w-5 h-5 flex-shrink-0">
+							<img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/blog-clock.svg" alt="Time" class="block w-full h-full object-contain">
+						</div>
+						<p class="font-semibold text-[14px] text-secondary leading-[1.15] whitespace-nowrap">
+							<?php
+							$content = get_the_content();
+							$word_count = str_word_count(strip_tags($content));
+							$reading_time = ceil($word_count / 200);
+							echo $reading_time . ' ' . _n('минута', 'минут', $reading_time, 'enotarynew') . ' чтения';
+							?>
+						</p>
+					</div>
+				</div>
+			</div>
+		</a>
+		<?php
+			$delay += 50;
+		endwhile;
+	else :
+		?>
+		<div class="col-span-full bg-white border border-[rgba(0,0,0,0.05)] rounded-[30px] p-8 text-center">
+			<?php if (!empty($search_query)) : ?>
+				<p class="font-semibold text-base text-secondary">По запросу "<?php echo esc_html($search_query); ?>" ничего не найдено</p>
+				<button onclick="window.location.reload()" class="inline-block mt-4 font-semibold text-sm text-primary hover:underline cursor-pointer">Показать все статьи</button>
+			<?php else : ?>
+				<p class="font-semibold text-base text-secondary">Пока нет опубликованных статей</p>
+			<?php endif; ?>
+		</div>
+		<?php
+	endif;
+	
+	$posts_html = ob_get_clean();
+	
+	// Пагинация
+	$pagination_html = '';
+	if ($blog_query->max_num_pages > 1) {
+		$current_page = max(1, $paged);
+		$total_pages = $blog_query->max_num_pages;
+		
+		ob_start();
+		?>
+		<div class="pagination-container mt-10 flex justify-center items-center gap-2">
+			<?php if ($current_page > 1) : ?>
+				<button data-page="<?php echo $current_page - 1; ?>" class="pagination-btn pagination-arrow w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M12.5 15L7.5 10L12.5 5" stroke="#375d74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</button>
+			<?php endif; ?>
+			
+			<?php
+			$range = 2;
+			for ($i = 1; $i <= $total_pages; $i++) :
+				if ($i == 1 || $i == $total_pages || ($i >= $current_page - $range && $i <= $current_page + $range)) :
+					if ($i == $current_page) :
+						?>
+						<span class="pagination-number w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold text-sm"><?php echo $i; ?></span>
+						<?php else : ?>
+						<button data-page="<?php echo $i; ?>" class="pagination-btn pagination-number w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors font-semibold text-sm text-dark"><?php echo $i; ?></button>
+						<?php endif; ?>
+				<?php elseif ($i == $current_page - $range - 1 || $i == $current_page + $range + 1) : ?>
+					<span class="pagination-dots text-secondary font-bold">...</span>
+				<?php endif; ?>
+			<?php endfor; ?>
+			
+			<?php if ($current_page < $total_pages) : ?>
+				<button data-page="<?php echo $current_page + 1; ?>" class="pagination-btn pagination-arrow w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-[rgba(0,0,0,0.05)] hover:bg-[rgba(55,93,116,0.1)] transition-colors">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M7.5 5L12.5 10L7.5 15" stroke="#375d74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</button>
+			<?php endif; ?>
+		</div>
+		<?php
+		$pagination_html = ob_get_clean();
+	}
+	
+	wp_reset_postdata();
+	
+	wp_send_json_success(array(
+		'posts' => $posts_html,
+		'pagination' => $pagination_html,
+		'found_posts' => $blog_query->found_posts,
+		'max_pages' => $blog_query->max_num_pages
+	));
+}
+add_action('wp_ajax_blog_search', 'enotarynew_ajax_blog_search');
+add_action('wp_ajax_nopriv_blog_search', 'enotarynew_ajax_blog_search');
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
@@ -244,6 +414,11 @@ require get_template_directory() . '/inc/template-tags.php';
  * Functions which enhance the theme by hooking into WordPress.
  */
 require get_template_directory() . '/inc/template-functions.php';
+
+/**
+ * AJAX обработчик формы обратной связи.
+ */
+require get_template_directory() . '/inc/ajax-contact-form.php';
 
 /**
  * Customizer additions.

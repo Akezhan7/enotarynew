@@ -6,6 +6,9 @@
  */
 
 get_header();
+
+// Получаем документы из ACF
+$documents = get_field('documents_list');
 ?>
 
         <!-- Хлебные крошки -->
@@ -32,82 +35,46 @@ get_header();
         <!-- Документы секция -->
         <section class="w-full documents-container py-4 sm:py-5">
             <div class="documents-grid">
-                <!-- Документ 1 -->
-                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[191px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="50">
+                <?php 
+                if (!empty($documents)) :
+                    $delay = 50;
+                    foreach ($documents as $index => $doc) :
+                        $icon = $doc['icon'] ?? get_template_directory_uri() . '/assets/images/pdf.png';
+                        $subtitle = $doc['subtitle'] ?? '';
+                        $title = $doc['title'] ?? '';
+                        $doc_type = $doc['document_type'] ?? 'single';
+                        $single_file = $doc['single_file'] ?? null;
+                        $files = $doc['files'] ?? array();
+                        
+                        // Определяем действие при клике
+                        if ($doc_type === 'single' && $single_file) {
+                            $click_action = 'onclick="event.stopPropagation(); window.open(\'' . esc_url($single_file['url']) . '\', \'_blank\'); return false;"';
+                            $data_type = 'data-doc-type="single"';
+                        } elseif ($doc_type === 'multiple' && !empty($files)) {
+                            $click_action = 'onclick="event.stopPropagation(); openModal(' . $index . '); return false;"';
+                            $data_type = 'data-doc-type="multiple"';
+                        } else {
+                            $click_action = '';
+                            $data_type = '';
+                        }
+                ?>
+                <!-- Документ -->
+                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[191px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="<?php echo $delay; ?>" <?php echo $data_type; ?> <?php echo $click_action; ?>>
                     <div class="w-[46px] h-[46px] flex-shrink-0">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.png" alt="PDF" class="w-full h-full object-contain">
+                        <img src="<?php echo esc_url($icon); ?>" alt="<?php echo esc_attr($title); ?>" class="w-full h-full object-contain">
                     </div>
                     <div class="flex flex-col gap-[6px] leading-[1.15]">
-                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary">Набор документов для ознакомления с работой УЦ<br>и помощи клиентам</p>
-                        <p class="font-bold text-[18px] lg:text-[20px] text-dark">Регламент УЦ по выпуску УКЭП</p>
+                        <?php if ($subtitle) : ?>
+                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary"><?php echo esc_html($subtitle); ?></p>
+                        <?php endif; ?>
+                        <p class="font-bold text-[18px] lg:text-[20px] text-dark"><?php echo esc_html($title); ?></p>
                     </div>
                 </div>
-
-                <!-- Документ 2 -->
-                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[191px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-[46px] h-[46px] flex-shrink-0">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.png" alt="PDF" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex flex-col gap-[6px] leading-[1.15]">
-                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary">Набор документов для ознакомления с работой УЦ<br>и помощи клиентам</p>
-                        <p class="font-bold text-[18px] lg:text-[20px] text-dark">Регламент УЦ по выпуску УНЭП</p>
-                    </div>
-                </div>
-
-                <!-- Документ 3 -->
-                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[191px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="150">
-                    <div class="w-[46px] h-[46px] flex-shrink-0">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.png" alt="PDF" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex flex-col gap-[6px] leading-[1.15]">
-                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary">Набор документов для ознакомления с работой УЦ<br>и помощи клиентам</p>
-                        <p class="font-bold text-[18px] lg:text-[20px] text-dark">Инструкция по заказу МЧД</p>
-                    </div>
-                </div>
-
-                <!-- Документ 4 -->
-                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[190px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-[46px] h-[46px] flex-shrink-0">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.png" alt="PDF" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex flex-col gap-[6px] leading-[1.15]">
-                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary">Набор документов для ознакомления с работой УЦ<br>и помощи клиентам</p>
-                        <p class="font-bold text-[18px] lg:text-[20px] text-dark">Инструкция по работе<br>Мульти-Инсталлятора</p>
-                    </div>
-                </div>
-
-                <!-- Документ 5 -->
-                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[190px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="250">
-                    <div class="w-[46px] h-[46px] flex-shrink-0">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.png" alt="PDF" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex flex-col gap-[6px] leading-[1.15]">
-                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary">Набор документов для ознакомления с работой УЦ<br>и помощи клиентам</p>
-                        <p class="font-bold text-[18px] lg:text-[20px] text-dark">Договор оферты</p>
-                    </div>
-                </div>
-
-                <!-- Документ 6 -->
-                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[190px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="300">
-                    <div class="w-[46px] h-[46px] flex-shrink-0">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.png" alt="PDF" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex flex-col gap-[6px] leading-[1.15]">
-                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary">Набор документов для ознакомления с работой УЦ<br>и помощи клиентам</p>
-                        <p class="font-bold text-[18px] lg:text-[20px] text-dark">Законодательство</p>
-                    </div>
-                </div>
-
-                <!-- Документ 7 -->
-                <div class="document-card bg-white rounded-[15px] lg:rounded-[20px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-4 lg:p-5 flex flex-col gap-4 lg:gap-5 justify-between min-h-[170px] sm:min-h-[180px] lg:min-h-[190px] hover:shadow-lg transition-shadow cursor-pointer" data-aos="fade-up" data-aos-delay="350">
-                    <div class="w-[46px] h-[46px] flex-shrink-0">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/pdf.png" alt="PDF" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex flex-col gap-[6px] leading-[1.15]">
-                        <p class="font-semibold text-[13px] lg:text-[14px] text-secondary">Набор документов для ознакомления с работой УЦ<br>и помощи клиентам</p>
-                        <p class="font-bold text-[18px] lg:text-[20px] text-dark">Перечень необходимых документов при заказе УКЭП/УНЭП</p>
-                    </div>
-                </div>
+                <?php 
+                    $delay += 50;
+                    endforeach;
+                endif;
+                ?>
             </div>
         </section>
 
@@ -118,7 +85,7 @@ get_header();
                 <div class="border-b border-[rgba(0,0,0,0.05)] flex gap-2.5 items-start p-5">
                     <div class="flex flex-col gap-4 flex-1 text-dark leading-[1.15]">
                         <p class="font-bold text-[20px]">Документы</p>
-                        <p class="font-semibold text-[14px]" id="modalDocumentTitle">Регламент УЦ по выпуску УКЭП</p>
+                        <p class="font-semibold text-[14px]" id="modalDocumentTitle"></p>
                     </div>
                     <button class="bg-[rgba(0,0,0,0.05)] p-2.5 rounded-[10px] flex items-center justify-center flex-shrink-0 hover:bg-[rgba(0,0,0,0.1)] transition-colors" onclick="closeModal()" aria-label="Закрыть">
                         <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -128,31 +95,73 @@ get_header();
                 </div>
                 
                 <!-- Контент модалки -->
-                <div class="flex flex-col gap-2.5 p-5">
-                    <!-- Карточка 1 - Аккредитованный УЦ -->
-                    <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[20px] p-5 flex flex-col gap-5 justify-between min-h-[190px] hover:shadow-lg transition-shadow cursor-pointer">
-                        <div class="w-[46px] h-[46px] flex-shrink-0">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/docs.png" alt="Документ" class="w-full h-full object-contain">
-                        </div>
-                        <div class="flex flex-col gap-2.5 leading-[1.15]">
-                            <p class="font-bold text-base text-dark text-center">Аккредитованный УЦ</p>
-                            <p class="font-semibold text-[14px] text-secondary">Порядок реализации функций аккредитованного удостоверяющего центра и исполнения его обязанностей. Регламент</p>
-                        </div>
-                    </div>
-
-                    <!-- Карточка 2 - Неаккредитованный УЦ -->
-                    <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[20px] p-5 flex flex-col gap-5 justify-between min-h-[190px] hover:shadow-lg transition-shadow cursor-pointer">
-                        <div class="w-[46px] h-[46px] flex-shrink-0">
-                            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/docs.png" alt="Документ" class="w-full h-full object-contain">
-                        </div>
-                        <div class="flex flex-col gap-2.5 leading-[1.15]">
-                            <p class="font-bold text-base text-dark text-center">Неаккредитованный УЦ</p>
-                            <p class="font-semibold text-[14px] text-secondary">Порядок реализации функций аккредитованного удостоверяющего центра и исполнения его обязанностей. Регламент</p>
-                        </div>
-                    </div>
+                <div class="flex flex-col gap-2.5 p-5" id="modalFilesContainer">
+                    <!-- Динамически заполняется из JS -->
                 </div>
             </div>
         </div>
+
+        <script>
+        // Данные документов для модального окна
+        const documentsData = <?php echo json_encode($documents ?: array()); ?>;
+        
+        function openModal(index) {
+            const doc = documentsData[index];
+            if (!doc || doc.document_type !== 'multiple' || !doc.files || doc.files.length === 0) {
+                return;
+            }
+            
+            // Устанавливаем заголовок
+            document.getElementById('modalDocumentTitle').textContent = doc.title || '';
+            
+            // Очищаем контейнер
+            const container = document.getElementById('modalFilesContainer');
+            container.innerHTML = '';
+            
+            // Добавляем карточки файлов
+            doc.files.forEach(file => {
+                const card = document.createElement('a');
+                card.href = file.file.url;
+                card.target = '_blank';
+                card.className = 'bg-white border border-[rgba(0,0,0,0.05)] rounded-[20px] p-5 flex flex-col gap-5 justify-between min-h-[190px] hover:shadow-lg transition-shadow cursor-pointer no-underline';
+                
+                card.innerHTML = `
+                    <div class="w-[46px] h-[46px] flex-shrink-0">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/docs.png" alt="Документ" class="w-full h-full object-contain">
+                    </div>
+                    <div class="flex flex-col gap-2.5 leading-[1.15]">
+                        <p class="font-bold text-base text-dark text-center">${file.title || ''}</p>
+                        ${file.description ? `<p class="font-semibold text-[14px] text-secondary">${file.description}</p>` : ''}
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Показываем модалку
+            document.getElementById('documentModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            document.getElementById('documentModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Закрытие по клику на overlay
+        document.getElementById('documentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Закрытие по ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+        </script>
 
 <?php
 get_footer();

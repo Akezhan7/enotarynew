@@ -81,6 +81,200 @@
             "rows": 3
         },
         {
+            "key": "field_office_tab",
+            "label": "Адреса офисов",
+            "name": "",
+            "type": "tab",
+            "instructions": "Адреса компаний и офисов",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_company_legal_info",
+            "label": "Юридическая информация",
+            "name": "company_legal_info",
+            "type": "repeater",
+            "instructions": "АО и ООО компании с ИНН",
+            "required": 0,
+            "conditional_logic": 0,
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Добавить компанию",
+            "sub_fields": [
+                {
+                    "key": "field_company_legal_name",
+                    "label": "Название",
+                    "name": "name",
+                    "type": "text",
+                    "required": 1,
+                    "placeholder": "АО «СИГНАЛ-КОМ»"
+                },
+                {
+                    "key": "field_company_legal_inn",
+                    "label": "ИНН",
+                    "name": "inn",
+                    "type": "text",
+                    "required": 1,
+                    "placeholder": "7714028893"
+                }
+            ]
+        },
+        {
+            "key": "field_office_addresses",
+            "label": "Адреса офисов",
+            "name": "office_addresses",
+            "type": "repeater",
+            "instructions": "Юридический, почтовый и физический адреса",
+            "required": 0,
+            "conditional_logic": 0,
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Добавить адрес",
+            "sub_fields": [
+                {
+                    "key": "field_address_type",
+                    "label": "Тип адреса",
+                    "name": "type",
+                    "type": "text",
+                    "required": 1,
+                    "placeholder": "Юридический адрес"
+                },
+                {
+                    "key": "field_address_text",
+                    "label": "Адрес",
+                    "name": "address",
+                    "type": "textarea",
+                    "required": 1,
+                    "rows": 2,
+                    "placeholder": "115087, г. Москва, Крутицкая наб., дом 23, кв. 64"
+                }
+            ]
+        },
+        {
+            "key": "field_contact_info_tab",
+            "label": "Контактная информация",
+            "name": "",
+            "type": "tab",
+            "instructions": "Телефоны, email, часы работы",
+            "required": 0,
+            "conditional_logic": 0,
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_contact_phones",
+            "label": "Телефоны",
+            "name": "contact_phones",
+            "type": "repeater",
+            "instructions": "Список телефонов с описанием",
+            "required": 0,
+            "conditional_logic": 0,
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Добавить телефон",
+            "sub_fields": [
+                {
+                    "key": "field_phone_label",
+                    "label": "Название",
+                    "name": "label",
+                    "type": "text",
+                    "required": 1,
+                    "placeholder": "Секретарь"
+                },
+                {
+                    "key": "field_phone_number",
+                    "label": "Номер",
+                    "name": "number",
+                    "type": "text",
+                    "required": 1,
+                    "placeholder": "+7 (495) 969-30-34"
+                }
+            ]
+        },
+        {
+            "key": "field_contact_email_main",
+            "label": "Основной Email",
+            "name": "contact_email_main",
+            "type": "email",
+            "instructions": "Главный email для контактов",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "",
+            "placeholder": "signal@signal-com.ru"
+        },
+        {
+            "key": "field_office_hours",
+            "label": "Часы работы офиса",
+            "name": "office_hours",
+            "type": "textarea",
+            "instructions": "Режим работы офиса (можно с переносами строк)",
+            "required": 0,
+            "conditional_logic": 0,
+            "rows": 2,
+            "default_value": "понедельник — пятница\nс 09:30 до 18:00"
+        },
+        {
+            "key": "field_reception_hours",
+            "label": "Часы приема клиентов УЦ",
+            "name": "reception_hours",
+            "type": "textarea",
+            "instructions": "Режим приема клиентов",
+            "required": 0,
+            "conditional_logic": 0,
+            "rows": 3,
+            "default_value": "понедельник — пятница\nс 10:00 до 12:30 и с 13:00 до 17:30"
+        },
+        {
+            "key": "field_office_route",
+            "label": "Проезд к офису",
+            "name": "office_route",
+            "type": "text",
+            "instructions": "Информация о проезде",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "Метро «Автозаводская» (выход 3) | МЦК «Автозаводская» (выход 2)"
+        },
+        {
+            "key": "field_office_route_file",
+            "label": "Файл схемы проезда",
+            "name": "office_route_file",
+            "type": "file",
+            "instructions": "Файл подробной схемы проезда (любой формат: PDF, JPG, PNG и т.д.)",
+            "required": 0,
+            "conditional_logic": 0,
+            "return_format": "array",
+            "library": "all",
+            "mime_types": ""
+        },
+        {
+            "key": "field_office_access_warning",
+            "label": "Важная информация о доступе",
+            "name": "office_access_warning",
+            "type": "wysiwyg",
+            "instructions": "Предупреждение о пропусках и требованиях",
+            "required": 0,
+            "conditional_logic": 0,
+            "tabs": "visual",
+            "toolbar": "basic",
+            "media_upload": 0
+        },
+        {
+            "key": "field_office_map_iframe",
+            "label": "Карта офиса (iframe)",
+            "name": "office_map_iframe",
+            "type": "textarea",
+            "instructions": "Вставьте код iframe карты (например, из Google Maps или Яндекс.Карт)",
+            "required": 0,
+            "conditional_logic": 0,
+            "rows": 4,
+            "placeholder": "<iframe src=\"...\" width=\"100%\" height=\"535\" frameborder=\"0\"></iframe>"
+        },
+        {
             "key": "field_branding_tab",
             "label": "Брендинг",
             "name": "",

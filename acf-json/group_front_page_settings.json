@@ -1,0 +1,651 @@
+{
+    "key": "group_front_page_settings",
+    "title": "Настройки главной страницы",
+    "fields": [
+        {
+            "key": "field_hero_tab",
+            "label": "Hero-секция",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_hero_title_big_1",
+            "label": "Заголовок большой (1)",
+            "name": "hero_title_big_1",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Первое крупное слово (например: ВСЁ)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "ВСЁ",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_hero_title_small",
+            "label": "Заголовок малый",
+            "name": "hero_title_small",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Средний текст между крупными словами",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "для работы с",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_hero_title_big_2",
+            "label": "Заголовок большой (2)",
+            "name": "hero_title_big_2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Второе крупное слово/фраза (например: Электронной подписью)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Электронной подписью",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_hero_image",
+            "label": "Изображение Hero",
+            "name": "hero_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Баннер справа в Hero секции",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_hero_description",
+            "label": "Описание",
+            "name": "hero_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Текст описания под заголовком",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "УЦ e-Notary в партнерстве с рядом аккредитованных УЦ изготавливает и обслуживает сертификаты усиленной квалифицированной электронной подписи (УКЭП) для ЮЛ, ФЛ, ИП, для сотрудников ЮЛ и ИП, а также машиночитаемые доверенности (МЧД)",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_hero_info_text_1",
+            "label": "Дополнительная информация (1)",
+            "name": "hero_info_text_1",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Первый абзац дополнительной информации",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Сертификаты УКЭП отличаются наличием ряда расширений, позволяющих их владельцам работать на различных государственных и коммерческих ресурсах. <br class=\"hidden sm:block\">При заказе эти расширения включаются в состав базового сертификата, который сам по себе обеспечивает работу пользователей более чем на 52 площадках. (ссылка на список площадок)",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_hero_info_text_2",
+            "label": "Дополнительная информация (2)",
+            "name": "hero_info_text_2",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Второй абзац дополнительной информации",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Схемы получения сертификата зависят от статуса клиента (ЮЛ, ИП, ФЛ), наличия/отсутствия действующего сертификата УКЭП и возможности использования мобильного приложения Госключ для идентификации.",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_ukep_tab",
+            "label": "УКЭП - Схемы получения",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_ukep_section_title",
+            "label": "Заголовок секции УКЭП",
+            "name": "ukep_section_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Усиленная квалифицированная электронная подпись (УКЭП).<br class=\"hidden sm:block\">Схемы получения",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_ukep_cards",
+            "label": "Карточки схем УКЭП",
+            "name": "ukep_cards",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Добавьте карточки с описанием схем получения УКЭП",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_ukep_card_title",
+            "button_label": "Добавить карточку",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_ukep_card_icon",
+                    "label": "Иконка",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Иконка слева (цифра 1, 2, 3, 4)",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_ukep_cards"
+                },
+                {
+                    "key": "field_ukep_card_title",
+                    "label": "Заголовок",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "70",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "Например: Первичное получение УКЭП руководителем ЮЛ или ИП",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_ukep_cards"
+                },
+                {
+                    "key": "field_ukep_card_steps",
+                    "label": "Шаги схемы",
+                    "name": "steps",
+                    "aria-label": "",
+                    "type": "repeater",
+                    "instructions": "Добавьте шаги схемы получения. Ссылка опциональна.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "table",
+                    "pagination": 0,
+                    "min": 0,
+                    "max": 0,
+                    "collapsed": "field_ukep_step_text",
+                    "button_label": "Добавить шаг",
+                    "rows_per_page": 20,
+                    "parent_repeater": "field_ukep_cards",
+                    "sub_fields": [
+                        {
+                            "key": "field_ukep_step_text",
+                            "label": "Текст шага",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "Например: Выбор сертификата и необходимых расширений",
+                            "prepend": "",
+                            "append": "",
+                            "parent_repeater": "field_ukep_card_steps"
+                        },
+                        {
+                            "key": "field_ukep_step_link",
+                            "label": "Ссылка (опционально)",
+                            "name": "link",
+                            "aria-label": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "https://example.com",
+                            "parent_repeater": "field_ukep_card_steps"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "field_mchd_tab",
+            "label": "МЧД - Машиночитаемая доверенность",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_mchd_title",
+            "label": "Заголовок МЧД",
+            "name": "mchd_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "МЧД - машиночитаемая доверенность",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_mchd_description",
+            "label": "Описание МЧД",
+            "name": "mchd_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "С 1 сентября 2024 года машиночитаемая доверенность (МЧД) нужна всем сотрудникам, которые подписывают документы от имени компании.<br class=\"hidden sm:block\">МЧД — это электронный файл в формате XML, аналог бумажной доверенности, в котором указана информация о доверителе, уполномоченном лице и полномочиях, которые оно получает.",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_mchd_advantages_title",
+            "label": "Заголовок преимуществ",
+            "name": "mchd_advantages_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Преимущества для клиентов:",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_mchd_requirements_title",
+            "label": "Заголовок требований",
+            "name": "mchd_requirements_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Для создания МЧД необходимо:",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_mchd_advantages_items",
+            "label": "Преимущества (по одному на строку)",
+            "name": "mchd_advantages_items",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "МЧД для СФР, ФНС, ФТС или ЭДО (форматы 003, СФР)\nПодписание МЧД доверителем по уникальной ссылке в один клик\nХранение и доступность доверенности 24/7 по той же ссылке\nВозможность отмены МЧД доверителем",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_mchd_requirements_items",
+            "label": "Требования (по одному на строку)",
+            "name": "mchd_requirements_items",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "ИНН, СНИЛС и разворот паспорта физ. лица –представителя ЮЛ/ИП;\nИНН и наименование организации – доверителя;\nИНН, СНИЛС и разворот паспорта руководителя;\nНаименование площадки/площадок, для которых формируется МЧД.\nДелегируемые полномочия",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_mchd_how_title",
+            "label": "Заголовок 'Как работать'",
+            "name": "mchd_how_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Как работать с машиночитаемой доверенностью",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_mchd_how_text_1",
+            "label": "Текст инструкции (1)",
+            "name": "mchd_how_text_1",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Сначала ЮЛ или ИП должны заказать в УЦ сертификат УКЭП для своего сотрудника (как физического лица) и оформить МЧД, подписанную руководителем или ИП с использованием своей УКЭП и зарегистрировать ее в распределённом реестре ФНС. Подписание документов от имени ЮЛ или ИП будет осуществляться в связке УКЭП физического лица + МЧД.",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_mchd_how_text_2",
+            "label": "Текст инструкции (2)",
+            "name": "mchd_how_text_2",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "По каждой заявке на МЧД создается индивидуальная ссылка для дистанционного выпуска МЧД или для подписания доверенности руководителем или ИП. Эта ссылка не пропадает и, если клиент потерял архив с МЧД, он всегда сможет его заново скачать. Утилита подписания МЧД руководителем встроена внутри СРМ-системы УЦ и подписание происходит по кнопке \\\"Подписать\\\" прямо в ней.",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_unep_tab",
+            "label": "УНЭП",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_unep_title",
+            "label": "Заголовок УНЭП",
+            "name": "unep_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Усиленная неквалифицированная электронная подпись (УНЭП)",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_unep_paragraphs",
+            "label": "Абзацы текста (по одному на строку)",
+            "name": "unep_paragraphs",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Каждая строка = отдельный параграф",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "УНЭП, как правило, используется в корпоративных приложениях и системах и может выпускаться на основе индивидуальных регламентов.\nУЦ e-Notary оказывает услуги ФЛ и сотрудникам ЮЛ и ИП по изготовлению и обслуживанию сертификатов УНЭП\nУЦ работает в 2-х режимах: прямая выдача сертификатов и работа в режиме аутсорсинга.\nВ первом режиме запрос на сертификат поступает в УЦ и сертифицируется по письменному заявлению от ЮЛ по идентификации конкретного сотрудника или непосредственно от ФЛ\nВ режиме аутсорсинга у ЮЛ устанавливается АРМ <a href=\"https://www.signal-com.ru/products/pki/notary-pro-ra/\" class=\"font-bold text-sm md:text-base text-[#262626] leading-[1.15] underline hover:opacity-70 transition-opacity\">Центра Регистрации</a>, Администратор которого отвечает за формирование, подписание и отправку запросов в УЦ и идентификацию пользователей. Выпуск сертификатов УНЭП УЦ e-Notary производит в режиме on line.",
+            "maxlength": "",
+            "rows": 8,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_unep_image",
+            "label": "Изображение УНЭП",
+            "name": "unep_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Иллюстрация справа",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_type",
+                "operator": "==",
+                "value": "front_page"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content",
+        "excerpt",
+        "discussion",
+        "comments",
+        "revisions",
+        "slug",
+        "author",
+        "format",
+        "page_attributes",
+        "featured_image",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}
