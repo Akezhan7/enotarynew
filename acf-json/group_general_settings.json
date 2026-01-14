@@ -358,23 +358,76 @@
             "placeholder": "2025 © Компания"
         },
         {
-            "key": "field_footer_menu_1",
-            "label": "Колонка 1: Главная (не используется, выводится главное меню WP)",
-            "name": "footer_menu_1",
-            "type": "message",
-            "instructions": "",
+            "key": "field_footer_col1_title",
+            "label": "Колонка 1: Заголовок",
+            "name": "footer_col1_title",
+            "type": "text",
+            "instructions": "Заголовок первой колонки футера",
             "required": 0,
             "conditional_logic": 0,
-            "message": "В первой колонке футера автоматически выводится главное меню WordPress (menu-1). Редактируйте его в разделе \"Внешний вид > Меню\".",
-            "new_lines": "wpautop",
-            "esc_html": 0
+            "default_value": "Главная",
+            "placeholder": "Главная"
+        },
+        {
+            "key": "field_footer_menu_1",
+            "label": "Колонка 1: Ссылки меню",
+            "name": "footer_menu_1",
+            "type": "repeater",
+            "instructions": "Ссылки первой колонки: О нас, Новости, Telegram, Контакты",
+            "required": 0,
+            "conditional_logic": 0,
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Добавить ссылку",
+            "sub_fields": [
+                {
+                    "key": "field_footer_menu_1_text",
+                    "label": "Текст ссылки",
+                    "name": "text",
+                    "type": "text",
+                    "required": 1,
+                    "default_value": "",
+                    "placeholder": "О нас"
+                },
+                {
+                    "key": "field_footer_menu_1_url",
+                    "label": "URL",
+                    "name": "url",
+                    "type": "text",
+                    "required": 1,
+                    "default_value": "",
+                    "placeholder": "/page/ или https://site.com"
+                },
+                {
+                    "key": "field_footer_menu_1_target",
+                    "label": "Открывать в новой вкладке",
+                    "name": "target_blank",
+                    "type": "true_false",
+                    "required": 0,
+                    "default_value": 0,
+                    "ui": 1
+                }
+            ]
+        },
+        {
+            "key": "field_footer_col2_title",
+            "label": "Колонка 2: Заголовок",
+            "name": "footer_col2_title",
+            "type": "text",
+            "instructions": "Заголовок второй колонки футера",
+            "required": 0,
+            "conditional_logic": 0,
+            "default_value": "Наши услуги",
+            "placeholder": "Наши услуги"
         },
         {
             "key": "field_footer_menu_2",
-            "label": "Колонка 2: Информация (юридические документы)",
+            "label": "Колонка 2: Ссылки меню",
             "name": "footer_menu_2",
             "type": "repeater",
-            "instructions": "Ссылки на важные документы: Оферта, Регламент, Политика конфиденциальности и т.д.",
+            "instructions": "Ссылки второй колонки: Заказать УКЭП, МЧД, УНЭП, Сервер штампов времени",
             "required": 0,
             "conditional_logic": 0,
             "collapsed": "",
@@ -390,30 +443,81 @@
                     "type": "text",
                     "required": 1,
                     "default_value": "",
-                    "placeholder": "Договор оферты"
+                    "placeholder": "Заказать УКЭП"
                 },
                 {
                     "key": "field_footer_menu_2_url",
                     "label": "URL",
                     "name": "url",
-                    "type": "url",
+                    "type": "text",
                     "required": 1,
                     "default_value": "",
-                    "placeholder": "https://"
+                    "placeholder": "/page/ или https://site.com"
+                },
+                {
+                    "key": "field_footer_menu_2_target",
+                    "label": "Открывать в новой вкладке",
+                    "name": "target_blank",
+                    "type": "true_false",
+                    "required": 0,
+                    "default_value": 0,
+                    "ui": 1
                 }
             ]
         },
         {
-            "key": "field_footer_menu_3",
-            "label": "Колонка 3: Услуги (не используется)",
-            "name": "footer_menu_3",
-            "type": "message",
-            "instructions": "",
+            "key": "field_footer_col3_title",
+            "label": "Колонка 3: Заголовок",
+            "name": "footer_col3_title",
+            "type": "text",
+            "instructions": "Заголовок третьей колонки футера",
             "required": 0,
             "conditional_logic": 0,
-            "message": "В третьей колонке футера выводится одна ссылка \"ПО и Токены\" на страницу products-services. Редактировать через код.",
-            "new_lines": "wpautop",
-            "esc_html": 0
+            "default_value": "Программное обеспечение",
+            "placeholder": "Программное обеспечение"
+        },
+        {
+            "key": "field_footer_menu_3",
+            "label": "Колонка 3: Ссылки меню",
+            "name": "footer_menu_3",
+            "type": "repeater",
+            "instructions": "Ссылки третьей колонки: Криптопровайдер, Мульти-Инсталлятор, SmartToken-PRO",
+            "required": 0,
+            "conditional_logic": 0,
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Добавить ссылку",
+            "sub_fields": [
+                {
+                    "key": "field_footer_menu_3_text",
+                    "label": "Текст ссылки",
+                    "name": "text",
+                    "type": "text",
+                    "required": 1,
+                    "default_value": "",
+                    "placeholder": "Криптопровайдер Signal-COM CSP"
+                },
+                {
+                    "key": "field_footer_menu_3_url",
+                    "label": "URL",
+                    "name": "url",
+                    "type": "text",
+                    "required": 1,
+                    "default_value": "",
+                    "placeholder": "/page/ или https://site.com"
+                },
+                {
+                    "key": "field_footer_menu_3_target",
+                    "label": "Открывать в новой вкладке",
+                    "name": "target_blank",
+                    "type": "true_false",
+                    "required": 0,
+                    "default_value": 0,
+                    "ui": 1
+                }
+            ]
         },
         {
             "key": "field_social_tab",

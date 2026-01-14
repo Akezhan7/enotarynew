@@ -171,7 +171,9 @@ function initStickyHeader() {
             header.classList.remove('scrolled-up');
         }
         
-        // Скрываем/показываем шапку при скролле вниз/вверх
+        // ОТКЛЮЧЕНО: Скрытие шапки при скролле вниз
+        // Клиент попросил, чтобы шапка всегда была видна
+        /*
         if (currentScroll > scrollThreshold) {
             if (currentScroll > lastScroll && currentScroll - lastScroll > hideThreshold) {
                 // Скролл вниз - скрываем шапку
@@ -183,6 +185,7 @@ function initStickyHeader() {
                 header.classList.add('scrolled-up');
             }
         }
+        */
         
         lastScroll = currentScroll;
         ticking = false;

@@ -86,10 +86,10 @@ $payer_types = get_payer_types_options();
         </section>
 
         <!-- Усиленный неквалифицированный сертификат -->
-        <?php render_checklist_by_category( 'usilennyj-nekvalificzirovannyj-sertifikat', 'Усиленный неквалифицированный сертификат', array(), false ); ?>
+        <?php render_checklist_by_category( 'usilennyj-nekvalificzirovannyj-sertifikat', 'Усиленный неквалифицированный сертификат' ); ?>
 
         <!-- Аутсорсинг услуг Удостоверяющего Центра -->
-        <?php render_checklist_by_category( 'autsorsing-uslug-udostoveryayushhego-czentra', 'Аутсорсинг услуг Удостоверяющего Центра', array(), false ); ?>
+        <?php render_checklist_by_category( 'autsorsing-uslug-udostoveryayushhego-czentra', 'Аутсорсинг услуг Удостоверяющего Центра' ); ?>
 
         <!-- Всего -->
         <section class="obhs ibsh w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5 mb-6 sm:mb-8 md:mb-10">

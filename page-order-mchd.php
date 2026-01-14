@@ -86,7 +86,7 @@ $payer_types = get_payer_types_options();
         </section>
 
         <!-- Формат -->
-        <?php render_checklist_by_category( 'format', 'Формат', array(), false ); ?>
+        <?php render_checklist_by_category( 'format', 'Формат' ); ?>
 
         <!-- Всего -->
         <section class="obhs w-full responsive-container py-4 sm:py-5 flex flex-col gap-4 sm:gap-5 mb-6 sm:mb-8 md:mb-10">

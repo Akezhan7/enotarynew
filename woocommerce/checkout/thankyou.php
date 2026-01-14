@@ -59,9 +59,9 @@ defined( 'ABSPATH' ) || exit;
 				</div>
 
 				<!-- Информация о заказе (компактная таблица) -->
-				<ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-5 sm:mb-6 list-none p-0">
+				<ul class="woocommerce-order-overview woocommerce-thankyou-order-details order_details flex flex-wrap gap-3 sm:gap-4 mb-5 sm:mb-6 list-none p-0">
 
-					<li class="woocommerce-order-overview__order order bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3">
+					<li class="woocommerce-order-overview__order order bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3 flex-1 min-w-[140px] sm:min-w-[160px]">
 						<p class="text-[11px] sm:text-[12px] text-[#979797] uppercase font-semibold mb-1">
 							<?php esc_html_e( 'Order number:', 'woocommerce' ); ?>
 						</p>
@@ -70,7 +70,7 @@ defined( 'ABSPATH' ) || exit;
 						</strong>
 					</li>
 
-					<li class="woocommerce-order-overview__date date bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3">
+					<li class="woocommerce-order-overview__date date bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3 flex-1 min-w-[140px] sm:min-w-[160px]">
 						<p class="text-[11px] sm:text-[12px] text-[#979797] uppercase font-semibold mb-1">
 							<?php esc_html_e( 'Date:', 'woocommerce' ); ?>
 						</p>
@@ -79,8 +79,8 @@ defined( 'ABSPATH' ) || exit;
 						</strong>
 					</li>
 
-					<?php if ( is_user_logged_in() && $order->get_user_id() === get_current_user_id() && $order->get_billing_email() ) : ?>
-						<li class="woocommerce-order-overview__email email bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3">
+					<?php if ( $order->get_billing_email() ) : ?>
+						<li class="woocommerce-order-overview__email email bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3 flex-1 min-w-[140px] sm:min-w-[180px]">
 							<p class="text-[11px] sm:text-[12px] text-[#979797] uppercase font-semibold mb-1">
 								<?php esc_html_e( 'Email:', 'woocommerce' ); ?>
 							</p>
@@ -90,7 +90,7 @@ defined( 'ABSPATH' ) || exit;
 						</li>
 					<?php endif; ?>
 
-					<li class="woocommerce-order-overview__total total bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3">
+					<li class="woocommerce-order-overview__total total bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3 flex-1 min-w-[140px] sm:min-w-[160px]">
 						<p class="text-[11px] sm:text-[12px] text-[#979797] uppercase font-semibold mb-1">
 							<?php esc_html_e( 'Total:', 'woocommerce' ); ?>
 						</p>
@@ -100,7 +100,7 @@ defined( 'ABSPATH' ) || exit;
 					</li>
 
 					<?php if ( $order->get_payment_method_title() ) : ?>
-						<li class="woocommerce-order-overview__payment-method method bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3">
+						<li class="woocommerce-order-overview__payment-method method bg-gray-50 rounded-[10px] px-3 py-2.5 sm:px-4 sm:py-3 flex-1 min-w-[140px] sm:min-w-[180px]">
 							<p class="text-[11px] sm:text-[12px] text-[#979797] uppercase font-semibold mb-1">
 								<?php esc_html_e( 'Payment method:', 'woocommerce' ); ?>
 							</p>

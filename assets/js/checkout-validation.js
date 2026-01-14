@@ -346,7 +346,7 @@
             if (isIndividual) {
                 requiredFields.push('billing_inn', 'billing_passport_address', 'billing_postcode_custom');
             } else if (isEntrepreneur) {
-                requiredFields.push('billing_inn', 'billing_postcode_custom');
+                requiredFields.push('billing_inn', 'billing_passport_address', 'billing_postcode_custom');
             } else if (isLegal) {
                 requiredFields.push('billing_company', 'billing_inn', 'billing_kpp', 'billing_legal_address', 'billing_postcode_custom');
             }

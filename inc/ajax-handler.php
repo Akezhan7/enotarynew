@@ -62,36 +62,20 @@ function add_custom_bundle_to_cart() {
     // Счетчик добавленных товаров
     $added_count = 0;
     
-    // СНАЧАЛА добавляем товар типа плательщика (обязательный)
+    // Сохраняем тип плательщика в сессии (НЕ добавляем в корзину!)
+    // Тип плательщика используется только для выбора форм и способов оплаты
     if ( ! empty( $payer_type ) ) {
         WC()->session->set( 'active_payer_type', $payer_type );
         
-        // Добавление товара типа плательщика в корзину
+        // Получаем данные типа плательщика для label
         $payer_types_data = get_payer_types_options();
-        if ( isset( $payer_types_data[ $payer_type ] ) && ! empty( $payer_types_data[ $payer_type ]['product_id'] ) ) {
-            $payer_product_id = $payer_types_data[ $payer_type ]['product_id'];
-            $payer_product = wc_get_product( $payer_product_id );
-            
-            if ( $payer_product ) {
-                // Добавляем товар с метаданными о названии услуги
-                $cart_item_key = WC()->cart->add_to_cart( 
-                    $payer_product_id, 
-                    1,
-                    0,
-                    array(),
-                    array( 
-                        '_service_name' => $service_name,
-                        '_is_payer_type' => true
-                    )
-                );
-                if ( $cart_item_key ) {
-                    $added_count++;
-                }
-            }
+        if ( isset( $payer_types_data[ $payer_type ] ) ) {
+            $payer_label = $payer_types_data[ $payer_type ]['label'] ?? '';
+            WC()->session->set( 'payer_type_label', $payer_label );
         }
     }
     
-    // ПОТОМ добавляем дополнительные товары (необязательные)
+    // Добавляем только выбранные товары/услуги (БЕЗ типа плательщика)
     if ( ! empty( $items ) && is_array( $items ) ) {
         foreach ( $items as $item ) {
             $product_id = isset( $item['id'] ) ? intval( $item['id'] ) : 0;
@@ -125,14 +109,15 @@ function add_custom_bundle_to_cart() {
         }
     }
     
-    // Проверка что хотя бы один товар добавлен (как минимум тип плательщика)
-    if ( $added_count === 0 ) {
+    // Проверка что хотя бы один товар добавлен (валидация на клиенте должна это гарантировать)
+    // Но оставляем проверку для безопасности
+    if ( $added_count === 0 && empty( $items ) ) {
         wp_send_json_error( array(
-            'message' => 'Не удалось добавить товары в корзину. Проверьте наличие товаров.'
+            'message' => 'Не удалось добавить товары в корзину. Проверьте выбранные товары.'
         ) );
     }
     
-    // Сохранение ID базового товара
+    // Сохранение ID базового товара (для информации)
     if ( $base_product_id > 0 ) {
         WC()->session->set( 'base_product_id', $base_product_id );
     }

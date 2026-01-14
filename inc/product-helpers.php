@@ -122,6 +122,34 @@ function render_checklist_by_category( $category_slug, $section_title = '', $arg
         $product_description = $product->get_short_description();
         $index++;
         
+        // Получаем атрибуты товара для фильтрации по типу плательщика
+        $attributes = $product->get_attributes();
+        $payer_type_filter = '';
+        
+        // Ищем атрибут "для физ" или другие атрибуты для фильтрации
+        if ( ! empty( $attributes ) ) {
+            foreach ( $attributes as $attribute ) {
+                $attribute_name = $attribute->get_name();
+                
+                // DEBUG: Выводим все атрибуты товара
+                error_log( sprintf( 'Товар "%s": атрибут "%s"', $product_name, $attribute_name ) );
+                
+                // Проверяем разные варианты названия атрибута
+                if ( in_array( strtolower( $attribute_name ), array( 'для физ', 'dlya_fiz', 'dlya-fiz', 'pa_dlya-fiz', 'pa_dlya_fiz', 'pa_dlya_fiz' ) ) ) {
+                    $terms = $attribute->get_terms();
+                    if ( ! empty( $terms ) && is_array( $terms ) ) {
+                        $payer_type_filter = $terms[0]->slug;
+                        error_log( sprintf( 'Найден фильтр для "%s": %s (из terms)', $product_name, $payer_type_filter ) );
+                    } elseif ( ! empty( $attribute->get_options() ) ) {
+                        $options = $attribute->get_options();
+                        $payer_type_filter = is_array( $options ) ? reset( $options ) : $options;
+                        error_log( sprintf( 'Найден фильтр для "%s": %s (из options)', $product_name, $payer_type_filter ) );
+                    }
+                    break;
+                }
+            }
+        }
+        
         // Определяем, нужен ли border-b (для всех кроме последнего)
         $border_class = ( $index < $count ) ? 'border-b border-[rgba(0,0,0,0.05)]' : '';
         
@@ -132,7 +160,11 @@ function render_checklist_by_category( $category_slug, $section_title = '', $arg
         $wrapper_align = ! empty( $product_description ) ? 'items-start' : 'items-center';
         
         ?>
-        <div class="flex flex-wrap <?php echo esc_attr( $wrapper_align ); ?> gap-2 sm:gap-2.5 p-4 sm:p-5 <?php echo esc_attr( $border_class ); ?>">
+        <div class="flex flex-wrap <?php echo esc_attr( $wrapper_align ); ?> gap-2 sm:gap-2.5 p-4 sm:p-5 <?php echo esc_attr( $border_class ); ?>" 
+             <?php if ( ! empty( $payer_type_filter ) ) : ?>
+                data-payer-filter="<?php echo esc_attr( $payer_type_filter ); ?>"
+             <?php endif; ?>
+        >
             <div class="<?php echo esc_attr( $checkbox_class ); ?>"></div>
             <input 
                 type="checkbox" 

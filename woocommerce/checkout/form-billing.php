@@ -123,8 +123,10 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
             <div class="checkbox-custom-agree border-2 border-primary checked flex-shrink-0"></div>
             <input type="checkbox" name="personal_data_consent" id="personal_data_consent_individual" value="1" checked style="display:none;">
             <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
-                <p class="font-bold text-[14px] sm:text-[15px] lg:text-base text-[#262626] leading-[1.15]">Я согласен(-на)</p>
-                <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">на обработку персональных данных</p>
+                <p class="font-bold text-[14px] sm:text-[15px] lg:text-base text-[#262626] leading-[1.15]">Я согласен(-на) с</p>
+                <a href="<?php echo enotarynew_get_page_url_by_template('page-terms.php'); ?>" target="_blank" class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-primary leading-[1.15] underline hover:opacity-70 transition-opacity">условиями использования</a>
+                <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">и</p>
+                <a href="<?php echo enotarynew_get_page_url_by_template('page-politic.php'); ?>" target="_blank" class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-primary leading-[1.15] underline hover:opacity-70 transition-opacity">политикой конфиденциальности</a>
             </div>
         </div>
     </div>
@@ -248,8 +250,10 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
             <div class="checkbox-custom-agree border-2 border-primary checked flex-shrink-0"></div>
             <input type="checkbox" name="personal_data_consent" id="personal_data_consent_entrepreneur" value="1" checked style="display:none;">
             <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
-                <p class="font-bold text-[14px] sm:text-[15px] lg:text-base text-[#262626] leading-[1.15]">Я согласен(-на)</p>
-                <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">на обработку персональных данных</p>
+                <p class="font-bold text-[14px] sm:text-[15px] lg:text-base text-[#262626] leading-[1.15]">Я согласен(-на) с</p>
+                <a href="<?php echo enotarynew_get_page_url_by_template('page-terms.php'); ?>" target="_blank" class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-primary leading-[1.15] underline hover:opacity-70 transition-opacity">условиями использования</a>
+                <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">и</p>
+                <a href="<?php echo enotarynew_get_page_url_by_template('page-politic.php'); ?>" target="_blank" class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-primary leading-[1.15] underline hover:opacity-70 transition-opacity">политикой конфиденциальности</a>
             </div>
         </div>
     </div>
@@ -412,8 +416,10 @@ $payer_type = WC()->session->get( 'active_payer_type', 'individual' );
             <div class="checkbox-custom-agree border-2 border-primary checked flex-shrink-0"></div>
             <input type="checkbox" name="personal_data_consent" id="personal_data_consent_legal" value="1" checked style="display:none;">
             <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
-                <p class="font-bold text-[14px] sm:text-[15px] lg:text-base text-[#262626] leading-[1.15]">Я согласен(-на)</p>
-                <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">на обработку персональных данных</p>
+                <p class="font-bold text-[14px] sm:text-[15px] lg:text-base text-[#262626] leading-[1.15]">Я согласен(-на) с</p>
+                <a href="<?php echo enotarynew_get_page_url_by_template('page-terms.php'); ?>" target="_blank" class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-primary leading-[1.15] underline hover:opacity-70 transition-opacity">условиями использования</a>
+                <p class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-secondary leading-[1.15]">и</p>
+                <a href="<?php echo enotarynew_get_page_url_by_template('page-politic.php'); ?>" target="_blank" class="font-semibold text-[12px] sm:text-[13px] lg:text-sm text-primary leading-[1.15] underline hover:opacity-70 transition-opacity">политикой конфиденциальности</a>
             </div>
         </div>
     </div>

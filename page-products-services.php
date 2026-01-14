@@ -28,14 +28,14 @@ get_header();
             </section>
 
             <!-- Программное обеспечение -->
-            <section class="flex flex-col gap-5 py-5">
+            <section id="csp" class="flex flex-col gap-5 py-5">
                 <div class="flex items-center justify-between" data-aos="fade-right" data-aos-delay="150">
                     <h2 class="font-bold text-[24px] sm:text-[28px] md:text-[32px] text-[#262626] leading-[1.15]">Программное обеспечение</h2>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <!-- Карточка 1 -->
-                    <a href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="200">
+                    <a id="csp-card" href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="200">
                         <div class="w-[68px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/signal-com-csp.png" alt="Signal-COM CSP" class="w-full h-full object-cover">
                         </div>
@@ -46,7 +46,7 @@ get_header();
                     </a>
                     
                     <!-- Карточка 2 -->
-                    <a href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="250">
+                    <a id="installer" href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="250">
                         <div class="w-[68px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/multi-installer.png" alt="Мульти-Инсталлятор" class="w-full h-full object-cover">
                         </div>
@@ -64,14 +64,14 @@ get_header();
             </section>
 
             <!-- Токены -->
-            <section class="flex flex-col gap-5 py-5">
+            <section id="smarttoken" class="flex flex-col gap-5 py-5">
                 <div class="flex items-center justify-between" data-aos="fade-right" data-aos-delay="300">
                     <h2 class="font-bold text-[24px] sm:text-[28px] md:text-[32px] text-[#262626] leading-[1.15]">Токены</h2>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <!-- Карточка 1 -->
-                    <a href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="350">
+                    <a id="smarttoken-card" href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="350">
                         <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/smarttoken-pro.png" alt="SmartToken-PRO" class="w-full h-full object-cover">
                         </div>
@@ -103,7 +103,7 @@ get_header();
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Карточка 1 -->
                     <a href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="500">
-                        <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                        <div class="w-[70px] h-[70px] rounded-[20px] overflow-hidden flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/settings-icon.png" alt="Настройка" class="w-full h-full object-cover">
                         </div>
                         <div class="flex flex-col gap-2.5 flex-1 p-2.5">
@@ -114,7 +114,7 @@ get_header();
                     
                     <!-- Карточка 2 -->
                     <a href="<?php echo enotarynew_get_page_url_by_template('page-order-ukep.php'); ?>" class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer no-underline" data-aos="zoom-in" data-aos-delay="550">
-                        <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                        <div class="w-[70px] h-[70px] rounded-[20px] overflow-hidden flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/multi-installer.png" alt="Штампы времени" class="w-full h-full object-cover">
                         </div>
                         <div class="flex flex-col gap-2.5 flex-1 p-2.5">
@@ -125,7 +125,7 @@ get_header();
                     
                     <!-- Карточка 3 - Локальная проверка УКЭП (открывает модальное окно) -->
                     <div class="card-hover bg-white rounded-[30px] shadow-[0px_0px_15px_0px_rgba(161,161,161,0.1)] p-2.5 flex gap-2.5 items-center cursor-pointer" data-aos="zoom-in" data-aos-delay="600" id="openVerificationModal">
-                        <div class="w-[100px] h-[100px] rounded-[20px] overflow-hidden flex-shrink-0">
+                        <div class="w-[70px] h-[70px] rounded-[20px] overflow-hidden flex-shrink-0">
                             <img src="<?php echo get_template_directory_uri(); ?>/figma-downloads/verification-icon.png" alt="Проверка" class="w-full h-full object-cover">
                         </div>
                         <div class="flex flex-col gap-2.5 flex-1 p-2.5">

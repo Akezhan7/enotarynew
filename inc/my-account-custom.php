@@ -32,16 +32,17 @@ function enotary_display_customer_order_info( $order ) {
     
     echo '<div class="enotary-customer-blocks">';
     
-    // БЛОК 1: Сертификат ЭП
+    // BLOCK 1: Сертификат ЭП
     enotary_display_certificate_block( $order );
     
-    // БЛОК 2: Лицензии и ПО
-    enotary_display_software_block( $order );
+    // BLOCK 2: Лицензии и ПО
+    // enotary_display_software_block( $order );
     
-    // БЛОК 3: Реферальные ссылки для расширений
-    enotary_display_referral_links_block( $order );
+    // BLOCK 3: Реферальные ссылки для расширений
+    // ОТКЛЮЧЕНО: Клиент попросил убрать блок "Полезные ссылки для работы"
+    // enotary_display_referral_links_block( $order );
     
-    // БЛОК 4: Инструкции для УНЭП
+    // BLOCK 4: Инструкции для УНЭП
     enotary_display_unep_instructions_block( $order );
     
     echo '</div>';

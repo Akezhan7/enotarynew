@@ -15,6 +15,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * ============================================
+ * ОТКЛЮЧЕНИЕ СТАНДАРТНЫХ NOTICES WOOCOMMERCE
+ * ============================================
+ */
+
+/**
+ * Убрать стандартные сообщения об ошибках WooCommerce на странице checkout
+ * Используется кастомная JS валидация, дублирующие сообщения не нужны
+ */
+add_action( 'wp_enqueue_scripts', 'enotary_hide_checkout_notices_css', 100 );
+function enotary_hide_checkout_notices_css() {
+    if ( is_checkout() && ! is_wc_endpoint_url() ) {
+        wp_add_inline_style( 'woocommerce-general', '
+            .woocommerce-NoticeGroup,
+            .woocommerce-error,
+            .woocommerce-message,
+            .woocommerce-info,
+            ul.woocommerce-error {
+                display: none !important;
+            }
+        ' );
+    }
+}
+
+/**
+ * ============================================
  * ОТКЛЮЧЕНИЕ СТАНДАРТНЫХ ПОЛЕЙ WOOCOMMERCE
  * ============================================
  */
@@ -278,59 +303,62 @@ add_action( 'wp_enqueue_scripts', 'enotary_localize_checkout_fields', 999 );
  */
 
 /**
- * Принудительная регистрация перед чекаутом
+ * ОТКЛЮЧЕНО: Клиент отказался от личного кабинета (Пункт 8 замечаний - 24.12.2025)
  * 
+ * Принудительная регистрация перед чекаутом
  * Редиректит незалогиненных пользователей на страницу входа
  * с передачей URL возврата через GET параметр
+ * 
+ * Для включения обратно: раскомментировать код ниже
  */
-add_action( 'template_redirect', 'enotary_force_login_before_checkout' );
+// add_action( 'template_redirect', 'enotary_force_login_before_checkout' );
 
-function enotary_force_login_before_checkout() {
-    // Проверка: это страница чекаута?
-    if ( is_checkout() && ! is_user_logged_in() && ! is_wc_endpoint_url( 'order-received' ) ) {
-        // Получаем URL чекаута для возврата
-        $checkout_url = wc_get_checkout_url();
-        
-        // Редирект на страницу my-account с параметром redirect_to
-        $login_url = add_query_arg( 'redirect_to', urlencode( $checkout_url ), wc_get_page_permalink( 'myaccount' ) );
-        wp_redirect( $login_url );
-        exit;
-    }
-}
+// function enotary_force_login_before_checkout() {
+//     // Проверка: это страница чекаута?
+//     if ( is_checkout() && ! is_user_logged_in() && ! is_wc_endpoint_url( 'order-received' ) ) {
+//         // Получаем URL чекаута для возврата
+//         $checkout_url = wc_get_checkout_url();
+//         
+//         // Редирект на страницу my-account с параметром redirect_to
+//         $login_url = add_query_arg( 'redirect_to', urlencode( $checkout_url ), wc_get_page_permalink( 'myaccount' ) );
+//         wp_redirect( $login_url );
+//         exit;
+//     }
+// }
 
 /**
- * Редирект на чекаут после успешного входа
+ * ОТКЛЮЧЕНО: Редирект на чекаут после успешного входа
  */
-add_filter( 'woocommerce_login_redirect', 'enotary_redirect_after_login', 10, 2 );
+// add_filter( 'woocommerce_login_redirect', 'enotary_redirect_after_login', 10, 2 );
 
-function enotary_redirect_after_login( $redirect, $user ) {
-    // Эта функция не будет вызываться для template-login.php
-    // Оставляем для совместимости с WooCommerce формами, если они используются где-то еще
-    if ( isset( $_REQUEST['redirect_to'] ) && ! empty( $_REQUEST['redirect_to'] ) ) {
-        $redirect_to = esc_url_raw( urldecode( $_REQUEST['redirect_to'] ) );
-        if ( strpos( $redirect_to, 'checkout' ) !== false ) {
-            return $redirect_to;
-        }
-    }
-    return $redirect;
-}
+// function enotary_redirect_after_login( $redirect, $user ) {
+//     // Эта функция не будет вызываться для template-login.php
+//     // Оставляем для совместимости с WooCommerce формами, если они используются где-то еще
+//     if ( isset( $_REQUEST['redirect_to'] ) && ! empty( $_REQUEST['redirect_to'] ) ) {
+//         $redirect_to = esc_url_raw( urldecode( $_REQUEST['redirect_to'] ) );
+//         if ( strpos( $redirect_to, 'checkout' ) !== false ) {
+//             return $redirect_to;
+//         }
+//     }
+//     return $redirect;
+// }
 
 /**
- * Редирект на чекаут после успешной регистрации
+ * ОТКЛЮЧЕНО: Редирект на чекаут после успешной регистрации
  */
-add_filter( 'woocommerce_registration_redirect', 'enotary_redirect_after_registration', 10, 1 );
+// add_filter( 'woocommerce_registration_redirect', 'enotary_redirect_after_registration', 10, 1 );
 
-function enotary_redirect_after_registration( $redirect ) {
-    // Эта функция не будет вызываться для template-register.php
-    // Оставляем для совместимости с WooCommerce формами, если они используются где-то еще
-    if ( isset( $_REQUEST['redirect_to'] ) && ! empty( $_REQUEST['redirect_to'] ) ) {
-        $redirect_to = esc_url_raw( urldecode( $_REQUEST['redirect_to'] ) );
-        if ( strpos( $redirect_to, 'checkout' ) !== false ) {
-            return $redirect_to;
-        }
-    }
-    return $redirect;
-}
+// function enotary_redirect_after_registration( $redirect ) {
+//     // Эта функция не будет вызываться для template-register.php
+//     // Оставляем для совместимости с WooCommerce формами, если они используются где-то еще
+//     if ( isset( $_REQUEST['redirect_to'] ) && ! empty( $_REQUEST['redirect_to'] ) ) {
+//         $redirect_to = esc_url_raw( urldecode( $_REQUEST['redirect_to'] ) );
+//         if ( strpos( $redirect_to, 'checkout' ) !== false ) {
+//             return $redirect_to;
+//         }
+//     }
+//     return $redirect;
+// }
 
 /**
  * ============================================
@@ -374,11 +402,11 @@ function enotary_filter_payment_gateways( $gateways ) {
         }
     }
     
-    // ФЛ и ИП - чековые платежи (cheque) + robokassa
+    // ФЛ и ИП - только Робокасса
     elseif ( $payer_type === 'individual' || $payer_type === 'entrepreneur' ) {
         foreach ( $gateways as $key => $gateway ) {
-            // Оставляем только cheque и robokassa для физ. лиц и ИП
-            if ( $key !== 'cheque' && $key !== 'robokassa' ) {
+            // Оставляем только robokassa для физ. лиц и ИП
+            if ( $key !== 'robokassa' ) {
                 unset( $gateways[ $key ] );
             }
         }
@@ -589,11 +617,12 @@ function enotary_autofill_hidden_fields( $data, $errors ) {
 
 /**
  * Валидация кастомных полей при оформлении заказа
+ * ОТКЛЮЧЕНО: Используется только JavaScript валидация для лучшего UX
  * 
  * @param array $data Данные чекаута
  * @param WP_Error $errors Объект ошибок
  */
-add_action( 'woocommerce_after_checkout_validation', 'enotary_validate_custom_checkout_fields', 10, 2 );
+// add_action( 'woocommerce_after_checkout_validation', 'enotary_validate_custom_checkout_fields', 10, 2 );
 
 function enotary_validate_custom_checkout_fields( $data, $errors ) {
     // Проверка ИНН (если заполнен)

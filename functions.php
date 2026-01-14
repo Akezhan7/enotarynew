@@ -507,14 +507,33 @@ function enotarynew_get_page_url_by_template( $template ) {
  * Регистрация страницы настроек ACF для E-Notary
  */
 if( function_exists('acf_add_options_page') ) {
+	// Главная страница настроек
 	acf_add_options_page(array(
 		'page_title' 	=> 'Настройки E-Notary',
 		'menu_title'	=> 'E-Notary',
 		'menu_slug' 	=> 'enotary-settings',
 		'capability'	=> 'edit_posts',
 		'icon_url'		=> 'dashicons-admin-generic',
-		'redirect'		=> false,
+		'redirect'		=> true, // Перенаправляем на первую подстраницу
 		'position'		=> 58,
+	));
+
+	// Подстраница: Общие настройки сайта
+	acf_add_options_sub_page(array(
+		'page_title' 	=> 'Общие настройки сайта',
+		'menu_title'	=> 'Общие настройки',
+		'menu_slug' 	=> 'theme-general-settings',
+		'parent_slug'	=> 'enotary-settings',
+		'capability'	=> 'edit_posts',
+	));
+
+	// Подстраница: Настройки магазина
+	acf_add_options_sub_page(array(
+		'page_title' 	=> 'Настройки магазина',
+		'menu_title'	=> 'Настройки магазина',
+		'menu_slug' 	=> 'theme-shop-settings',
+		'parent_slug'	=> 'enotary-settings',
+		'capability'	=> 'edit_posts',
 	));
 }
 
@@ -641,8 +660,18 @@ function enotary_custom_register_page() {
 add_action( 'after_setup_theme', 'enotary_custom_register_page' );
 
 /**
- * Редирект со стандартной страницы входа wp-login.php на кастомную
+ * НОВОЕ: Включить гостевой checkout (24.12.2025 - Пункт 8)
+ * Позволяет оформлять заказы БЕЗ регистрации
  */
+add_filter( 'woocommerce_checkout_registration_required', '__return_false' );
+add_filter( 'woocommerce_enable_guest_checkout', '__return_true' );
+
+/**
+ * ОТКЛЮЧЕНО: Редирект со стандартной страницы входа wp-login.php на кастомную
+ * (Клиент отказался от ЛК - 24.12.2025)
+ */
+/*
+/*
 function enotary_redirect_login_page() {
     $page_viewed = basename( $_SERVER['REQUEST_URI'] );
     
@@ -652,45 +681,58 @@ function enotary_redirect_login_page() {
     }
 }
 add_action( 'init', 'enotary_redirect_login_page' );
+*/
 
 /**
- * Редирект после выхода на страницу входа
+ * ОТКЛЮЧЕНО: Редирект после выхода на страницу входа
  */
+/*
 function enotary_logout_redirect() {
     wp_redirect( home_url( '/vkhod/' ) );
     exit;
 }
 add_action( 'wp_logout', 'enotary_logout_redirect' );
+*/
 
 /**
- * Изменение URL страницы входа в WordPress
+ * ОТКЛЮЧЕНО: Изменение URL страницы входа в WordPress
  */
+/*
 function enotary_custom_login_url( $login_url ) {
     return home_url( '/vkhod/' );
 }
 add_filter( 'login_url', 'enotary_custom_login_url' );
+*/
 
 /**
- * Изменение URL страницы регистрации в WordPress
+ * ОТКЛЮЧЕНО: Изменение URL страницы регистрации в WordPress
  */
+/*
 function enotary_custom_register_url( $register_url ) {
     return home_url( '/registratsiya/' );
 }
 add_filter( 'register_url', 'enotary_custom_register_url' );
+*/
 
 /**
- * Включить регистрацию пользователей
+ * ОТКЛЮЧЕНО: Включить регистрацию пользователей
+ * (Теперь не требуется - гостевой checkout активен)
  */
+/*
 function enotary_enable_user_registration() {
     update_option( 'users_can_register', 1 );
 }
 add_action( 'after_setup_theme', 'enotary_enable_user_registration' );
+*/
 
 /**
- * "Ядерный вариант" - Полная замена шаблона страницы входа WooCommerce
+ * ОТКЛЮЧЕНО: "Ядерный вариант" - Полная замена шаблона страницы входа WooCommerce
+ * (Клиент отказался от ЛК - 24.12.2025)
+ * 
  * Если пользователь НЕ залогинен на странице "Мой аккаунт" - загружаем template-login.php
  * Это гарантирует 100% идентичность визуала
  */
+/*
 function enotary_replace_wc_login_template() {
     // Проверяем: это страница "Мой аккаунт" И пользователь НЕ залогинен
     if ( is_account_page() && ! is_user_logged_in() ) {
@@ -705,6 +747,7 @@ function enotary_replace_wc_login_template() {
     }
 }
 add_action( 'template_redirect', 'enotary_replace_wc_login_template', 1 );
+*/
 
 /**
  * Редирект со страницы корзины на главную
@@ -717,3 +760,40 @@ function enotary_redirect_cart_to_home() {
     }
 }
 add_action( 'template_redirect', 'enotary_redirect_cart_to_home' );
+
+/**
+ * Редирект со страницы каталога (Shop) на главную
+ * Каталог не используется - товары выбираются на страницах заказа
+ */
+function enotary_redirect_shop_to_home() {
+    if ( is_shop() ) {
+        wp_safe_redirect( home_url() );
+        exit;
+    }
+}
+add_action( 'template_redirect', 'enotary_redirect_shop_to_home' );
+
+add_filter( 'upload_mimes', 'allow_svg_upload' );
+
+function allow_svg_upload( $mimes ) {
+    // Разрешаем SVG
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+}
+
+// Исправление для предварительного просмотра SVG в медиабиблиотеке (необязательно, но удобно)
+add_action( 'admin_head', 'fix_svg_thumb_display' );
+function fix_svg_thumb_display() {
+    echo '<style>
+        td.media-icon img[src$=".svg"], img[src$=".svg"].attachment-post-thumbnail {
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>';
+}
+
+/**
+ * Убрать ссылки с товаров на странице благодарности (Thank You Page)
+ * Товары должны отображаться просто текстом без возможности клика
+ */
+add_filter( 'woocommerce_order_item_permalink', '__return_false' );

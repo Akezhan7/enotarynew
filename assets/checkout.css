@@ -50,47 +50,69 @@
     float: none !important;
 }
 
-/* Кастомные поля чекаута */
-.enotary-field-inn input,
-.enotary-field-kpp input,
-.enotary-field-okpo input,
-.enotary-field-company input,
-.enotary-field-address input,
-.enotary-field-legal-address input,
-.enotary-field-postcode input {
-    background: white !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
-    border-radius: 8px !important;
-    padding: 12px 14px !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
+/* Кастомные поля чекаута - переопределяем text-secondary для введенного текста */
+#billing_first_name,
+#billing_phone_individual, 
+#billing_phone_entrepreneur, 
+#billing_phone_legal,
+#billing_email_individual, 
+#billing_email_entrepreneur, 
+#billing_email_legal,
+#billing_inn_individual,
+#billing_inn_entrepreneur,
+#billing_inn_legal,
+#billing_kpp,
+#billing_okpo,
+#billing_company,
+#billing_passport_address,
+#billing_legal_address,
+#billing_postcode_custom_individual,
+#billing_postcode_custom_entrepreneur,
+#billing_postcode_custom_legal,
+input[name="billing_first_name"],
+input[name="billing_phone"],
+input[name="billing_email"],
+input[name="billing_inn"],
+input[name="billing_kpp"],
+input[name="billing_okpo"],
+input[name="billing_company"],
+input[name="billing_passport_address"],
+input[name="billing_legal_address"],
+input[name="billing_postcode_custom"] {
+    color: #262626 !important; /* Черный цвет для введенного текста вместо серого text-secondary */
+}
+
+/* Placeholder серого цвета - оставляем как есть */
+#billing_first_name::placeholder,
+#billing_phone_individual::placeholder, 
+#billing_phone_entrepreneur::placeholder, 
+#billing_phone_legal::placeholder,
+#billing_email_individual::placeholder, 
+#billing_email_entrepreneur::placeholder, 
+#billing_email_legal::placeholder,
+#billing_inn_individual::placeholder,
+#billing_inn_entrepreneur::placeholder,
+#billing_inn_legal::placeholder,
+#billing_kpp::placeholder,
+#billing_okpo::placeholder,
+#billing_company::placeholder,
+#billing_passport_address::placeholder,
+#billing_legal_address::placeholder,
+#billing_postcode_custom_individual::placeholder,
+#billing_postcode_custom_entrepreneur::placeholder,
+#billing_postcode_custom_legal::placeholder,
+input[name="billing_first_name"]::placeholder,
+input[name="billing_phone"]::placeholder,
+input[name="billing_email"]::placeholder,
+input[name="billing_inn"]::placeholder,
+input[name="billing_kpp"]::placeholder,
+input[name="billing_okpo"]::placeholder,
+input[name="billing_company"]::placeholder,
+input[name="billing_passport_address"]::placeholder,
+input[name="billing_legal_address"]::placeholder,
+input[name="billing_postcode_custom"]::placeholder {
     color: #979797 !important;
-    transition: border-color 0.3s ease !important;
-}
-
-.enotary-field-inn input:focus,
-.enotary-field-kpp input:focus,
-.enotary-field-okpo input:focus,
-.enotary-field-company input:focus,
-.enotary-field-address input:focus,
-.enotary-field-legal-address input:focus,
-.enotary-field-postcode input:focus {
-    border-color: #375d74 !important;
-    outline: none !important;
-}
-
-/* Лейблы полей */
-.enotary-field-inn label,
-.enotary-field-kpp label,
-.enotary-field-okpo label,
-.enotary-field-company label,
-.enotary-field-address label,
-.enotary-field-legal-address label,
-.enotary-field-postcode label {
-    font-weight: 600 !important;
-    font-size: 15px !important;
-    color: #262626 !important;
-    margin-bottom: 8px !important;
+    opacity: 1 !important;
 }
 
 /* Сообщения валидации */
@@ -174,8 +196,29 @@
 
 .woocommerce-checkout #payment ul.payment_methods li label {
     font-weight: 600;
-    color: #262626;
+    color: #262626 !important;
     cursor: pointer;
+}
+
+/* Описание метода оплаты */
+.woocommerce-checkout #payment ul.payment_methods li .payment_box {
+    color: #666 !important;
+    background: #f9f9f9;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods li .payment_box div,
+.woocommerce-checkout #payment ul.payment_methods li .payment_box span {
+    color: #666 !important;
+}
+
+/* Робокасса - все тексты видимы */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_robokassa label,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_robokassa * {
+    color: #262626 !important;
 }
 
 /* Кнопка оформления заказа */

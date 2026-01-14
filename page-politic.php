@@ -30,7 +30,7 @@ get_header();
         <!-- Основной контент -->
         <section class="w-full responsive-container py-6 sm:py-8 md:py-10">
             <div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-[15px] sm:rounded-[20px] p-6 sm:p-8 md:p-10">
-                <div class="prose max-w-none">
+                <div class="prose max-w-none entry-content">
                     <?php
                     if (have_posts()) :
                         while (have_posts()) : the_post();

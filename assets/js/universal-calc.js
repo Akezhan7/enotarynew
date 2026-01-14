@@ -33,15 +33,99 @@
         
         /**
          * Обновить базовую цену при выборе типа плательщика
+         * ВАЖНО: Базовая цена НЕ добавляется автоматически в итог!
+         * Она добавится только если чекбокс типа плательщика будет отмечен
          */
         function updateBasePrice($element) {
-            basePrice = parseFloat($element.attr('data-base-price')) || 0;
+            // Сохраняем данные, но НЕ добавляем в basePrice
+            basePrice = 0; // Базовая цена = 0, цена добавится только через чекбокс
             baseProductId = parseInt($element.attr('data-base-id')) || 0;
             currentPayerType = $element.val() || '';
             
-            console.log('Базовая цена обновлена:', basePrice, 'ID товара:', baseProductId, 'Тип:', currentPayerType);
+            console.log('Тип плательщика выбран:', currentPayerType, 'ID товара:', baseProductId, '(цена НЕ добавлена автоматически)');
+            
+            // Фильтруем товары по типу плательщика
+            filterProductsByPayerType(currentPayerType);
             
             updateTotalPrice();
+        }
+        
+        /**
+         * Фильтрация товаров по типу плательщика
+         * Показывает/скрывает товары с атрибутом data-payer-filter
+         */
+        function filterProductsByPayerType(payerType) {
+            console.log('=== НАЧАЛО ФИЛЬТРАЦИИ ===');
+            console.log('Выбранный тип плательщика:', payerType);
+            
+            // Если тип плательщика не выбран - показываем все товары
+            if (!payerType) {
+                console.log('Тип не выбран, показываем все товары');
+                $('[data-payer-filter]').show();
+                return;
+            }
+            
+            // Проходим по всем товарам с атрибутом data-payer-filter
+            $('[data-payer-filter]').each(function() {
+                const $item = $(this);
+                const itemFilter = $item.attr('data-payer-filter');
+                const productName = $item.find('.service-name').text().trim() || 'Без названия';
+                
+                console.log('---');
+                console.log('Товар:', productName);
+                console.log('Атрибут фильтра:', itemFilter);
+                
+                if (!itemFilter) {
+                    // Если фильтра нет - показываем для всех
+                    console.log('→ Фильтра нет, показываем');
+                    $item.show();
+                    return;
+                }
+                
+                // Проверяем, содержит ли значение атрибута ключевое слово типа плательщика
+                // individual -> ищем 'fiz'/'физ' или 'individual' в значении атрибута
+                // entrepreneur -> ищем 'ip'/'ип' или 'entrepreneur' в значении атрибута  
+                // legal -> ищем 'yur'/'юр' или 'legal' в значении атрибута
+                let shouldShow = false;
+                const filterLower = itemFilter.toLowerCase();
+                
+                console.log('Фильтр (lowercase):', filterLower);
+                
+                if (payerType === 'individual' && (filterLower.includes('fiz') || filterLower.includes('физ') || filterLower.includes('individual'))) {
+                    shouldShow = true;
+                    console.log('→ Совпадение с individual (содержит fiz/физ/individual)');
+                } else if (payerType === 'entrepreneur' && (filterLower.includes('ip') || filterLower.includes('ип') || filterLower.includes('entrepreneur'))) {
+                    shouldShow = true;
+                    console.log('→ Совпадение с entrepreneur (содержит ip/ип/entrepreneur)');
+                } else if (payerType === 'legal' && (filterLower.includes('yur') || filterLower.includes('юр') || filterLower.includes('legal'))) {
+                    shouldShow = true;
+                    console.log('→ Совпадение с legal (содержит yur/юр/legal)');
+                } else {
+                    console.log('→ НЕ совпадает с типом', payerType);
+                }
+                
+                if (shouldShow) {
+                    console.log('→ ПОКАЗЫВАЕМ товар');
+                    $item.show();
+                } else {
+                    console.log('→ СКРЫВАЕМ товар');
+                    // Иначе скрываем и снимаем галочку
+                    $item.hide();
+                    const $checkbox = $item.find('.service-checkbox');
+                    if ($checkbox.is(':checked')) {
+                        $checkbox.prop('checked', false);
+                        // Обновляем визуальный чекбокс
+                        $item.find('.checkbox-custom').removeClass('checked');
+                        // Сбрасываем количество
+                        const $quantity = $item.find('.quantity-value');
+                        if ($quantity.length > 0) {
+                            $quantity.text('0');
+                        }
+                    }
+                }
+            });
+            
+            console.log('=== КОНЕЦ ФИЛЬТРАЦИИ ===');
         }
         
         /**
@@ -73,15 +157,16 @@
         
         /**
          * Обновить общую стоимость
+         * Теперь ВСЯ стоимость идет только из выбранных чекбоксов (включая тип плательщика)
          */
         function updateTotalPrice() {
             const extrasPrice = calculateExtrasPrice();
-            const totalPrice = basePrice + extrasPrice;
+            const totalPrice = extrasPrice; // Базовая цена = 0, все через чекбоксы
             
             // Обновляем отображение цены
             $('.total-price').text(formatPrice(totalPrice) + '₽');
             
-            console.log('Итого:', totalPrice, '(База:', basePrice, '+ Допы:', extrasPrice + ')');
+            console.log('Итого:', totalPrice, '(Выбранные товары)');
         }
         
         /**
@@ -101,8 +186,15 @@
             // baseProductId используется только для валидации и передается отдельно
             
             // Добавляем выбранные дополнительные товары с количеством
+            // ИСКЛЮЧАЕМ чекбокс типа плательщика (он идентифицируется по baseProductId)
             $('.service-checkbox:checked').each(function() {
                 const productId = parseInt($(this).attr('data-product-id')) || 0;
+                
+                // ВАЖНО: Пропускаем товар типа плательщика, чтобы не было дублирования
+                if (productId === baseProductId) {
+                    console.log('Пропускаем товар типа плательщика (добавится на сервере):', productId);
+                    return; // continue
+                }
                 
                 // Находим главный контейнер для этого чекбокса
                 const $mainContainer = $(this).closest('.flex');
@@ -141,13 +233,25 @@
             
             console.log('Отправка в корзину:', cartData);
             
-            // Проверка что выбран тип плательщика (достаточно только его, дополнения необязательны)
+            // Проверка 1: Обязательно должен быть выбран тип плательщика
             if (!cartData.payer_type || cartData.base_product_id <= 0) {
                 console.error('Валидация не прошла:', {
                     payer_type: cartData.payer_type,
                     base_product_id: cartData.base_product_id
                 });
-                alert('Пожалуйста, выберите тип плательщика');
+                alert('Пожалуйста, выберите тип плательщика (Физическое лицо / ИП / Юридическое лицо)');
+                return;
+            }
+            
+            // Проверка 2: Должен быть выбран хотя бы один товар/услуга (кроме типа плательщика)
+            // Считаем чекбоксы, исключая тип плательщика
+            const selectedItemsCount = $('.service-checkbox:checked').filter(function() {
+                const productId = parseInt($(this).attr('data-product-id')) || 0;
+                return productId !== cartData.base_product_id;
+            }).length;
+            
+            if (selectedItemsCount === 0) {
+                alert('Пожалуйста, выберите хотя бы один сертификат или дополнительную услугу');
                 return;
             }
             

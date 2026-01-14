@@ -127,6 +127,15 @@ function enotary_validate_entrepreneur_fields() {
         }
     }
     
+    // Адрес (по паспорту) - ОБЯЗАТЕЛЬНОЕ (минимум 5 символов)
+    enotary_validate_required_field( 'billing_passport_address', 'Адрес (по паспорту)' );
+    
+    if ( ! empty( $_POST['billing_passport_address'] ) ) {
+        if ( strlen( trim( $_POST['billing_passport_address'] ) ) < 5 ) {
+            wc_add_notice( 'Адрес должен содержать минимум 5 символов', 'error' );
+        }
+    }
+    
     // Почтовый индекс (6 цифр) - ОБЯЗАТЕЛЬНОЕ
     enotary_validate_required_field( 'billing_postcode_custom', 'Почтовый индекс' );
     

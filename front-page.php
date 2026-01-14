@@ -38,16 +38,16 @@ $unep_image = get_field('unep_image') ?: get_template_directory_uri() . '/figma-
         <div class="hero-section-wrapper w-full">
             <!-- Герой секция -->
             <section class="w-full responsive-container py-[20px] lg:py-[50px] flex items-center justify-between">
-                <div class="w-full max-w-[1432px] flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-12 items-center justify-between">
+                <div class="w-full max-w-[1432px] flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-6 items-center justify-between">
                     <!-- Левая часть: текстовый контент -->
-                    <div class="flex flex-col items-start justify-center leading-[1.15] w-full lg:w-1/2" data-aos="fade-right" data-aos-duration="800">
+                    <div class="flex flex-col items-start justify-center leading-[1.15] w-full lg:w-[45%]" data-aos="fade-right" data-aos-duration="800">
                         <p class="font-extrabold text-[32px] sm:text-[44px] md:text-[56px] lg:text-[64px] xl:text-[72px] text-primary tracking-[-1.5px] sm:tracking-[-2px] lg:tracking-[-2.88px] leading-[1.15]"><?php echo esc_html($hero_title_big_1); ?></p>
                         <p class="font-bold text-[16px] sm:text-[22px] md:text-[28px] lg:text-[32px] xl:text-[36px] text-secondary leading-[1.15]"><?php echo esc_html($hero_title_small); ?></p>
-                        <p class="font-extrabold text-[32px] sm:text-[44px] md:text-[56px] lg:text-[64px] xl:text-[72px] text-primary tracking-[-1.5px] sm:tracking-[-2px] lg:tracking-[-2.88px] leading-[1.15]"><?php echo esc_html($hero_title_big_2); ?></p>
+                        <p class="font-extrabold text-[24px] sm:text-[32px] md:text-[40px] lg:text-[48px] xl:text-[54px] text-primary tracking-[-1px] sm:tracking-[-1.5px] lg:tracking-[-2px] leading-[1.15]"><?php echo esc_html($hero_title_big_2); ?></p>
                     </div>
                     
                     <!-- Правая часть: изображение -->
-                    <div class="flex items-center justify-center lg:justify-end w-full lg:w-1/2" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+                    <div class="flex items-center justify-center lg:justify-end w-full lg:w-[55%]" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
                         <img src="<?php echo esc_url($hero_image); ?>" alt="Электронная подпись" class="w-full h-auto object-contain">
                     </div>
                 </div>

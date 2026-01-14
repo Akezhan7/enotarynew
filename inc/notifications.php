@@ -584,30 +584,68 @@ function enotary_display_notification_info( $order ) {
 add_action( 'woocommerce_order_status_changed', 'enotary_send_unep_instruction_email', 10, 4 );
 
 function enotary_send_unep_instruction_email( $order_id, $old_status, $new_status, $order ) {
+    // DEBUG: Логируем вызов хука
+    error_log( sprintf(
+        '[УНЭП DEBUG] Хук сработал для заказа #%d: %s → %s',
+        $order_id,
+        $old_status,
+        $new_status
+    ) );
+    
     // Отправляем только при переходе в processing или completed
     if ( ! in_array( $new_status, array( 'processing', 'completed' ) ) ) {
+        error_log( sprintf(
+            '[УНЭП DEBUG] Заказ #%d: Статус %s не подходит для отправки (нужен processing или completed)',
+            $order_id,
+            $new_status
+        ) );
         return;
     }
     
     // Проверяем, не отправляли ли уже инструкцию
     $already_sent = $order->get_meta( '_unep_instruction_sent', true );
     if ( $already_sent === 'yes' ) {
+        error_log( sprintf(
+            '[УНЭП DEBUG] Заказ #%d: Инструкция уже была отправлена ранее',
+            $order_id
+        ) );
         return; // Уже отправляли
     }
     
     // Проверяем, есть ли в заказе товары УНЭП
     $has_unep = enotary_order_has_unep( $order );
     if ( ! $has_unep ) {
+        error_log( sprintf(
+            '[УНЭП DEBUG] Заказ #%d: Товары УНЭП НЕ обнаружены. Детали: %s',
+            $order_id,
+            enotary_get_order_debug_info( $order )
+        ) );
         return; // Нет товаров УНЭП
     }
+    
+    error_log( sprintf(
+        '[УНЭП DEBUG] Заказ #%d: Товары УНЭП обнаружены! Начинаем отправку инструкции...',
+        $order_id
+    ) );
     
     // Получаем файл инструкции из ACF настроек
     $instruction_unep = get_field( 'instruction_unep', 'option' );
     if ( ! $instruction_unep || empty( $instruction_unep['url'] ) ) {
         // Инструкция не загружена в настройках
+        error_log( sprintf(
+            '[УНЭП DEBUG] Заказ #%d: ОШИБКА - файл инструкции не загружен в настройках магазина',
+            $order_id
+        ) );
         $order->add_order_note( '⚠️ Не удалось отправить инструкцию УНЭП: файл не загружен в настройках магазина.' );
         return;
     }
+    
+    error_log( sprintf(
+        '[УНЭП DEBUG] Заказ #%d: Файл инструкции найден: %s (ID: %s)',
+        $order_id,
+        $instruction_unep['filename'],
+        $instruction_unep['ID']
+    ) );
     
     // Отправляем письмо
     $sent = enotary_send_unep_instruction_mail( $order, $instruction_unep );
@@ -618,11 +656,23 @@ function enotary_send_unep_instruction_email( $order_id, $old_status, $new_statu
         $order->update_meta_data( '_unep_instruction_sent_date', current_time( 'mysql' ) );
         $order->save();
         
+        error_log( sprintf(
+            '[УНЭП DEBUG] Заказ #%d: ✅ Инструкция успешно отправлена на email: %s',
+            $order_id,
+            $order->get_billing_email()
+        ) );
+        
         // Добавляем заметку к заказу
         $order->add_order_note( 
             '✅ Инструкция УНЭП отправлена на email: ' . $order->get_billing_email() 
         );
     } else {
+        error_log( sprintf(
+            '[УНЭП DEBUG] Заказ #%d: ❌ ОШИБКА отправки письма на email: %s',
+            $order_id,
+            $order->get_billing_email()
+        ) );
+        
         // Ошибка отправки
         $order->add_order_note( 
             '❌ Не удалось отправить инструкцию УНЭП на email: ' . $order->get_billing_email() 
@@ -632,30 +682,114 @@ function enotary_send_unep_instruction_email( $order_id, $old_status, $new_statu
 
 /**
  * Проверяет, содержит ли заказ товары УНЭП
+ * 
+ * Проверка по 4 критериям (в порядке приоритета):
+ * 1. Метаданные корзины (_service_name = 'УНЭП') - ГЛАВНЫЙ КРИТЕРИЙ после добавления префиксов
+ * 2. SKU товара (начинается с 'unep_')
+ * 3. Название товара (содержит 'унэп' или 'неквалифицированный')
+ * 4. Slug категории товара
  */
 function enotary_order_has_unep( $order ) {
-    foreach ( $order->get_items() as $item ) {
+    $order_id = $order->get_id();
+    $items = $order->get_items();
+    
+    // DEBUG: Логируем что вообще приходит
+    error_log( sprintf(
+        '[УНЭП CHECK] Заказ #%d: Количество позиций в заказе: %d',
+        $order_id,
+        count( $items )
+    ) );
+    
+    if ( empty( $items ) ) {
+        error_log( sprintf(
+            '[УНЭП CHECK] Заказ #%d: ❌ Позиции пустые!',
+            $order_id
+        ) );
+        return false;
+    }
+    
+    foreach ( $items as $item_id => $item ) {
         $product = $item->get_product();
+        $item_name = $item->get_name();
         
-        // Проверяем по названию товара
-        $product_name = $item->get_name();
-        if ( 
-            stripos( $product_name, 'унэп' ) !== false ||
-            stripos( $product_name, 'неквалифицированный' ) !== false
-        ) {
+        // DEBUG: Логируем каждый товар
+        error_log( sprintf(
+            '[УНЭП CHECK] Заказ #%d: Проверяю товар: "%s" (item_id: %s)',
+            $order_id,
+            $item_name,
+            $item_id
+        ) );
+        
+        // ПРОВЕРКА 1 (ПРИОРИТЕТНАЯ): По метаданным _service_name
+        // Это главный способ определения после добавления системы префиксов
+        $service_name = $item->get_meta( '_service_name', true );
+        
+        error_log( sprintf(
+            '[УНЭП CHECK] Заказ #%d: Товар "%s" - _service_name = "%s"',
+            $order_id,
+            $item_name,
+            $service_name ? $service_name : 'НЕ ЗАДАН'
+        ) );
+        
+        if ( ! empty( $service_name ) && $service_name === 'УНЭП' ) {
+            error_log( sprintf(
+                '[УНЭП CHECK] Заказ #%d: ✅ Товар определен как УНЭП по _service_name!',
+                $order_id
+            ) );
             return true;
         }
         
-        // Проверяем по категориям товара
+        // ПРОВЕРКА 2: По SKU товара
         if ( $product ) {
-            $categories = wp_get_post_terms( $product->get_id(), 'product_cat', array( 'fields' => 'slugs' ) );
-            if ( ! is_wp_error( $categories ) ) {
-                foreach ( $categories as $cat_slug ) {
+            $sku = $product->get_sku();
+            error_log( sprintf(
+                '[УНЭП CHECK] Заказ #%d: Товар "%s" - SKU = "%s"',
+                $order_id,
+                $item_name,
+                $sku ? $sku : 'НЕТ'
+            ) );
+            
+            if ( ! empty( $sku ) && strpos( $sku, 'unep_' ) === 0 ) {
+                error_log( sprintf(
+                    '[УНЭП CHECK] Заказ #%d: ✅ Товар определен как УНЭП по SKU!',
+                    $order_id
+                ) );
+                return true;
+            }
+        }
+        
+        // ПРОВЕРКА 3: По названию товара
+        if ( 
+            stripos( $item_name, 'унэп' ) !== false ||
+            stripos( $item_name, 'неквалифицированный' ) !== false
+        ) {
+            error_log( sprintf(
+                '[УНЭП CHECK] Заказ #%d: ✅ Товар определен как УНЭП по названию!',
+                $order_id
+            ) );
+            return true;
+        }
+        
+        // ПРОВЕРКА 4: По категориям товара
+        if ( $product ) {
+            $categories = wp_get_post_terms( $product->get_id(), 'product_cat', array( 'fields' => 'all' ) );
+            if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
+                foreach ( $categories as $category ) {
+                    $cat_slug = $category->slug;
+                    $cat_name = $category->name;
+                    
                     if ( 
                         strpos( $cat_slug, 'nekvalificzirovannyj' ) !== false ||
                         strpos( $cat_slug, 'usilennyj' ) !== false ||
-                        strpos( $cat_slug, 'unep' ) !== false
+                        strpos( $cat_slug, 'unep' ) !== false ||
+                        stripos( $cat_name, 'неквалифицированный' ) !== false ||
+                        stripos( $cat_name, 'унэп' ) !== false
                     ) {
+                        error_log( sprintf(
+                            '[УНЭП CHECK] Заказ #%d: ✅ Товар определен как УНЭП по категории "%s"!',
+                            $order_id,
+                            $cat_name
+                        ) );
                         return true;
                     }
                 }
@@ -663,7 +797,43 @@ function enotary_order_has_unep( $order ) {
         }
     }
     
+    error_log( sprintf(
+        '[УНЭП CHECK] Заказ #%d: ❌ Товары УНЭП НЕ обнаружены ни по одному критерию',
+        $order_id
+    ) );
+    
     return false;
+}
+
+/**
+ * Получить отладочную информацию о товарах в заказе
+ * Для логирования в случае когда товары не определились как УНЭП
+ */
+function enotary_get_order_debug_info( $order ) {
+    $debug_info = array();
+    
+    foreach ( $order->get_items() as $item_id => $item ) {
+        $product = $item->get_product();
+        $item_info = array(
+            'name' => $item->get_name(),
+            'sku' => $product ? $product->get_sku() : 'н/д',
+            '_service_name' => $item->get_meta( '_service_name', true ),
+            'categories' => array(),
+        );
+        
+        if ( $product ) {
+            $categories = wp_get_post_terms( $product->get_id(), 'product_cat', array( 'fields' => 'all' ) );
+            if ( ! is_wp_error( $categories ) && ! empty( $categories ) ) {
+                foreach ( $categories as $cat ) {
+                    $item_info['categories'][] = sprintf( '%s (slug: %s)', $cat->name, $cat->slug );
+                }
+            }
+        }
+        
+        $debug_info[] = $item_info;
+    }
+    
+    return json_encode( $debug_info, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
 }
 
 /**
@@ -671,7 +841,14 @@ function enotary_order_has_unep( $order ) {
  */
 function enotary_send_unep_instruction_mail( $order, $instruction_file ) {
     $to = $order->get_billing_email();
+    $order_id = $order->get_id();
     $subject = 'Инструкция по формированию запроса УНЭП - Заказ #' . $order->get_order_number();
+    
+    error_log( sprintf(
+        '[УНЭП MAIL] Начинаем отправку для заказа #%d на email: %s',
+        $order_id,
+        $to
+    ) );
     
     // Получаем имя клиента
     $customer_name = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
@@ -691,12 +868,38 @@ function enotary_send_unep_instruction_mail( $order, $instruction_file ) {
     // Прикрепляем файл инструкции
     $attachments = array();
     $file_path = get_attached_file( $instruction_file['ID'] );
+    
+    error_log( sprintf(
+        '[УНЭП MAIL] Заказ #%d: Файл инструкции ID=%s, путь=%s',
+        $order_id,
+        $instruction_file['ID'],
+        $file_path ? $file_path : 'НЕ НАЙДЕН'
+    ) );
+    
     if ( $file_path && file_exists( $file_path ) ) {
         $attachments[] = $file_path;
+        error_log( sprintf(
+            '[УНЭП MAIL] Заказ #%d: ✅ Файл существует, добавлен как вложение',
+            $order_id
+        ) );
+    } else {
+        error_log( sprintf(
+            '[УНЭП MAIL] Заказ #%d: ⚠️ Файл НЕ найден на сервере! file_exists=%s',
+            $order_id,
+            $file_path ? 'false' : 'path_empty'
+        ) );
     }
     
     // Отправляем письмо
-    return wp_mail( $to, $subject, $message, $headers, $attachments );
+    $sent = wp_mail( $to, $subject, $message, $headers, $attachments );
+    
+    error_log( sprintf(
+        '[УНЭП MAIL] Заказ #%d: wp_mail результат = %s',
+        $order_id,
+        $sent ? 'SUCCESS' : 'FAILED'
+    ) );
+    
+    return $sent;
 }
 
 /**
@@ -817,12 +1020,23 @@ function enotary_get_unep_instruction_email_html( $order, $customer_name ) {
 
 /**
  * Отображение информации об отправке инструкции в админке заказа
+ * + Кнопка ручной отправки + Диагностика
  */
 add_action( 'woocommerce_admin_order_data_after_order_details', 'enotary_display_unep_instruction_info' );
 
 function enotary_display_unep_instruction_info( $order ) {
     $instruction_sent = $order->get_meta( '_unep_instruction_sent', true );
     $instruction_date = $order->get_meta( '_unep_instruction_sent_date', true );
+    $has_unep = enotary_order_has_unep( $order );
+    
+    // Проверяем ACF файл
+    $instruction_file = get_field( 'instruction_unep', 'option' );
+    $file_exists = false;
+    $file_path = '';
+    if ( $instruction_file && ! empty( $instruction_file['ID'] ) ) {
+        $file_path = get_attached_file( $instruction_file['ID'] );
+        $file_exists = $file_path && file_exists( $file_path );
+    }
     
     if ( $instruction_sent === 'yes' && ! empty( $instruction_date ) ) {
         ?>
@@ -833,9 +1047,17 @@ function enotary_display_unep_instruction_info( $order ) {
                 <strong>Дата отправки:</strong> <?php echo esc_html( date( 'd.m.Y H:i', strtotime( $instruction_date ) ) ); ?><br>
                 <strong>Email:</strong> <?php echo esc_html( $order->get_billing_email() ); ?>
             </p>
+            <!-- Кнопка повторной отправки -->
+            <p>
+                <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=resend_unep_instruction&order_id=' . $order->get_id() ), 'resend_unep_' . $order->get_id() ); ?>" 
+                   class="button button-secondary"
+                   onclick="return confirm('Отправить инструкцию повторно?');">
+                    🔄 Отправить повторно
+                </a>
+            </p>
         </div>
         <?php
-    } elseif ( enotary_order_has_unep( $order ) ) {
+    } elseif ( $has_unep ) {
         ?>
         <div class="order_data_column" style="clear:both; padding-top: 13px;">
             <h3>📧 Инструкция УНЭП</h3>
@@ -843,7 +1065,109 @@ function enotary_display_unep_instruction_info( $order ) {
                 <strong>Статус:</strong> ⏳ Ожидает отправки<br>
                 <em style="color: #999;">Будет отправлена автоматически при смене статуса на "В обработке" или "Выполнен"</em>
             </p>
+            <!-- Кнопка ручной отправки -->
+            <p>
+                <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=resend_unep_instruction&order_id=' . $order->get_id() ), 'resend_unep_' . $order->get_id() ); ?>" 
+                   class="button button-primary">
+                    📤 Отправить сейчас
+                </a>
+            </p>
+            <!-- Диагностика -->
+            <details style="margin-top: 10px; background: #f9f9f9; padding: 10px; border-radius: 4px;">
+                <summary style="cursor: pointer; font-weight: bold;">🔧 Диагностика</summary>
+                <div style="margin-top: 10px; font-size: 12px;">
+                    <p><strong>Файл инструкции в ACF:</strong> 
+                        <?php if ( $instruction_file ) : ?>
+                            ✅ Загружен (ID: <?php echo esc_html( $instruction_file['ID'] ); ?>)
+                        <?php else : ?>
+                            ❌ НЕ загружен в настройках магазина
+                        <?php endif; ?>
+                    </p>
+                    <p><strong>Файл на сервере:</strong> 
+                        <?php if ( $file_exists ) : ?>
+                            ✅ Существует
+                        <?php else : ?>
+                            ❌ НЕ найден (путь: <?php echo esc_html( $file_path ); ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p><strong>Email клиента:</strong> <?php echo esc_html( $order->get_billing_email() ); ?></p>
+                </div>
+            </details>
         </div>
         <?php
+    }
+}
+
+/**
+ * Обработчик ручной отправки инструкции УНЭП
+ */
+add_action( 'admin_post_resend_unep_instruction', 'enotary_handle_manual_unep_send' );
+
+function enotary_handle_manual_unep_send() {
+    $order_id = isset( $_GET['order_id'] ) ? intval( $_GET['order_id'] ) : 0;
+    
+    // Проверяем nonce
+    if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'resend_unep_' . $order_id ) ) {
+        wp_die( 'Ошибка безопасности' );
+    }
+    
+    // Проверяем права
+    if ( ! current_user_can( 'edit_shop_orders' ) ) {
+        wp_die( 'Недостаточно прав' );
+    }
+    
+    $order = wc_get_order( $order_id );
+    if ( ! $order ) {
+        wp_die( 'Заказ не найден' );
+    }
+    
+    // Получаем файл инструкции
+    $instruction_file = get_field( 'instruction_unep', 'option' );
+    if ( ! $instruction_file || empty( $instruction_file['url'] ) ) {
+        $order->add_order_note( '⚠️ Ручная отправка: файл инструкции не загружен в настройках магазина' );
+        wp_redirect( admin_url( 'post.php?post=' . $order_id . '&action=edit&unep_error=no_file' ) );
+        exit;
+    }
+    
+    // Сбрасываем флаг для повторной отправки
+    $order->delete_meta_data( '_unep_instruction_sent' );
+    $order->save();
+    
+    // Отправляем
+    $sent = enotary_send_unep_instruction_mail( $order, $instruction_file );
+    
+    if ( $sent ) {
+        $order->update_meta_data( '_unep_instruction_sent', 'yes' );
+        $order->update_meta_data( '_unep_instruction_sent_date', current_time( 'mysql' ) );
+        $order->save();
+        $order->add_order_note( '✅ Инструкция УНЭП отправлена вручную на email: ' . $order->get_billing_email() );
+        wp_redirect( admin_url( 'post.php?post=' . $order_id . '&action=edit&unep_sent=1' ) );
+    } else {
+        $order->add_order_note( '❌ Ошибка ручной отправки инструкции УНЭП' );
+        wp_redirect( admin_url( 'post.php?post=' . $order_id . '&action=edit&unep_error=send_failed' ) );
+    }
+    exit;
+}
+
+/**
+ * Уведомления в админке о результате отправки
+ */
+add_action( 'admin_notices', 'enotary_unep_admin_notices' );
+
+function enotary_unep_admin_notices() {
+    if ( isset( $_GET['unep_sent'] ) && $_GET['unep_sent'] == '1' ) {
+        echo '<div class="notice notice-success is-dismissible"><p>✅ Инструкция УНЭП успешно отправлена!</p></div>';
+    }
+    if ( isset( $_GET['unep_error'] ) ) {
+        $error = sanitize_text_field( $_GET['unep_error'] );
+        $message = '';
+        if ( $error === 'no_file' ) {
+            $message = 'Файл инструкции не загружен. Загрузите PDF в разделе Настройки магазина → Инструкции.';
+        } elseif ( $error === 'send_failed' ) {
+            $message = 'Ошибка отправки email. Проверьте настройки WP Mail SMTP.';
+        }
+        if ( $message ) {
+            echo '<div class="notice notice-error is-dismissible"><p>❌ ' . esc_html( $message ) . '</p></div>';
+        }
     }
 }
