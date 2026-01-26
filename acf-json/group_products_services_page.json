@@ -1,0 +1,271 @@
+{
+    "key": "group_products_services_page",
+    "title": "Настройки страницы ПО\/Токены\/Услуги",
+    "fields": [
+        {
+            "key": "field_ps_intro_title",
+            "label": "Заголовок страницы",
+            "name": "ps_intro_title",
+            "type": "text",
+            "default_value": "ПО, токены и услуги для работы с электронной подписью"
+        },
+        {
+            "key": "field_ps_intro_text",
+            "label": "Вступительный текст",
+            "name": "ps_intro_text",
+            "type": "wysiwyg",
+            "default_value": "УЦ e-Notary входит в состав АО «Сигнал-КОМ»..."
+        },
+        {
+            "key": "field_ps_software_section",
+            "label": "Программное обеспечение",
+            "name": "ps_software_section",
+            "type": "repeater",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Добавить карточку",
+            "sub_fields": [
+                {
+                    "key": "field_ps_software_image",
+                    "label": "Изображение",
+                    "name": "image",
+                    "type": "image",
+                    "return_format": "url"
+                },
+                {
+                    "key": "field_ps_software_title",
+                    "label": "Заголовок",
+                    "name": "title",
+                    "type": "text"
+                },
+                {
+                    "key": "field_ps_software_description",
+                    "label": "Описание",
+                    "name": "description",
+                    "type": "textarea"
+                },
+                {
+                    "key": "field_ps_software_link_type",
+                    "label": "Тип ссылки",
+                    "name": "link_type",
+                    "type": "select",
+                    "choices": {
+                        "external": "Внешняя ссылка",
+                        "modal": "Модальное окно"
+                    },
+                    "default_value": "external"
+                },
+                {
+                    "key": "field_ps_software_external_url",
+                    "label": "URL ссылки",
+                    "name": "external_url",
+                    "type": "url",
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_ps_software_link_type",
+                                "operator": "==",
+                                "value": "external"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_ps_software_modal_content",
+                    "label": "Содержимое модального окна",
+                    "name": "modal_content",
+                    "type": "wysiwyg",
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_ps_software_link_type",
+                                "operator": "==",
+                                "value": "modal"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_ps_software_show_info_icon",
+                    "label": "Показать иконку информации",
+                    "name": "show_info_icon",
+                    "type": "true_false",
+                    "default_value": 0
+                }
+            ]
+        },
+        {
+            "key": "field_ps_tokens_section",
+            "label": "Токены",
+            "name": "ps_tokens_section",
+            "type": "repeater",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Добавить карточку",
+            "sub_fields": [
+                {
+                    "key": "field_ps_tokens_image",
+                    "label": "Изображение",
+                    "name": "image",
+                    "type": "image",
+                    "return_format": "url"
+                },
+                {
+                    "key": "field_ps_tokens_title",
+                    "label": "Заголовок",
+                    "name": "title",
+                    "type": "text"
+                },
+                {
+                    "key": "field_ps_tokens_description",
+                    "label": "Описание",
+                    "name": "description",
+                    "type": "textarea"
+                },
+                {
+                    "key": "field_ps_tokens_link_type",
+                    "label": "Тип ссылки",
+                    "name": "link_type",
+                    "type": "select",
+                    "choices": {
+                        "external": "Внешняя ссылка",
+                        "modal": "Модальное окно"
+                    },
+                    "default_value": "external"
+                },
+                {
+                    "key": "field_ps_tokens_external_url",
+                    "label": "URL ссылки",
+                    "name": "external_url",
+                    "type": "url",
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_ps_tokens_link_type",
+                                "operator": "==",
+                                "value": "external"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_ps_tokens_modal_content",
+                    "label": "Содержимое модального окна",
+                    "name": "modal_content",
+                    "type": "wysiwyg",
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_ps_tokens_link_type",
+                                "operator": "==",
+                                "value": "modal"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_ps_tokens_show_info_icon",
+                    "label": "Показать иконку информации",
+                    "name": "show_info_icon",
+                    "type": "true_false",
+                    "default_value": 0
+                }
+            ]
+        },
+        {
+            "key": "field_ps_services_section",
+            "label": "Услуги",
+            "name": "ps_services_section",
+            "type": "repeater",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Добавить карточку",
+            "sub_fields": [
+                {
+                    "key": "field_ps_services_image",
+                    "label": "Изображение",
+                    "name": "image",
+                    "type": "image",
+                    "return_format": "url"
+                },
+                {
+                    "key": "field_ps_services_title",
+                    "label": "Заголовок",
+                    "name": "title",
+                    "type": "text"
+                },
+                {
+                    "key": "field_ps_services_description",
+                    "label": "Описание",
+                    "name": "description",
+                    "type": "textarea"
+                },
+                {
+                    "key": "field_ps_services_link_type",
+                    "label": "Тип ссылки",
+                    "name": "link_type",
+                    "type": "select",
+                    "choices": {
+                        "external": "Внешняя ссылка",
+                        "modal": "Модальное окно"
+                    },
+                    "default_value": "external"
+                },
+                {
+                    "key": "field_ps_services_external_url",
+                    "label": "URL ссылки",
+                    "name": "external_url",
+                    "type": "url",
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_ps_services_link_type",
+                                "operator": "==",
+                                "value": "external"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_ps_services_modal_content",
+                    "label": "Содержимое модального окна",
+                    "name": "modal_content",
+                    "type": "wysiwyg",
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_ps_services_link_type",
+                                "operator": "==",
+                                "value": "modal"
+                            }
+                        ]
+                    ]
+                },
+                {
+                    "key": "field_ps_services_show_info_icon",
+                    "label": "Показать иконку информации",
+                    "name": "show_info_icon",
+                    "type": "true_false",
+                    "default_value": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-products-services.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label"
+}

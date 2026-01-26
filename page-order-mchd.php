@@ -33,6 +33,11 @@ $payer_types = get_payer_types_options();
             </div>
         </section>
 
+        <!-- Подзаголовок выбора плательщика -->
+        <div class="w-full responsive-container pt-6 sm:pt-8 md:pt-10">
+            <h3 class="font-bold text-[20px] sm:text-[24px] text-[#262626] leading-[1.15] text-center" data-aos="fade-up">Выберите плательщика</h3>
+        </div>
+
         <!-- Выбор типа лица -->
         <section class="w-full responsive-container py-6 sm:py-8 md:py-10 flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-10" data-aos="fade-up" data-aos-delay="100" data-service-name="МЧД">
             <!-- Юридическое Лицо -->
@@ -46,42 +51,33 @@ $payer_types = get_payer_types_options();
                     data-base-id="<?php echo esc_attr( $payer_types['legal']['product_id'] ); ?>"
                 >
                 <p class="entity-card-label font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['legal']['label'] ); ?></p>
-                <div class="entity-card-price-box rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="entity-card-price-text font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['legal']['price'], 0, ',', ' ' ) ); ?> руб.</p>
-                </div>
             </div>
             
             <!-- Физическое Лицо -->
-            <div class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
+            <div class="entity-card entity-card-active border border-[rgba(0,0,0,0.05)] bg-primary rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-lg min-h-[60px] sm:min-h-[76px]">
                 <input 
                     type="radio" 
                     name="payer_type" 
                     value="<?php echo esc_attr( $payer_types['individual']['value'] ); ?>" 
                     class="hidden"
+                    checked
                     data-base-price="<?php echo esc_attr( $payer_types['individual']['price'] ); ?>"
                     data-base-id="<?php echo esc_attr( $payer_types['individual']['product_id'] ); ?>"
                 >
-                <p class="entity-card-label font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['individual']['label'] ); ?></p>
-                <div class="entity-card-price-box rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="entity-card-price-text font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['individual']['price'], 0, ',', ' ' ) ); ?> руб.</p>
-                </div>
+                <p class="entity-card-label font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap text-white"><?php echo esc_html( $payer_types['individual']['label'] ); ?></p>
             </div>
             
             <!-- ИП -->
-            <div class="entity-card entity-card-active border border-[rgba(0,0,0,0.05)] bg-primary rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-lg min-h-[60px] sm:min-h-[76px]">
+            <div class="entity-card border border-[rgba(0,0,0,0.05)] bg-white rounded-[15px] sm:rounded-[20px] p-4 sm:p-5 flex-1 flex flex-row items-center justify-center gap-2 sm:gap-2.5 cursor-pointer shadow-md hover:shadow-lg transition-shadow min-h-[60px] sm:min-h-[76px]">
                 <input 
                     type="radio" 
                     name="payer_type" 
                     value="<?php echo esc_attr( $payer_types['entrepreneur']['value'] ); ?>" 
                     class="hidden"
-                    checked
                     data-base-price="<?php echo esc_attr( $payer_types['entrepreneur']['price'] ); ?>"
                     data-base-id="<?php echo esc_attr( $payer_types['entrepreneur']['product_id'] ); ?>"
                 >
                 <p class="entity-card-label font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( $payer_types['entrepreneur']['label'] ); ?></p>
-                <div class="entity-card-price-box rounded-[8px] sm:rounded-[10px] px-2 sm:px-2.5 py-2 sm:py-2.5 flex items-center justify-center">
-                    <p class="entity-card-price-text font-bold text-sm sm:text-base text-center leading-[1.15] whitespace-nowrap"><?php echo esc_html( number_format( $payer_types['entrepreneur']['price'], 0, ',', ' ' ) ); ?> руб.</p>
-                </div>
             </div>
         </section>
 

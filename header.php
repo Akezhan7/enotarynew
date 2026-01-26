@@ -62,10 +62,10 @@
                 
                 <!-- Нижняя часть -->
                <div class="flex gap-2 md:gap-5 items-center pb-4 lg:pb-5 relative">
-                <a href="https://www.signal-com.ru/" target="_blank" rel="noopener noreferrer" class="h-[36px] min-[400px]:h-[44px] sm:h-[58px] lg:h-[60px] w-[120px] min-[400px]:w-[145px] sm:w-[195px] lg:w-[215px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="h-[36px] min-[400px]:h-[44px] sm:h-[58px] lg:h-[60px] w-[86px] min-[400px]:w-[105px] sm:w-[137px] lg:w-[150px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
                     <img src="<?php echo esc_url(get_site_logo('main')); ?>" alt="<?php bloginfo('name'); ?>" class="w-full h-full object-contain">
                 </a>
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="h-[36px] min-[400px]:h-[44px] sm:h-[58px] lg:h-[60px] w-[86px] min-[400px]:w-[105px] sm:w-[137px] lg:w-[150px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
+                <a href="https://www.signal-com.ru/" target="_blank" rel="noopener noreferrer" class="h-[36px] min-[400px]:h-[44px] sm:h-[58px] lg:h-[60px] w-[120px] min-[400px]:w-[145px] sm:w-[195px] lg:w-[215px] relative flex-shrink-0 hover:opacity-80 transition-opacity">
                     <img src="<?php echo esc_url(get_site_logo('secondary')); ?>" alt="<?php bloginfo('name'); ?>" class="w-full h-full object-contain">
                 </a>
                 <!-- Мобильная кнопка меню -->

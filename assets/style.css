@@ -46,6 +46,10 @@ body > div.flex.flex-col.items-center.relative.w-full > footer {
     padding-top: 0;
 }
 
+.woocommerce img, .woocommerce-page img {
+    height: 100%!important;
+}
+
 .hero-section-wrapper::before {
     content: '';
     position: absolute;

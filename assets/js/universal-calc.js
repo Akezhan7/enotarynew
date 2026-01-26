@@ -61,13 +61,32 @@
             // Если тип плательщика не выбран - показываем все товары
             if (!payerType) {
                 console.log('Тип не выбран, показываем все товары');
-                $('[data-payer-filter]').show();
+                $('.service-checkbox').closest('.flex').show();
                 return;
             }
             
-            // Проходим по всем товарам с атрибутом data-payer-filter
-            $('[data-payer-filter]').each(function() {
-                const $item = $(this);
+            // Правила скрытия товаров по названиям (для УКЭП)
+            const hideRules = {
+                'individual': [ // Физ лицо - скрыть:
+                    'ЭП руководителей организаций',
+                    'ЭП Индивидуальных предпринимателей',
+                    'ЭП физического лица для сотрудника организаций и Индивидуальных предпринимателей'
+                ],
+                'legal': [ // Юр лицо - скрыть:
+                    'ЭП Индивидуальных предпринимателей'
+                ],
+                'entrepreneur': [ // ИП - скрыть:
+                    'ЭП руководителей организаций'
+                ]
+            };
+            
+            // Получаем список товаров для скрытия
+            const productsToHide = hideRules[payerType] || [];
+            
+            // Проходим по всем товарам (и с атрибутом data-payer-filter, и без него)
+            $('.service-checkbox').each(function() {
+                const $checkbox = $(this);
+                const $item = $checkbox.closest('.flex');
                 const itemFilter = $item.attr('data-payer-filter');
                 const productName = $item.find('.service-name').text().trim() || 'Без названия';
                 
@@ -75,53 +94,60 @@
                 console.log('Товар:', productName);
                 console.log('Атрибут фильтра:', itemFilter);
                 
-                if (!itemFilter) {
-                    // Если фильтра нет - показываем для всех
-                    console.log('→ Фильтра нет, показываем');
-                    $item.show();
-                    return;
+                let shouldHide = false;
+                
+                // ПРОВЕРКА 1: Скрытие по названию (приоритет)
+                for (let i = 0; i < productsToHide.length; i++) {
+                    if (productName.includes(productsToHide[i])) {
+                        shouldHide = true;
+                        console.log('→ СКРЫВАЕМ по названию (правило для', payerType + ')');
+                        break;
+                    }
                 }
                 
-                // Проверяем, содержит ли значение атрибута ключевое слово типа плательщика
-                // individual -> ищем 'fiz'/'физ' или 'individual' в значении атрибута
-                // entrepreneur -> ищем 'ip'/'ип' или 'entrepreneur' в значении атрибута  
-                // legal -> ищем 'yur'/'юр' или 'legal' в значении атрибута
-                let shouldShow = false;
-                const filterLower = itemFilter.toLowerCase();
-                
-                console.log('Фильтр (lowercase):', filterLower);
-                
-                if (payerType === 'individual' && (filterLower.includes('fiz') || filterLower.includes('физ') || filterLower.includes('individual'))) {
-                    shouldShow = true;
-                    console.log('→ Совпадение с individual (содержит fiz/физ/individual)');
-                } else if (payerType === 'entrepreneur' && (filterLower.includes('ip') || filterLower.includes('ип') || filterLower.includes('entrepreneur'))) {
-                    shouldShow = true;
-                    console.log('→ Совпадение с entrepreneur (содержит ip/ип/entrepreneur)');
-                } else if (payerType === 'legal' && (filterLower.includes('yur') || filterLower.includes('юр') || filterLower.includes('legal'))) {
-                    shouldShow = true;
-                    console.log('→ Совпадение с legal (содержит yur/юр/legal)');
-                } else {
-                    console.log('→ НЕ совпадает с типом', payerType);
+                // ПРОВЕРКА 2: Если не скрыт по названию, проверяем атрибут data-payer-filter
+                if (!shouldHide && itemFilter) {
+                    const filterLower = itemFilter.toLowerCase();
+                    console.log('Фильтр (lowercase):', filterLower);
+                    
+                    let shouldShow = false;
+                    
+                    if (payerType === 'individual' && (filterLower.includes('fiz') || filterLower.includes('физ') || filterLower.includes('individual'))) {
+                        shouldShow = true;
+                        console.log('→ Совпадение с individual (содержит fiz/физ/individual)');
+                    } else if (payerType === 'entrepreneur' && (filterLower.includes('ip') || filterLower.includes('ип') || filterLower.includes('entrepreneur'))) {
+                        shouldShow = true;
+                        console.log('→ Совпадение с entrepreneur (содержит ip/ип/entrepreneur)');
+                    } else if (payerType === 'legal' && (filterLower.includes('yur') || filterLower.includes('юр') || filterLower.includes('legal'))) {
+                        shouldShow = true;
+                        console.log('→ Совпадение с legal (содержит yur/юр/legal)');
+                    } else {
+                        console.log('→ НЕ совпадает с типом', payerType);
+                    }
+                    
+                    if (!shouldShow) {
+                        shouldHide = true;
+                        console.log('→ СКРЫВАЕМ по атрибуту');
+                    }
                 }
                 
-                if (shouldShow) {
-                    console.log('→ ПОКАЗЫВАЕМ товар');
-                    $item.show();
-                } else {
-                    console.log('→ СКРЫВАЕМ товар');
-                    // Иначе скрываем и снимаем галочку
+                // Применяем скрытие или показ
+                if (shouldHide) {
+                    console.log('→ ИТОГ: СКРЫВАЕМ товар');
                     $item.hide();
-                    const $checkbox = $item.find('.service-checkbox');
+                    
+                    // Снимаем галочку и сбрасываем количество
                     if ($checkbox.is(':checked')) {
                         $checkbox.prop('checked', false);
-                        // Обновляем визуальный чекбокс
                         $item.find('.checkbox-custom').removeClass('checked');
-                        // Сбрасываем количество
                         const $quantity = $item.find('.quantity-value');
                         if ($quantity.length > 0) {
                             $quantity.text('0');
                         }
                     }
+                } else {
+                    console.log('→ ИТОГ: ПОКАЗЫВАЕМ товар');
+                    $item.show();
                 }
             });
             

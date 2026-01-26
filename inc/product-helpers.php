@@ -134,11 +134,33 @@ function render_checklist_by_category( $category_slug, $section_title = '', $arg
                 // DEBUG: Выводим все атрибуты товара
                 error_log( sprintf( 'Товар "%s": атрибут "%s"', $product_name, $attribute_name ) );
                 
-                // Проверяем разные варианты названия атрибута
-                if ( in_array( strtolower( $attribute_name ), array( 'для физ', 'dlya_fiz', 'dlya-fiz', 'pa_dlya-fiz', 'pa_dlya_fiz', 'pa_dlya_fiz' ) ) ) {
+                // Нормализуем название атрибута (убираем лишние пробелы, переводим в нижний регистр)
+                $normalized_attr_name = strtolower( trim( $attribute_name ) );
+                
+                // Проверяем разные варианты названия атрибута (включая варианты с пробелами)
+                $valid_attr_names = array(
+                    'для физ',
+                    'для юр', 
+                    'для ип',
+                    'dlya_fiz',
+                    'dlya-fiz',
+                    'pa_dlya-fiz',
+                    'pa_dlya_fiz',
+                    'pa_dlya_fiz',
+                    'для физ лица',
+                    'для юр лица',
+                    'для ип',
+                    'filter',
+                    'type'
+                );
+                
+                if ( in_array( $normalized_attr_name, $valid_attr_names ) || 
+                     strpos( $normalized_attr_name, 'для' ) !== false || 
+                     strpos( $normalized_attr_name, 'dlya' ) !== false ) {
+                    
                     $terms = $attribute->get_terms();
                     if ( ! empty( $terms ) && is_array( $terms ) ) {
-                        $payer_type_filter = $terms[0]->slug;
+                        $payer_type_filter = $terms[0]->name; // Используем name вместо slug для читабельности
                         error_log( sprintf( 'Найден фильтр для "%s": %s (из terms)', $product_name, $payer_type_filter ) );
                     } elseif ( ! empty( $attribute->get_options() ) ) {
                         $options = $attribute->get_options();
@@ -175,7 +197,7 @@ function render_checklist_by_category( $category_slug, $section_title = '', $arg
                 id="product-<?php echo esc_attr( $product_id ); ?>"
             >
             <div class="flex-1 flex flex-col gap-2 sm:gap-2.5">
-                <p class="font-bold text-sm sm:text-base text-[#262626] leading-[1.15]">
+                <p class="service-name font-bold text-sm sm:text-base text-[#262626] leading-[1.15]">
                     <?php echo esc_html( $product_name ); ?>
                 </p>
                 <?php if ( ! empty( $product_description ) ) : ?>

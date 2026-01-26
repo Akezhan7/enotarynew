@@ -483,20 +483,10 @@ function initEntityCards() {
         card.classList.add('bg-white');
         
         const label = card.querySelector('.entity-card-label');
-        const priceBox = card.querySelector('.entity-card-price-box');
-        const priceText = card.querySelector('.entity-card-price-text');
         
         if (label) {
             label.classList.remove('text-white');
             label.classList.add('text-[#262626]');
-        }
-        if (priceBox) {
-            priceBox.classList.remove('bg-white');
-            priceBox.classList.add('bg-secondary');
-        }
-        if (priceText) {
-            priceText.classList.remove('text-[#262626]', 'text-black');
-            priceText.classList.add('text-white');
         }
     }
     
@@ -506,20 +496,10 @@ function initEntityCards() {
         card.classList.add('entity-card-active', 'bg-primary');
         
         const label = card.querySelector('.entity-card-label');
-        const priceBox = card.querySelector('.entity-card-price-box');
-        const priceText = card.querySelector('.entity-card-price-text');
         
         if (label) {
             label.classList.remove('text-[#262626]');
             label.classList.add('text-white');
-        }
-        if (priceBox) {
-            priceBox.classList.remove('bg-secondary');
-            priceBox.classList.add('bg-white');
-        }
-        if (priceText) {
-            priceText.classList.remove('text-white');
-            priceText.classList.add('text-[#262626]', 'text-black');
         }
     }
     
