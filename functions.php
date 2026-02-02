@@ -797,3 +797,81 @@ function fix_svg_thumb_display() {
  * Товары должны отображаться просто текстом без возможности клика
  */
 add_filter( 'woocommerce_order_item_permalink', '__return_false' );
+
+/**
+ * ФИНАЛЬНЫЙ ФИКС v13: Исправление SUM и COST
+ * Работает с 1 аргументом, ищет заказ глобально.
+ */
+add_filter( 'wc_robokassa_receipt', 'enotary_fix_sum_and_cost', 10, 1 );
+
+function enotary_fix_sum_and_cost( $receipt ) {
+    // 1. Пытаемся найти ID заказа разными способами
+    $order_id = get_query_var( 'order-pay' );
+
+    // Способ 2: Глобальные переменные
+    if ( ! $order_id ) {
+        global $wp;
+        $order_id = isset( $wp->query_vars['order-pay'] ) ? $wp->query_vars['order-pay'] : 0;
+    }
+
+    // Способ 3: Через URL ключ (надежный запасной вариант)
+    if ( ! $order_id && isset($_GET['key']) ) {
+        $order_id = wc_get_order_id_by_order_key( $_GET['key'] );
+    }
+
+    $order = wc_get_order( $order_id );
+    
+    // Если заказ не найден — ничего не трогаем, возвращаем как есть
+    if ( ! $order ) return $receipt;
+
+    // Заполняем контакты клиента, если пусто
+    if ( empty($receipt['client']['email']) ) {
+        $receipt['client']['email'] = $order->get_billing_email();
+    }
+    if ( empty($receipt['client']['phone']) ) {
+        $receipt['client']['phone'] = $order->get_billing_phone();
+    }
+
+    if ( ! empty( $receipt['items'] ) ) {
+        foreach ( $receipt['items'] as $key => $receipt_item ) {
+            
+            foreach ( $order->get_items() as $order_item ) {
+                $order_name = trim(strip_tags($order_item->get_name()));
+                $receipt_name = trim(strip_tags($receipt_item['name']));
+                
+                // Сравниваем имена
+                if ( $order_name === $receipt_name || 
+                     stripos($order_name, $receipt_name) !== false || 
+                     stripos($receipt_name, $order_name) !== false ) {
+                    
+                    // МАТЕМАТИКА: Берем полную цену (товар + налог)
+                    $item_total = $order_item->get_total(); 
+                    $item_tax = $order_item->get_total_tax(); 
+                    $full_price = $item_total + $item_tax; 
+                    $quantity = $order_item->get_quantity();
+                    
+                    // Обновляем общую сумму строки
+                    $receipt['items'][$key]['sum'] = number_format($full_price, 2, '.', '');
+                    
+                    // Обновляем цену за единицу
+                    if ( $quantity > 0 ) {
+                        $receipt['items'][$key]['cost'] = number_format($full_price / $quantity, 2, '.', '');
+                    } else {
+                        $receipt['items'][$key]['cost'] = $receipt['items'][$key]['sum'];
+                    }
+                    
+                    // Указываем ставку НДС (если налог есть > 0)
+                    if ( $item_tax > 0 ) {
+                         $receipt['items'][$key]['tax'] = 'vat5';
+                    } else {
+                         $receipt['items'][$key]['tax'] = 'none';
+                    }
+                    
+                    break; // Товар найден, идем к следующему в чеке
+                }
+            }
+        }
+    }
+
+    return $receipt;
+}

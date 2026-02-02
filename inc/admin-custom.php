@@ -399,10 +399,11 @@ function enotary_custom_shop_order_column_content( $column, $post_id ) {
             break;
         
         case 'company_details':
-            // Реквизиты юридического лица
+            // Реквизиты: ЮЛ или ИП
             $payer_type = $order->get_meta( '_active_payer_type' );
             
             if ( $payer_type === 'legal' ) {
+                // ЛОГИКА ДЛЯ ЮРЛИЦ
                 $company = $order->get_billing_company();
                 $inn = $order->get_meta( '_billing_inn' );
                 $kpp = $order->get_meta( '_billing_kpp' );
@@ -427,6 +428,22 @@ function enotary_custom_shop_order_column_content( $column, $post_id ) {
                     echo 'Юр. Адрес: ' . esc_html( $legal_address );
                 }
                 echo '</div>';
+                
+            } elseif ( $payer_type === 'entrepreneur' ) {
+                // ДОБАВЛЕННЫЙ БЛОК ДЛЯ ИП
+                $inn = $order->get_meta( '_billing_inn' );
+                $passport_address = $order->get_meta( '_billing_passport_address' );
+                
+                echo '<strong>ИП</strong><br>';
+                echo '<div style="font-size: 11px; line-height: 1.6; color: #555;">';
+                if ( $inn ) {
+                    echo 'ИНН: ' . esc_html( $inn ) . '<br>';
+                }
+                if ( $passport_address ) {
+                    echo 'Адрес: ' . esc_html( $passport_address );
+                }
+                echo '</div>';
+                
             } else {
                 echo '<span style="color: #999;">—</span>';
             }
